@@ -1,3 +1,5 @@
+pub mod assets;
+
 pub mod generated {
     pub mod ssvc {
         pub mod decision_point;
