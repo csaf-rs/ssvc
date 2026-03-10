@@ -1,5 +1,6 @@
 pub mod assets;
 pub mod validation;
+pub mod namespaces;
 
 pub mod generated {
     pub mod ssvc {
