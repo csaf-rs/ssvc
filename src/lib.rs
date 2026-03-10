@@ -1,4 +1,5 @@
 pub mod assets;
+pub mod validation;
 
 pub mod generated {
     pub mod ssvc {
