@@ -1,6 +1,10 @@
 [package]
 name = "ssvc"
 edition = "2024"
+version = "0.1.0"
+publish = true
+description = "Implementation of the SSVC specification in Rust"
+license = "Apache-2.0"
 
 [dependencies]
 chrono = { version = "0.4", features = ["serde"] }
