@@ -84,7 +84,7 @@ jobs:
       - name: Build WASM bindings
         run: |
           cargo install wasm-pack --locked
-          wasm-pack build --target web --out-dir pkg -- --features wasm
+          wasm-pack build --target web --out-dir pkg --scope csaf-rs -- --features wasm
       - name: Publish to NPM
         working-directory: ./pkg
         run: |
