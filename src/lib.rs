@@ -10,3 +10,6 @@ pub mod generated {
 }
 
 pub use generated::ssvc::{decision_point, selection_list};
+
+#[cfg(feature = "wasm")]
+pub mod wasm;
