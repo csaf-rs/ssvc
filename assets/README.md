@@ -1,4 +1,4 @@
-# ssvcAsset Sources & Licenses
+# ssvc Asset Sources & Licenses
 
 This library is meant to be published as rust crate(s). For the sake of successful publishing and
 reproducibility, we have to bundle/vendor relevant (external) assets. These assets are described
