@@ -8,7 +8,7 @@ set -euo pipefail
 # between embedded assets and the library version!
 
 # Get the directory of this script (which is part of the main repo, not some submodule)
-SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 # Always run from the repository root so paths are deterministic
 REPO_ROOT="$(git -C "$SCRIPT_DIR" rev-parse --show-toplevel 2>/dev/null)" || {
