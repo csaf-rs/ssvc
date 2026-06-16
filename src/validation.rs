@@ -10,6 +10,7 @@ pub struct SsvcError {
 }
 
 /// Helper function for validating field matches between selection and base decision points.
+#[allow(clippy::too_many_arguments)]
 fn validate_field_match<S, B>(
     selection_field: &Option<S>,
     base_field: &B,
@@ -24,29 +25,29 @@ where
     S: Deref<Target = String>,
     B: Deref<Target = String>,
 {
-    if let Some(sel_field) = selection_field {
-        if sel_field.deref() != base_field.deref() {
-            let mut instance_path = vec![
-                "selections".to_string(),
-                i_s.to_string(),
-            ];
-            instance_path.extend(path_suffix.iter().map(|s| s.to_string()));
-            instance_path.push(field_name.to_string());
+    if let Some(sel_field) = selection_field
+        && sel_field.deref() != base_field.deref()
+    {
+        let mut instance_path = vec![
+            "selections".to_string(),
+            i_s.to_string(),
+        ];
+        instance_path.extend(path_suffix.iter().map(|s| s.to_string()));
+        instance_path.push(field_name.to_string());
 
-            return Err(SsvcError {
-                message: format!(
-                    "Extension namespace '{}' {} {} '{}' does not match base namespace '{}' {} '{}'",
-                    ext_namespace,
-                    context,
-                    field_name,
-                    sel_field.deref(),
-                    base_namespace,
-                    field_name,
-                    base_field.deref()
-                ),
-                instance_path,
-            });
-        }
+        return Err(SsvcError {
+            message: format!(
+                "Extension namespace '{}' {} {} '{}' does not match base namespace '{}' {} '{}'",
+                ext_namespace,
+                context,
+                field_name,
+                sel_field.deref(),
+                base_namespace,
+                field_name,
+                base_field.deref()
+            ),
+            instance_path,
+        });
     }
     Ok(())
 }
