@@ -1,8 +1,8 @@
+use crate::decision_point::DecisionPoint;
+use rust_embed::RustEmbed;
 use std::collections::{HashMap, HashSet};
 use std::ops::Deref;
 use std::sync::LazyLock;
-use rust_embed::RustEmbed;
-use crate::decision_point::DecisionPoint;
 
 /// The embedded Decision Point JSON Schema content.
 pub static SELECTION_LIST_SCHEMA: &str = include_str!("../assets/SelectionList_2_0_0.schema.json");
@@ -32,8 +32,10 @@ pub static SSVC_DECISION_POINTS: LazyLock<SsvcDecisionPointsMap> = LazyLock::new
                         dp.version.deref().to_owned(),
                     );
                     decision_points.insert(key, dp);
-                },
-                Err(err) => eprintln!("Warning: Failed to parse decision point from file {filename}: {err}"),
+                }
+                Err(err) => {
+                    eprintln!("Warning: Failed to parse decision point from file {filename}: {err}")
+                }
             }
         }
     }
