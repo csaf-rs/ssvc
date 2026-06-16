@@ -45,7 +45,7 @@ fn build_from_schema(
     let content = prettyplease::unparse(&syn_file);
 
     let out_file = Path::new(&target_path).to_path_buf();
-    fs::create_dir_all(&out_file.parent().unwrap())?;
+    fs::create_dir_all(out_file.parent().unwrap())?;
     fs::write(out_file, content)?;
 
     Ok(())
