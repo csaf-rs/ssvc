@@ -39,14 +39,16 @@ fn build_from_schema(file_path: &str, target_path: &str) -> Result<(), Box<dyn s
     type_space.add_root_schema(schema)?;
 
     let mut syn_file = syn::parse2::<syn::File>(type_space.to_stream())?;
-    add_ignore_clippy(&mut syn_file);
-    add_ignore_rustfmt(&mut syn_file);
     add_generated_code_header(&mut syn_file);
+    add_ignore_rustfmt(&mut syn_file);
+    add_ignore_clippy(&mut syn_file);
 
     let content = prettyplease::unparse(&syn_file);
 
     let out_file = Path::new(&target_path).to_path_buf();
-    fs::create_dir_all(out_file.parent().unwrap())?;
+    if let Some(parent) = out_file.parent() {
+        fs::create_dir_all(parent)?;
+    }
     fs::write(out_file, content)?;
 
     Ok(())
@@ -54,7 +56,7 @@ fn build_from_schema(file_path: &str, target_path: &str) -> Result<(), Box<dyn s
 
 fn add_generated_code_header(file: &mut syn::File) {
     let doc_attr: syn::Attribute = syn::parse_quote! { #![doc = #GENERATED_CODE_HEADER] };
-    file.attrs.insert(0, doc_attr);
+    file.attrs.push(doc_attr);
 }
 
 static GENERATED_CODE_HEADER: &str = "
@@ -65,10 +67,10 @@ static GENERATED_CODE_HEADER: &str = "
 
 fn add_ignore_rustfmt(file: &mut syn::File) {
     let doc_attr = syn::parse_quote! { #![cfg_attr(any(), rustfmt::skip)] };
-    file.attrs.insert(0, doc_attr);
+    file.attrs.push(doc_attr);
 }
 
 fn add_ignore_clippy(file: &mut syn::File) {
     let doc_attr = syn::parse_quote! { #![allow(clippy::all)] };
-    file.attrs.insert(0, doc_attr);
+    file.attrs.push(doc_attr);
 }
