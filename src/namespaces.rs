@@ -17,8 +17,14 @@ pub struct ParsedNamespace {
 /// The base namespace, either registered or unregistered.
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub enum BaseNamespace {
-    Registered { name: String, fragment: Option<String> },
-    Unregistered { reverse_domain: String, fragment: String },
+    Registered {
+        name: String,
+        fragment: Option<String>,
+    },
+    Unregistered {
+        reverse_domain: String,
+        fragment: String,
+    },
 }
 
 /// A namespace extension segment.
@@ -27,9 +33,16 @@ pub enum Extension {
     /// A BCP-47 language tag.
     Language(String),
     /// A reverse domain extension with an optional fragment.
-    Domain { reverse_domain: String, fragment: Option<String> },
+    Domain {
+        reverse_domain: String,
+        fragment: Option<String>,
+    },
     /// An unofficial translation.
-    Translation { reverse_domain: String, fragment: Option<String>, language: String },
+    Translation {
+        reverse_domain: String,
+        fragment: Option<String>,
+        language: String,
+    },
 }
 
 impl ParsedNamespace {
@@ -45,7 +58,10 @@ impl ParsedNamespace {
 
     pub fn parse_internal(namespace: &str, allow_test: bool) -> Result<Self, String> {
         if namespace.len() < 3 || namespace.len() > 1000 {
-            return Err(format!("Namespace length must be between 3 and 1000 characters, got {}", namespace.len()));
+            return Err(format!(
+                "Namespace length must be between 3 and 1000 characters, got {}",
+                namespace.len()
+            ));
         }
 
         let parts: Vec<&str> = namespace.split('/').collect();
@@ -87,21 +103,30 @@ impl ParsedNamespace {
                 return Err("Fragment cannot be empty after '#'".to_string());
             }
 
-            Ok(BaseNamespace::Registered { name, fragment: Some(fragment) })
+            Ok(BaseNamespace::Registered {
+                name,
+                fragment: Some(fragment),
+            })
         } else {
-            Ok(BaseNamespace::Registered { name: base.to_string(), fragment: None })
+            Ok(BaseNamespace::Registered {
+                name: base.to_string(),
+                fragment: None,
+            })
         }
     }
 
     fn parse_unregistered_base(base: &str, allow_test: bool) -> Result<BaseNamespace, String> {
-        let hash_pos = base.find('#')
-            .ok_or_else(|| "Unregistered namespace must contain a fragment (format: x_domain#fragment)".to_string())?;
+        let hash_pos = base.find('#').ok_or_else(|| {
+            "Unregistered namespace must contain a fragment (format: x_domain#fragment)".to_string()
+        })?;
 
         let reverse_domain = base[2..hash_pos].to_string();
         let fragment = base[hash_pos + 1..].to_string();
 
         if reverse_domain.is_empty() {
-            return Err("Reverse domain name cannot be empty in unregistered namespace".to_string());
+            return Err(
+                "Reverse domain name cannot be empty in unregistered namespace".to_string(),
+            );
         }
         if fragment.is_empty() {
             return Err("Fragment is required in unregistered namespace".to_string());
@@ -114,11 +139,17 @@ impl ParsedNamespace {
         let full_unregistered = format!("x_{}", reverse_domain);
         for reserved in RESERVED_UNREGISTERED {
             if full_unregistered == *reserved {
-                return Err(format!("Reserved unregistered namespace '{}' must not be used", reserved));
+                return Err(format!(
+                    "Reserved unregistered namespace '{}' must not be used",
+                    reserved
+                ));
             }
         }
 
-        Ok(BaseNamespace::Unregistered { reverse_domain, fragment })
+        Ok(BaseNamespace::Unregistered {
+            reverse_domain,
+            fragment,
+        })
     }
 
     fn parse_extensions(parts: &[&str]) -> Result<Vec<Extension>, String> {
@@ -176,7 +207,7 @@ impl ParsedNamespace {
 
             Ok(Extension::Domain {
                 reverse_domain,
-                fragment: Some(fragment)
+                fragment: Some(fragment),
             })
         } else {
             if content.is_empty() {
@@ -184,7 +215,7 @@ impl ParsedNamespace {
             }
             Ok(Extension::Domain {
                 reverse_domain: content.to_string(),
-                fragment: None
+                fragment: None,
             })
         }
     }
@@ -195,8 +226,9 @@ impl ParsedNamespace {
         }
 
         let content = &segment[1..];
-        let dollar_pos = content.find('$')
-            .ok_or_else(|| "Translation segment must contain '$' before language tag".to_string())?;
+        let dollar_pos = content.find('$').ok_or_else(|| {
+            "Translation segment must contain '$' before language tag".to_string()
+        })?;
 
         let domain_part = &content[..dollar_pos];
 
@@ -205,7 +237,6 @@ impl ParsedNamespace {
         if language.is_empty() {
             return Err("Language tag cannot be empty in translation".to_string());
         }
-
 
         if let Some(hash_pos) = domain_part.find('#') {
             let reverse_domain = domain_part[..hash_pos].to_string();
@@ -221,7 +252,7 @@ impl ParsedNamespace {
             Ok(Extension::Translation {
                 reverse_domain,
                 fragment: Some(fragment),
-                language
+                language,
             })
         } else {
             if domain_part.is_empty() {
@@ -230,7 +261,7 @@ impl ParsedNamespace {
             Ok(Extension::Translation {
                 reverse_domain: domain_part.to_string(),
                 fragment: None,
-                language
+                language,
             })
         }
     }
@@ -346,7 +377,10 @@ mod tests {
         let parsed = result.unwrap();
         assert_eq!(parsed.extensions.len(), 1);
         match &parsed.extensions[0] {
-            Extension::Domain { reverse_domain, fragment } => {
+            Extension::Domain {
+                reverse_domain,
+                fragment,
+            } => {
                 assert_eq!(reverse_domain, "example.org");
                 assert_eq!(fragment, &Some("ref".to_string()));
             }
@@ -369,7 +403,11 @@ mod tests {
         let parsed = result.unwrap();
         assert_eq!(parsed.extensions.len(), 2);
         match &parsed.extensions[1] {
-            Extension::Translation { reverse_domain, fragment, language } => {
+            Extension::Translation {
+                reverse_domain,
+                fragment,
+                language,
+            } => {
                 assert_eq!(reverse_domain, "example.isao");
                 assert_eq!(fragment, &None);
                 assert_eq!(language, "pl-PL");
@@ -454,7 +492,10 @@ mod tests {
         assert!(result.is_ok());
         let parsed = result.unwrap();
         match parsed.base {
-            BaseNamespace::Unregistered { reverse_domain, fragment } => {
+            BaseNamespace::Unregistered {
+                reverse_domain,
+                fragment,
+            } => {
                 assert_eq!(reverse_domain, "com.example.subdomain");
                 assert_eq!(fragment, "test");
             }

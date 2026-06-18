@@ -1,7 +1,9 @@
-use std::ops::Deref;
 use crate::assets::{DP_VAL_KEYS_LOOKUP, REGISTERED_SSVC_NAMESPACES, SSVC_DECISION_POINTS};
-use crate::namespaces::{validate_namespace, validate_namespace_allow_test, BaseNamespace, ParsedNamespace};
+use crate::namespaces::{
+    BaseNamespace, ParsedNamespace, validate_namespace, validate_namespace_allow_test,
+};
 use crate::selection_list::SelectionList;
+use std::ops::Deref;
 
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct SsvcError {
@@ -28,10 +30,7 @@ where
     if let Some(sel_field) = selection_field
         && sel_field.deref() != base_field.deref()
     {
-        let mut instance_path = vec![
-            "selections".to_string(),
-            i_s.to_string(),
-        ];
+        let mut instance_path = vec!["selections".to_string(), i_s.to_string()];
         instance_path.extend(path_suffix.iter().map(|s| s.to_string()));
         instance_path.push(field_name.to_string());
 
@@ -56,7 +55,9 @@ pub fn validate_selection_list(selection_list: &SelectionList) -> Result<(), Vec
     validate_selection_list_internal(selection_list, validate_namespace)
 }
 
-pub fn validate_selection_list_allow_test(selection_list: &SelectionList) -> Result<(), Vec<SsvcError>> {
+pub fn validate_selection_list_allow_test(
+    selection_list: &SelectionList,
+) -> Result<(), Vec<SsvcError>> {
     validate_selection_list_internal(selection_list, validate_namespace_allow_test)
 }
 
@@ -74,7 +75,7 @@ fn validate_selection_list_internal(
                     instance_path: vec![
                         "selections".to_string(),
                         i_s.to_string(),
-                        "namespace".to_string()
+                        "namespace".to_string(),
                     ],
                 }]);
             }
@@ -121,7 +122,8 @@ fn validate_selection_list_internal(
                         "decision point",
                         i_s,
                         &[],
-                    ).map_err(|e| vec![e])?;
+                    )
+                    .map_err(|e| vec![e])?;
 
                     validate_field_match(
                         &selection.definition,
@@ -132,7 +134,8 @@ fn validate_selection_list_internal(
                         "decision point",
                         i_s,
                         &[],
-                    ).map_err(|e| vec![e])?;
+                    )
+                    .map_err(|e| vec![e])?;
                 }
 
                 let mut last_index: i32 = -1;
@@ -158,7 +161,7 @@ fn validate_selection_list_internal(
                                     i_val.to_string(),
                                 ],
                             }]);
-                        },
+                        }
                         Some(i_dp_val) => {
                             // Verify order is maintained (subset must preserve order from base)
                             if last_index > *i_dp_val {
@@ -193,7 +196,8 @@ fn validate_selection_list_internal(
                                     &context,
                                     i_s,
                                     &["values", &i_val.to_string()],
-                                ).map_err(|e| vec![e])?;
+                                )
+                                .map_err(|e| vec![e])?;
 
                                 validate_field_match(
                                     &sel_val.definition,
@@ -204,12 +208,13 @@ fn validate_selection_list_internal(
                                     &context,
                                     i_s,
                                     &["values", &i_val.to_string()],
-                                ).map_err(|e| vec![e])?;
+                                )
+                                .map_err(|e| vec![e])?;
                             }
-                        },
+                        }
                     }
                 }
-            },
+            }
             None => {
                 return Err(vec![SsvcError {
                     message: format!(
@@ -220,7 +225,7 @@ fn validate_selection_list_internal(
                     ),
                     instance_path: vec!["selections".to_string(), i_s.to_string()],
                 }]);
-            },
+            }
         }
     }
     Ok(())

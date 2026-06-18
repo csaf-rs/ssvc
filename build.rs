@@ -1,6 +1,6 @@
-use typify::{TypeSpace, TypeSpaceSettings};
 use std::fs;
 use std::path::Path;
+use typify::{TypeSpace, TypeSpaceSettings};
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     println!("cargo:rerun-if-changed=build.rs");
@@ -25,10 +25,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     Ok(())
 }
 
-fn build_from_schema(
-    file_path: &str,
-    target_path: &str,
-) -> Result<(), Box<dyn std::error::Error>> {
+fn build_from_schema(file_path: &str, target_path: &str) -> Result<(), Box<dyn std::error::Error>> {
     // Open the file and deserialize the JSON schema
     let file = std::fs::File::open(file_path)?;
     let schema = serde_json::from_reader(file)?;
