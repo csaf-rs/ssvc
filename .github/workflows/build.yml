@@ -28,6 +28,8 @@ jobs:
           RUSTDOCFLAGS: "-D warnings"
       - name: Build
         run: cargo build --verbose
+      - name: Clippy check
+        run: cargo clippy --all-targets --locked --release -- -D warnings
       - name: Run tests
         run: cargo test --verbose
       - name: Publish dry-run
