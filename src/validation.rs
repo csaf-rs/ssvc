@@ -1,5 +1,5 @@
 use crate::assets::{DP_VAL_KEYS_LOOKUP, REGISTERED_SSVC_NAMESPACES, SSVC_DECISION_POINTS};
-use crate::namespaces::{validate_namespace, BaseNamespace};
+use crate::namespaces::{BaseNamespace, validate_namespace};
 use crate::selection_list::SelectionList;
 use std::ops::Deref;
 
@@ -43,20 +43,20 @@ where
         instance_path.extend(path_suffix.iter().map(|s| s.to_string()));
         instance_path.push(field_name.to_string());
 
-            return Some(ValidationError {
-                message: format!(
-                    "Extension namespace '{}' {} {} '{}' does not match base namespace '{}' {} '{}'",
-                    ext_namespace,
-                    context,
-                    field_name,
-                    sel_field.deref(),
-                    base_namespace,
-                    field_name,
-                    base_field.deref()
-                ),
-                instance_path,
-            });
-        }
+        return Some(ValidationError {
+            message: format!(
+                "Extension namespace '{}' {} {} '{}' does not match base namespace '{}' {} '{}'",
+                ext_namespace,
+                context,
+                field_name,
+                sel_field.deref(),
+                base_namespace,
+                field_name,
+                base_field.deref()
+            ),
+            instance_path,
+        });
+    }
     None
 }
 
@@ -76,7 +76,8 @@ pub fn validate_selection_list(
 
     for (i_s, selection) in selection_list.selections.iter().enumerate() {
         // Parse and validate namespace structure
-        let parsed_ns = match validate_namespace(selection.namespace.deref(), allow_test_namespaces) {
+        let parsed_ns = match validate_namespace(selection.namespace.deref(), allow_test_namespaces)
+        {
             Ok(ns) => ns,
             Err(err) => {
                 errors.push(ValidationError {
@@ -174,7 +175,7 @@ pub fn validate_selection_list(
                                 ],
                             });
                             continue;
-                        },
+                        }
                         Some(i_dp_val) => {
                             // Verify order is maintained (subset must preserve order from base)
                             if last_index > *i_dp_val {
@@ -242,7 +243,7 @@ pub fn validate_selection_list(
                     instance_path: vec!["selections".to_string(), i_s.to_string()],
                 });
                 continue;
-            },
+            }
         }
     }
 
@@ -264,10 +265,19 @@ mod tests {
         };
 
         let json = serde_json::to_value(&error).expect("serialize ValidationError");
-        assert_eq!(json.get("message").and_then(|v| v.as_str()), Some("example"));
-        assert_eq!(json.get("instancePath").and_then(|v| v.as_array()).map(|a| a.len()), Some(2));
+        assert_eq!(
+            json.get("message").and_then(|v| v.as_str()),
+            Some("example")
+        );
+        assert_eq!(
+            json.get("instancePath")
+                .and_then(|v| v.as_array())
+                .map(|a| a.len()),
+            Some(2)
+        );
 
-        let roundtrip: ValidationError = serde_json::from_value(json).expect("deserialize ValidationError");
+        let roundtrip: ValidationError =
+            serde_json::from_value(json).expect("deserialize ValidationError");
         assert_eq!(roundtrip, error);
     }
 }

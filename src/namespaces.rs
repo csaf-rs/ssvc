@@ -402,7 +402,10 @@ mod tests {
 
     #[test]
     fn test_translation_extension() {
-        let result = validate_namespace("ssvc//.example.isao#constituency/.example.isao$pl-PL", false);
+        let result = validate_namespace(
+            "ssvc//.example.isao#constituency/.example.isao$pl-PL",
+            false,
+        );
         assert!(result.is_ok());
         let parsed = result.unwrap();
         assert_eq!(parsed.extensions.len(), 2);

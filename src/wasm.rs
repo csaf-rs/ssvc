@@ -2,10 +2,9 @@
 //!
 //! This module provides WebAssembly bindings for the SSVC library, allowing it to be used in web applications.
 
-use wasm_bindgen::prelude::*;
 use crate::selection_list::SelectionList;
 use crate::validation::validate_selection_list;
-
+use wasm_bindgen::prelude::*;
 
 /// Initialize panic hook for better error messages in the browser console
 #[wasm_bindgen(start)]
@@ -23,8 +22,7 @@ pub fn validate_selection_list_from_string(
 
     let result = validate_selection_list(&selection_list, allow_test_namespaces);
 
-    serde_wasm_bindgen::to_value(&result)
-        .map_err(|e| JsValue::from_str(&e.to_string()))
+    serde_wasm_bindgen::to_value(&result).map_err(|e| JsValue::from_str(&e.to_string()))
 }
 
 #[wasm_bindgen(js_name = validateSelectionListValue)]
@@ -37,8 +35,7 @@ pub fn validate_selection_list_from_jsvalue(
 
     let result = validate_selection_list(&selection_list, allow_test_namespaces);
 
-    serde_wasm_bindgen::to_value(&result)
-        .map_err(|e| JsValue::from_str(&e.to_string()))
+    serde_wasm_bindgen::to_value(&result).map_err(|e| JsValue::from_str(&e.to_string()))
 }
 
 #[cfg(all(test, target_arch = "wasm32"))]
