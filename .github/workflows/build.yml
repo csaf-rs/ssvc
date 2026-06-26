@@ -20,7 +20,7 @@ jobs:
           ./update_assets.sh
           CHANGES=$(git status --porcelain)
           if [ -n "$CHANGES" ]; then
-            echo "::error::Assets are out of date. Please run ./scripts/update/update_assets.sh locally and commit the changes."
+            echo "::error::Assets are out of date. Please run ./update_assets.sh locally and commit the changes."
             echo "$CHANGES"
             exit 1
           fi
