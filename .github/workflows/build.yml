@@ -24,8 +24,18 @@ jobs:
             ~/.cargo/registry
             ~/.cargo/git
           key: ${{ runner.os }}-cargo-registry-${{ hashFiles('**/Cargo.lock') }}
+      - name: Format check
+        run: |
+          rustup component add rustfmt
+          cargo fmt --all -- --check -l
+      - name: Doc check
+        run: cargo doc --no-deps --document-private-items --locked
+        env:
+          RUSTDOCFLAGS: "-D warnings"
       - name: Build
         run: cargo build --verbose
+      - name: Clippy check
+        run: cargo clippy --all-targets --locked --release -- -D warnings
       - name: Run tests
         run: cargo test --verbose
       - name: Add wasm target

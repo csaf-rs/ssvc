@@ -1,7 +1,7 @@
-use std::ops::Deref;
 use crate::assets::{DP_VAL_KEYS_LOOKUP, REGISTERED_SSVC_NAMESPACES, SSVC_DECISION_POINTS};
 use crate::namespaces::{validate_namespace, BaseNamespace};
 use crate::selection_list::SelectionList;
+use std::ops::Deref;
 
 #[derive(Debug, Clone, PartialEq, Eq, serde::Serialize, serde::Deserialize)]
 pub struct ValidationResult {
@@ -18,9 +18,10 @@ pub struct ValidationError {
 
 /// Helper function for validating field matches between selection and base
 /// decision points.
-/// 
+///
 /// Returns a ValidationError if the selection field is Some and does not match
 /// the base field, otherwise returns None.
+#[allow(clippy::too_many_arguments)]
 fn validate_field_match<S, B>(
     selection_field: &Option<S>,
     base_field: &B,
@@ -35,14 +36,12 @@ where
     S: Deref<Target = String>,
     B: Deref<Target = String>,
 {
-    if let Some(sel_field) = selection_field {
-        if sel_field.deref() != base_field.deref() {
-            let mut instance_path = vec![
-                "selections".to_string(),
-                i_s.to_string(),
-            ];
-            instance_path.extend(path_suffix.iter().map(|s| s.to_string()));
-            instance_path.push(field_name.to_string());
+    if let Some(sel_field) = selection_field
+        && sel_field.deref() != base_field.deref()
+    {
+        let mut instance_path = vec!["selections".to_string(), i_s.to_string()];
+        instance_path.extend(path_suffix.iter().map(|s| s.to_string()));
+        instance_path.push(field_name.to_string());
 
             return Some(ValidationError {
                 message: format!(
@@ -58,14 +57,13 @@ where
                 instance_path,
             });
         }
-    }
     None
 }
 
 /// Main validation function for SSVC SelectionList. Validates that all
 /// selections with registered SSVC namespaces conform to the structure of their
 /// corresponding decision points, including extension rules.
-/// 
+///
 /// # Arguments
 /// * `selection_list` - The SelectionList to validate
 /// * `allow_test_namespaces` - Whether to allow namespaces with "test"
@@ -86,7 +84,7 @@ pub fn validate_selection_list(
                     instance_path: vec![
                         "selections".to_string(),
                         i_s.to_string(),
-                        "namespace".to_string()
+                        "namespace".to_string(),
                     ],
                 });
                 continue;
@@ -229,10 +227,10 @@ pub fn validate_selection_list(
                                     errors.push(error);
                                 }
                             }
-                        },
+                        }
                     }
                 }
-            },
+            }
             None => {
                 errors.push(ValidationError {
                     message: format!(
