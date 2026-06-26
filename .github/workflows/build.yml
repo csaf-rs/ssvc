@@ -12,13 +12,24 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
+        with:
+          submodules: 'true'
+      - name: Check assets are up-to-date
+        run: |
+          ./update_assets.sh
+          CHANGES=$(git status --porcelain)
+          if [ -n "$CHANGES" ]; then
+            echo "::error::Assets are out of date. Please run ./scripts/update/update_assets.sh locally and commit the changes."
+            echo "$CHANGES"
+            exit 1
+          fi
       - name: Ensure Rust toolchain
         run: |
           rustup update stable
           rustup default stable
       - name: Cache cargo registry
-        uses: actions/cache@v3
+        uses: actions/cache@v6
         with:
           path: |
             ~/.cargo/registry
@@ -29,15 +40,13 @@ jobs:
           rustup component add rustfmt
           cargo fmt --all -- --check -l
       - name: Doc check
-        run: cargo doc --no-deps --document-private-items --locked
+        run: cargo doc --no-deps --document-private-items --locked --all-features
         env:
           RUSTDOCFLAGS: "-D warnings"
-      - name: Build
-        run: cargo build --verbose
       - name: Clippy check
-        run: cargo clippy --all-targets --locked --release -- -D warnings
+        run: cargo clippy --all-targets --locked --release --all-features -- -D warnings
       - name: Run tests
-        run: cargo test --verbose
+        run: cargo test --verbose --release --locked --all-features
       - name: Add wasm target
         run: rustup target add wasm32-unknown-unknown
       - name: Install wasm-pack
@@ -58,11 +67,9 @@ jobs:
       - build
     if: startsWith(github.ref, 'refs/tags/v') && !contains(github.ref, 'beta') && !contains(github.ref, 'alpha')
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           submodules: 'true'
-      - name: Update assets
-        run: ./update_assets.sh
       - uses: rust-lang/crates-io-auth-action@v1
         id: auth
       - name: Update rustup
@@ -81,11 +88,9 @@ jobs:
       - build
     if: startsWith(github.ref, 'refs/tags/v') && !contains(github.ref, 'beta') && !contains(github.ref, 'alpha')
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           submodules: 'true'
-      - name: Update assets
-        run: ./update_assets.sh
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
