@@ -1,17 +1,26 @@
 use crate::assets::{DP_VAL_KEYS_LOOKUP, REGISTERED_SSVC_NAMESPACES, SSVC_DECISION_POINTS};
-use crate::namespaces::{
-    BaseNamespace, ParsedNamespace, validate_namespace, validate_namespace_allow_test,
-};
+use crate::namespaces::{BaseNamespace, validate_namespace};
 use crate::selection_list::SelectionList;
 use std::ops::Deref;
 
-#[derive(Debug, Clone, PartialEq, Eq)]
-pub struct SsvcError {
+#[derive(Debug, Clone, PartialEq, Eq, serde::Serialize, serde::Deserialize)]
+pub struct ValidationResult {
+    pub success: bool,
+    pub errors: Vec<ValidationError>,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, serde::Serialize, serde::Deserialize)]
+pub struct ValidationError {
     pub message: String,
+    #[serde(rename = "instancePath")]
     pub instance_path: Vec<String>,
 }
 
-/// Helper function for validating field matches between selection and base decision points.
+/// Helper function for validating field matches between selection and base
+/// decision points.
+///
+/// Returns a ValidationError if the selection field is Some and does not match
+/// the base field, otherwise returns None.
 #[allow(clippy::too_many_arguments)]
 fn validate_field_match<S, B>(
     selection_field: &Option<S>,
@@ -22,7 +31,7 @@ fn validate_field_match<S, B>(
     context: &str,
     i_s: usize,
     path_suffix: &[&str],
-) -> Result<(), SsvcError>
+) -> Option<ValidationError>
 where
     S: Deref<Target = String>,
     B: Deref<Target = String>,
@@ -34,7 +43,7 @@ where
         instance_path.extend(path_suffix.iter().map(|s| s.to_string()));
         instance_path.push(field_name.to_string());
 
-        return Err(SsvcError {
+        return Some(ValidationError {
             message: format!(
                 "Extension namespace '{}' {} {} '{}' does not match base namespace '{}' {} '{}'",
                 ext_namespace,
@@ -48,36 +57,38 @@ where
             instance_path,
         });
     }
-    Ok(())
+    None
 }
 
-pub fn validate_selection_list(selection_list: &SelectionList) -> Result<(), Vec<SsvcError>> {
-    validate_selection_list_internal(selection_list, validate_namespace)
-}
-
-pub fn validate_selection_list_allow_test(
+/// Main validation function for SSVC SelectionList. Validates that all
+/// selections with registered SSVC namespaces conform to the structure of their
+/// corresponding decision points, including extension rules.
+///
+/// # Arguments
+/// * `selection_list` - The SelectionList to validate
+/// * `allow_test_namespaces` - Whether to allow namespaces with "test"
+///   extensions
+pub fn validate_selection_list(
     selection_list: &SelectionList,
-) -> Result<(), Vec<SsvcError>> {
-    validate_selection_list_internal(selection_list, validate_namespace_allow_test)
-}
+    allow_test_namespaces: bool,
+) -> ValidationResult {
+    let mut errors: Vec<ValidationError> = Vec::new();
 
-fn validate_selection_list_internal(
-    selection_list: &SelectionList,
-    namespace_validation_fn: fn(&str) -> Result<ParsedNamespace, String>,
-) -> Result<(), Vec<SsvcError>> {
     for (i_s, selection) in selection_list.selections.iter().enumerate() {
         // Parse and validate namespace structure
-        let parsed_ns = match namespace_validation_fn(selection.namespace.deref()) {
+        let parsed_ns = match validate_namespace(selection.namespace.deref(), allow_test_namespaces)
+        {
             Ok(ns) => ns,
             Err(err) => {
-                return Err(vec![SsvcError {
+                errors.push(ValidationError {
                     message: format!("Invalid SSVC namespace: {}", err),
                     instance_path: vec![
                         "selections".to_string(),
                         i_s.to_string(),
                         "namespace".to_string(),
                     ],
-                }]);
+                });
+                continue;
             }
         };
 
@@ -113,7 +124,7 @@ fn validate_selection_list_internal(
 
                 // If the namespace has no extensions, validate that name and definition match the base (if provided)
                 if parsed_ns.extensions.is_empty() {
-                    validate_field_match(
+                    if let Some(error) = validate_field_match(
                         &selection.name,
                         &dp.name,
                         "name",
@@ -122,10 +133,11 @@ fn validate_selection_list_internal(
                         "decision point",
                         i_s,
                         &[],
-                    )
-                    .map_err(|e| vec![e])?;
+                    ) {
+                        errors.push(error);
+                    }
 
-                    validate_field_match(
+                    if let Some(error) = validate_field_match(
                         &selection.definition,
                         &dp.definition,
                         "definition",
@@ -134,8 +146,9 @@ fn validate_selection_list_internal(
                         "decision point",
                         i_s,
                         &[],
-                    )
-                    .map_err(|e| vec![e])?;
+                    ) {
+                        errors.push(error);
+                    }
                 }
 
                 let mut last_index: i32 = -1;
@@ -146,7 +159,7 @@ fn validate_selection_list_internal(
                     match reference_indices.get(v_key) {
                         None => {
                             // The value is not found in the base decision point
-                            return Err(vec![SsvcError {
+                            errors.push(ValidationError {
                                 message: format!(
                                     "The SSVC decision point '{}::{}' (version {}) doesn't have a value with key '{}'",
                                     selection.namespace.deref(),
@@ -160,12 +173,13 @@ fn validate_selection_list_internal(
                                     "values".to_string(),
                                     i_val.to_string(),
                                 ],
-                            }]);
+                            });
+                            continue;
                         }
                         Some(i_dp_val) => {
                             // Verify order is maintained (subset must preserve order from base)
                             if last_index > *i_dp_val {
-                                return Err(vec![SsvcError {
+                                errors.push(ValidationError {
                                     message: format!(
                                         "The values for SSVC decision point '{}::{}' (version {}) are not in correct order",
                                         selection.namespace.deref(),
@@ -178,7 +192,8 @@ fn validate_selection_list_internal(
                                         "values".to_string(),
                                         i_val.to_string(),
                                     ],
-                                }]);
+                                });
+                                continue;
                             }
                             last_index = *i_dp_val;
 
@@ -187,7 +202,7 @@ fn validate_selection_list_internal(
                                 let base_val = &dp.values[*i_dp_val as usize];
                                 let context = format!("value '{}'", v_key);
 
-                                validate_field_match(
+                                if let Some(error) = validate_field_match(
                                     &sel_val.name,
                                     &base_val.name,
                                     "name",
@@ -196,10 +211,11 @@ fn validate_selection_list_internal(
                                     &context,
                                     i_s,
                                     &["values", &i_val.to_string()],
-                                )
-                                .map_err(|e| vec![e])?;
+                                ) {
+                                    errors.push(error);
+                                }
 
-                                validate_field_match(
+                                if let Some(error) = validate_field_match(
                                     &sel_val.definition,
                                     &base_val.definition,
                                     "definition",
@@ -208,15 +224,16 @@ fn validate_selection_list_internal(
                                     &context,
                                     i_s,
                                     &["values", &i_val.to_string()],
-                                )
-                                .map_err(|e| vec![e])?;
+                                ) {
+                                    errors.push(error);
+                                }
                             }
                         }
                     }
                 }
             }
             None => {
-                return Err(vec![SsvcError {
+                errors.push(ValidationError {
                     message: format!(
                         "Unknown SSVC decision point '{}::{}' with version '{}'",
                         selection.namespace.deref(),
@@ -224,9 +241,43 @@ fn validate_selection_list_internal(
                         version
                     ),
                     instance_path: vec!["selections".to_string(), i_s.to_string()],
-                }]);
+                });
+                continue;
             }
         }
     }
-    Ok(())
+
+    ValidationResult {
+        success: errors.is_empty(),
+        errors,
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::ValidationError;
+
+    #[test]
+    fn validation_error_is_serde_serializable() {
+        let error = ValidationError {
+            message: "example".to_string(),
+            instance_path: vec!["selections".to_string(), "0".to_string()],
+        };
+
+        let json = serde_json::to_value(&error).expect("serialize ValidationError");
+        assert_eq!(
+            json.get("message").and_then(|v| v.as_str()),
+            Some("example")
+        );
+        assert_eq!(
+            json.get("instancePath")
+                .and_then(|v| v.as_array())
+                .map(|a| a.len()),
+            Some(2)
+        );
+
+        let roundtrip: ValidationError =
+            serde_json::from_value(json).expect("deserialize ValidationError");
+        assert_eq!(roundtrip, error);
+    }
 }

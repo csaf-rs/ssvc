@@ -287,18 +287,22 @@ impl ParsedNamespace {
 
 /// Validate a namespace string according to SSVC namespace rules.
 ///
-/// This function parses and validates the namespace structure but does not check
-/// if registered namespaces are actually registered in the system (that check
-/// happens during selection list validation).
-pub fn validate_namespace(namespace: &str) -> Result<ParsedNamespace, String> {
-    ParsedNamespace::parse(namespace)
-}
-
-/// Validate a namespace string according to SSVC namespace rules.
+/// This function parses and validates the namespace structure but does not
+/// check if registered namespaces are actually registered in the system (that
+/// check happens during selection list validation).
 ///
-/// Same as `validate_namespace`, but allows "test" and "x_test" namespaces.
-pub fn validate_namespace_allow_test(namespace: &str) -> Result<ParsedNamespace, String> {
-    ParsedNamespace::parse_allow_test(namespace)
+/// # Arguments
+/// * `namespace` - The namespace string to validate
+/// * `allow_test_namespaces` - Whether to allow namespaces with "test" extensions
+pub fn validate_namespace(
+    namespace: &str,
+    allow_test_namespaces: bool,
+) -> Result<ParsedNamespace, String> {
+    if allow_test_namespaces {
+        ParsedNamespace::parse_allow_test(namespace)
+    } else {
+        ParsedNamespace::parse(namespace)
+    }
 }
 
 #[cfg(test)]
@@ -307,7 +311,7 @@ mod tests {
 
     #[test]
     fn test_simple_registered_namespace() {
-        let result = validate_namespace("ssvc");
+        let result = validate_namespace("ssvc", false);
         assert!(result.is_ok());
         let parsed = result.unwrap();
         assert!(parsed.is_registered());
@@ -316,7 +320,7 @@ mod tests {
 
     #[test]
     fn test_registered_namespace_with_fragment() {
-        let result = validate_namespace("nist#800-30");
+        let result = validate_namespace("nist#800-30", false);
         assert!(result.is_ok());
         let parsed = result.unwrap();
         assert!(parsed.is_registered());
@@ -331,7 +335,7 @@ mod tests {
 
     #[test]
     fn test_unregistered_namespace() {
-        let result = validate_namespace("x_example.test#test");
+        let result = validate_namespace("x_example.test#test", false);
         assert!(result.is_ok());
         let parsed = result.unwrap();
         assert!(parsed.is_unregistered());
@@ -339,28 +343,28 @@ mod tests {
 
     #[test]
     fn test_unregistered_namespace_missing_fragment() {
-        let result = validate_namespace("x_example.test");
+        let result = validate_namespace("x_example.test", false);
         assert!(result.is_err());
         assert!(result.unwrap_err().contains("fragment"));
     }
 
     #[test]
     fn test_reserved_registered_namespace() {
-        assert!(validate_namespace("example").is_err());
-        assert!(validate_namespace("test").is_err());
-        assert!(validate_namespace("invalid").is_err());
+        assert!(validate_namespace("example", false).is_err());
+        assert!(validate_namespace("test", false).is_err());
+        assert!(validate_namespace("invalid", false).is_err());
     }
 
     #[test]
     fn test_reserved_unregistered_namespace() {
-        assert!(validate_namespace("x_example#test").is_err());
-        assert!(validate_namespace("x_test#foo").is_err());
-        assert!(validate_namespace("x_invalid#bar").is_err());
+        assert!(validate_namespace("x_example#test", false).is_err());
+        assert!(validate_namespace("x_test#foo", false).is_err());
+        assert!(validate_namespace("x_invalid#bar", false).is_err());
     }
 
     #[test]
     fn test_namespace_with_language_extension() {
-        let result = validate_namespace("ssvc/de-DE");
+        let result = validate_namespace("ssvc/de-DE", false);
         assert!(result.is_ok());
         let parsed = result.unwrap();
         assert_eq!(parsed.extensions.len(), 1);
@@ -372,7 +376,7 @@ mod tests {
 
     #[test]
     fn test_namespace_with_empty_first_extension() {
-        let result = validate_namespace("ssvc//.example.org#ref");
+        let result = validate_namespace("ssvc//.example.org#ref", false);
         assert!(result.is_ok());
         let parsed = result.unwrap();
         assert_eq!(parsed.extensions.len(), 1);
@@ -390,7 +394,7 @@ mod tests {
 
     #[test]
     fn test_complex_namespace_with_extensions() {
-        let result = validate_namespace("ssvc/de-DE/.example.organization#ref-arch-1");
+        let result = validate_namespace("ssvc/de-DE/.example.organization#ref-arch-1", false);
         assert!(result.is_ok());
         let parsed = result.unwrap();
         assert_eq!(parsed.extensions.len(), 2);
@@ -398,7 +402,10 @@ mod tests {
 
     #[test]
     fn test_translation_extension() {
-        let result = validate_namespace("ssvc//.example.isao#constituency/.example.isao$pl-PL");
+        let result = validate_namespace(
+            "ssvc//.example.isao#constituency/.example.isao$pl-PL",
+            false,
+        );
         assert!(result.is_ok());
         let parsed = result.unwrap();
         assert_eq!(parsed.extensions.len(), 2);
@@ -418,35 +425,43 @@ mod tests {
 
     #[test]
     fn test_namespace_too_short() {
-        let result = validate_namespace("ab");
+        let result = validate_namespace("ab", false);
         assert!(result.is_err());
     }
 
     #[test]
     fn test_namespace_too_long() {
         let long_ns = "a".repeat(1001);
-        let result = validate_namespace(&long_ns);
+        let result = validate_namespace(&long_ns, false);
         assert!(result.is_err());
     }
 
     #[test]
     fn test_example_from_docs() {
         // Examples from documentation
-        assert!(validate_namespace("ssvc").is_ok());
-        assert!(validate_namespace("cisa").is_ok());
-        assert!(validate_namespace("x_example.test#test//.example.test#private-extension").is_ok());
-        assert!(validate_namespace("ssvc/de-DE/.example.organization#reference-arch-1").is_ok());
+        assert!(validate_namespace("ssvc", false).is_ok());
+        assert!(validate_namespace("cisa", false).is_ok());
+        assert!(
+            validate_namespace(
+                "x_example.test#test//.example.test#private-extension",
+                false
+            )
+            .is_ok()
+        );
+        assert!(
+            validate_namespace("ssvc/de-DE/.example.organization#reference-arch-1", false).is_ok()
+        );
     }
 
     #[test]
     fn test_cvss_namespace_example() {
-        let result = validate_namespace("cvss");
+        let result = validate_namespace("cvss", false);
         assert!(result.is_ok());
     }
 
     #[test]
     fn test_nist_with_fragment() {
-        let result = validate_namespace("nist#800-30");
+        let result = validate_namespace("nist#800-30", false);
         assert!(result.is_ok());
         let parsed = result.unwrap();
         match parsed.base {
@@ -460,7 +475,7 @@ mod tests {
 
     #[test]
     fn test_multiple_extensions() {
-        let result = validate_namespace("ssvc/de-DE/.example.org#ref1/.example.org#ref2");
+        let result = validate_namespace("ssvc/de-DE/.example.org#ref1/.example.org#ref2", false);
         assert!(result.is_ok());
         let parsed = result.unwrap();
         assert_eq!(parsed.extensions.len(), 3);
@@ -468,27 +483,27 @@ mod tests {
 
     #[test]
     fn test_empty_fragment_error() {
-        let result = validate_namespace("ssvc#");
+        let result = validate_namespace("ssvc#", false);
         assert!(result.is_err());
         assert!(result.unwrap_err().contains("empty"));
     }
 
     #[test]
     fn test_translation_without_domain() {
-        let result = validate_namespace("ssvc//.$de-DE");
+        let result = validate_namespace("ssvc//.$de-DE", false);
         assert!(result.is_err());
     }
 
     #[test]
     fn test_domain_extension_without_dot() {
-        let result = validate_namespace("ssvc//example.org");
+        let result = validate_namespace("ssvc//example.org", false);
         assert!(result.is_ok());
         // This is treated as a language tag, not a domain extension
     }
 
     #[test]
     fn test_unregistered_multiple_dots_in_domain() {
-        let result = validate_namespace("x_com.example.subdomain#test");
+        let result = validate_namespace("x_com.example.subdomain#test", false);
         assert!(result.is_ok());
         let parsed = result.unwrap();
         match parsed.base {

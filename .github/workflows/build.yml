@@ -5,18 +5,31 @@ on:
   push:
     branches:
       - main
+    tags:
+      - v*.*.*
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
+        with:
+          submodules: 'true'
+      - name: Check assets are up-to-date
+        run: |
+          ./update_assets.sh
+          CHANGES=$(git status --porcelain)
+          if [ -n "$CHANGES" ]; then
+            echo "::error::Assets are out of date. Please run ./update_assets.sh locally and commit the changes."
+            echo "$CHANGES"
+            exit 1
+          fi
       - name: Ensure Rust toolchain
         run: |
           rustup update stable
           rustup default stable
       - name: Cache cargo registry
-        uses: actions/cache@v3
+        uses: actions/cache@v6
         with:
           path: |
             ~/.cargo/registry
@@ -27,15 +40,19 @@ jobs:
           rustup component add rustfmt
           cargo fmt --all -- --check -l
       - name: Doc check
-        run: cargo doc --no-deps --document-private-items --locked
+        run: cargo doc --no-deps --document-private-items --locked --all-features
         env:
           RUSTDOCFLAGS: "-D warnings"
-      - name: Build
-        run: cargo build --verbose
       - name: Clippy check
-        run: cargo clippy --all-targets --locked --release -- -D warnings
+        run: cargo clippy --all-targets --locked --release --all-features -- -D warnings
       - name: Run tests
-        run: cargo test --verbose
+        run: cargo test --verbose --release --locked --all-features
+      - name: Add wasm target
+        run: rustup target add wasm32-unknown-unknown
+      - name: Install wasm-pack
+        run: cargo install wasm-pack --locked
+      - name: Run wasm tests
+        run: wasm-pack test --node -- --features wasm
       - name: Publish dry-run
         if: github.ref_type != 'tag'
         run: |
@@ -50,16 +67,40 @@ jobs:
       - build
     if: startsWith(github.ref, 'refs/tags/v') && !contains(github.ref, 'beta') && !contains(github.ref, 'alpha')
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           submodules: 'true'
-      - name: Update assets
-        run: ./update_assets.sh
       - uses: rust-lang/crates-io-auth-action@v1
         id: auth
       - name: Update rustup
         run: rustup update stable --no-self-update
       - name: Publish
-        run: cargo publish --locked -p csaf-rs --verbose
+        run: cargo publish --locked -p ssvc --verbose
         env:
           CARGO_REGISTRY_TOKEN: ${{ steps.auth.outputs.token }}
+
+  publish-npm:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    needs:
+      - build
+    if: startsWith(github.ref, 'refs/tags/v') && !contains(github.ref, 'beta') && !contains(github.ref, 'alpha')
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          submodules: 'true'
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          registry-url: 'https://registry.npmjs.org'
+      - name: Build WASM bindings
+        run: |
+          cargo install wasm-pack --locked
+          wasm-pack build --target web --out-dir pkg --scope csaf-rs -- --features wasm
+      - name: Publish to NPM
+        working-directory: ./pkg
+        run: |
+          npm publish --provenance

@@ -10,3 +10,7 @@ pub mod generated {
 }
 
 pub use generated::ssvc::{decision_point, selection_list};
+pub use validation::{ValidationError, ValidationResult};
+
+#[cfg(feature = "wasm")]
+pub mod wasm;
