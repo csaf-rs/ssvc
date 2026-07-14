@@ -1,4 +1,4 @@
-use crate::assets::{DP_VAL_KEYS_LOOKUP, REGISTERED_SSVC_NAMESPACES, SSVC_DECISION_POINTS};
+use crate::assets::{DECISION_POINTS, DP_VALUE_KEY_ORDER, DecisionPointId, REGISTERED_NAMESPACES};
 use crate::namespaces::{BaseNamespace, validate_namespace};
 use crate::selection_list::SelectionList;
 use std::ops::Deref;
@@ -100,7 +100,7 @@ pub fn validate_selection_list(
         };
 
         // Skip if the base namespace is not explicitly registered in SSVC
-        if !REGISTERED_SSVC_NAMESPACES.contains(base_name.as_str()) {
+        if !REGISTERED_NAMESPACES.contains(base_name.as_str()) {
             continue;
         }
 
@@ -109,12 +109,16 @@ pub fn validate_selection_list(
         // registered base namespaces and must follow the same decision point structure.
         let s_key = selection.key.deref().to_owned();
         let version = selection.version.deref().to_owned();
-        let dp_key = (base_name.clone(), s_key.clone(), version.clone());
+        let dp_key = DecisionPointId {
+            namespace: base_name.clone(),
+            key: s_key.clone(),
+            version: version.clone(),
+        };
 
-        match SSVC_DECISION_POINTS.get(&dp_key) {
+        match DECISION_POINTS.get(&dp_key) {
             Some(dp) => {
                 // Get value indices of decision point from base namespace
-                let reference_indices = DP_VAL_KEYS_LOOKUP.get(&dp_key).unwrap();
+                let reference_indices = DP_VALUE_KEY_ORDER.get(&dp_key).unwrap();
 
                 // Validate extension rules:
                 // - Extensions can limit values (subset) but not add new ones
