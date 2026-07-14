@@ -118,7 +118,7 @@ pub fn validate_selection_list(
         match DECISION_POINTS.get(&dp_key) {
             Some(dp) => {
                 // Get value indices of decision point from base namespace
-                let reference_indices = DP_VALUE_KEY_ORDER.get(&dp_key).unwrap();
+                let reference_indices = DP_VALUE_KEY_ORDER.get(&dp_key).expect("As DP_VALUE_KEY_ORDER is derived from DECISION_POINTS, all DECISION_POINTS keys should also exist in DP_VALUE_KEY_ORDER");
 
                 // Validate extension rules:
                 // - Extensions can limit values (subset) but not add new ones

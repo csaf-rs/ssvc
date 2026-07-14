@@ -14,7 +14,8 @@ pub static SELECTION_LIST_SCHEMA: &str = include_str!("../assets/SelectionList_2
 /// The embedded Decision Point JSON Schema content.
 pub static DECISION_POINT_SCHEMA: &str = include_str!("../assets/DecisionPoint_2_0_0.schema.json");
 
-/// Recursively loads all decision point JSON descriptions from `../ssvc/data/json/decision_points`.
+/// Recursively loads all decision point JSON descriptions from `assets/ssvc_decision_points`. (Which is
+/// mirrored from the SSVC repository at `../ssvc/data/json/decision_points`.)
 #[derive(RustEmbed)]
 #[folder = "assets/ssvc_decision_points/"]
 #[include = "*.json"]
@@ -47,7 +48,7 @@ pub static DECISION_POINTS: LazyLock<SsvcDecisionPointsMap> = LazyLock::new(|| {
                     decision_points.insert(key, dp);
                 }
                 Err(err) => {
-                    // TODO: This should be cought or at least pre-validation at compile time.
+                    // TODO: This should be caught or at least pre-validation at compile time.
                     eprintln!("Warning: Failed to parse decision point from file {filename}: {err}")
                 }
             }
