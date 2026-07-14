@@ -4,7 +4,7 @@ A Rust implementation of the **SSVC (Stakeholder-Specific Vulnerability Categori
 SSVC is a framework for prioritizing software vulnerability remediation efforts. It helps stakeholders make informed decisions about which vulnerabilities to address first by considering factors like vulnerability severity, the stakeholder's position in the ecosystem, and their specific constraints.
 Learn more at the [official SSVC documentation](https://certcc.github.io/SSVC/).
 
-# Features
+## Features
 
 This library provides validation and processing of SSVC decision points and selection lists, with support for SSVC namespaces and extensions.
 It features full serde support. The library supports both native Rust usage and WebAssembly (WASM) bindings for JavaScript/web applications.
@@ -29,8 +29,10 @@ cargo add ssvc
 use ssvc::selection_list::SelectionList;
 use ssvc::validate_selection_list;
 
-// Parse a selection list
-let selection_list: SelectionList = serde_json::from_str(json_data)?;
+let json_data = "..."; // Your SSVC selection list
+
+let selection_list: SelectionList =
+    serde_json::from_str(json_data).expect("SSVC SelectionList was invalid JSON");
 
 // Validate the selection list
 let result = validate_selection_list(&selection_list, false);
