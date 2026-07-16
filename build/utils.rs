@@ -71,7 +71,7 @@ pub fn walk_json_files(
         let path = entry?.path();
         if path.is_dir() {
             walk_json_files(&path, process)?;
-        } else if path.extension().map_or(false, |ext| ext == "json") {
+        } else if path.extension().is_some_and(|ext| ext == "json") {
             process(&path)?;
         }
     }
