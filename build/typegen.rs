@@ -2,6 +2,7 @@ use std::fs;
 use std::path::Path;
 use typify::{TypeSpace, TypeSpaceSettings};
 
+use anyhow::Result;
 use super::utils;
 
 pub const SCHEMA_TARGETS: &[(&str, &str)] = &[
@@ -19,7 +20,7 @@ pub const SCHEMA_TARGETS: &[(&str, &str)] = &[
 ///
 /// # Errors
 /// Returns an error if schema reading, type generation, or file writing fails.
-pub fn build_all_schemas() -> Result<(), Box<dyn std::error::Error>> {
+pub fn build_all_schemas() -> Result<()> {
     for (file_path, target_path) in SCHEMA_TARGETS {
         println!("cargo:rerun-if-changed={file_path}");
         build_from_schema(file_path, target_path)?;
@@ -38,7 +39,7 @@ pub fn build_all_schemas() -> Result<(), Box<dyn std::error::Error>> {
 pub fn build_from_schema(
     file_path: &str,
     target_path: &str,
-) -> Result<(), Box<dyn std::error::Error>> {
+) -> Result<()> {
     let file = std::fs::File::open(file_path)?;
     let schema = serde_json::from_reader(file)?;
 

@@ -1,13 +1,14 @@
 use std::fs;
 use std::path::Path;
 
+use anyhow::Result;
 use super::utils;
 
 /// Validates all decision point JSON files against the DecisionPoint schema.
 ///
 /// # Errors
 /// Returns an error if schema loading, file reading, or validation fails.
-pub fn validate_decision_points() -> Result<(), Box<dyn std::error::Error>> {
+pub fn validate_decision_points() -> Result<()> {
     let decision_points_dir = "assets/ssvc_decision_points";
     let schema_path = "assets/DecisionPoint_2_0_0.schema.json";
 
@@ -17,7 +18,7 @@ pub fn validate_decision_points() -> Result<(), Box<dyn std::error::Error>> {
     let schema_file = fs::File::open(schema_path)?;
     let schema: serde_json::Value = serde_json::from_reader(schema_file)?;
     let validator =
-        jsonschema::validator_for(&schema).map_err(|e| format!("Invalid schema: {}", e))?;
+        jsonschema::validator_for(&schema).map_err(|e| anyhow::anyhow!("Invalid schema: {}", e))?;
 
     let mut validator_closure =
         |path: &Path| utils::validate_json_file(path, &validator, "DecisionPoint_2_0_0");
