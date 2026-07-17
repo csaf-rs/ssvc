@@ -2,8 +2,8 @@ use std::fs;
 use std::path::Path;
 use typify::{TypeSpace, TypeSpaceSettings};
 
-use anyhow::Result;
 use super::utils;
+use anyhow::Result;
 
 pub const SCHEMA_TARGETS: &[(&str, &str)] = &[
     (
@@ -36,10 +36,7 @@ pub fn build_all_schemas() -> Result<()> {
 ///
 /// # Errors
 /// Returns an error if schema reading, type generation, or file writing fails.
-pub fn build_from_schema(
-    file_path: &str,
-    target_path: &str,
-) -> Result<()> {
+pub fn build_from_schema(file_path: &str, target_path: &str) -> Result<()> {
     let file = std::fs::File::open(file_path)?;
     let schema = serde_json::from_reader(file)?;
 

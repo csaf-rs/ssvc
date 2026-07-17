@@ -1,8 +1,8 @@
 use std::fs;
 use std::path::Path;
 
-use anyhow::Result;
 use super::utils;
+use anyhow::Result;
 
 /// Validates all decision point JSON files against the DecisionPoint schema.
 ///
