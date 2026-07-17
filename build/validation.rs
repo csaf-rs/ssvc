@@ -1,4 +1,4 @@
-use std::collections::HashSet;
+use std::collections::{HashMap, HashSet};
 use std::fs;
 use std::path::Path;
 
@@ -20,7 +20,7 @@ pub fn validate_decision_points() -> Result<()> {
     let validator =
         jsonschema::validator_for(&schema).map_err(|e| anyhow::anyhow!("Invalid schema: {}", e))?;
 
-    let mut seen_triples = HashSet::new();
+    let mut seen_triples = HashMap::new();
 
     let mut validator_closure = |path: &Path| {
         println!("cargo:rerun-if-changed={}", path.display());
@@ -36,14 +36,17 @@ pub fn validate_decision_points() -> Result<()> {
             .to_string();
 
         let triple = (namespace, key, version);
-        if !seen_triples.insert(triple.clone()) {
+        if let Some(original_path) = seen_triples.get(&triple) {
             return Err(anyhow::anyhow!(
-                "Duplicate decision point triple found: namespace='{}', key='{}', version='{}'",
+                "Duplicate decision point triple found: namespace='{}', key='{}', version='{}'\n  first occurrence: {}\n  offending occurrence: {}",
                 triple.0,
                 triple.1,
-                triple.2
+                triple.2,
+                original_path,
+                path.display()
             ));
         }
+        seen_triples.insert(triple.clone(), path.display().to_string());
 
         // Check that decision point value keys are unique
         // Safe to unwrap as these are guaranteed by schema validation
