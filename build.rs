@@ -5,7 +5,9 @@ mod utils;
 #[path = "build/validation.rs"]
 mod validation;
 
-fn main() -> Result<(), Box<dyn std::error::Error>> {
+use anyhow::Result;
+
+fn main() -> Result<()> {
     println!("cargo:rerun-if-changed=build.rs");
 
     // Generate types from JSON schemas
