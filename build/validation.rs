@@ -27,10 +27,13 @@ pub fn validate_decision_points() -> Result<()> {
         let json = utils::validate_json_file(path, &validator, "DecisionPoint_2_0_0")?;
 
         // Check for duplicate (namespace, key, version) triples
-        // Safe to unwrap as these are guaranteed by schema validation
+        // namespace and key are safe to unwrap as they are required by schema; version has a default of "0.0.1"
         let namespace = json["namespace"].as_str().unwrap().to_string();
         let key = json["key"].as_str().unwrap().to_string();
-        let version = json["version"].as_str().unwrap().to_string();
+        let version = json["version"]
+            .as_str()
+            .unwrap_or("0.0.1")
+            .to_string();
 
         let triple = (namespace, key, version);
         if !seen_triples.insert(triple.clone()) {
