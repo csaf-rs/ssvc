@@ -65,6 +65,7 @@ pub fn validate_json_file(
 ///
 /// Returns an error if directory reading fails or if the process closure returns an error.
 pub fn walk_json_files(dir: &Path, process: &mut dyn FnMut(&Path) -> Result<()>) -> Result<()> {
+    println!("cargo:rerun-if-changed={}", dir.display());
     for entry in fs::read_dir(dir)? {
         let path = entry?.path();
         if path.is_dir() {

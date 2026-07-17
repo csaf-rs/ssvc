@@ -12,7 +12,6 @@ pub fn validate_decision_points() -> Result<()> {
     let decision_points_dir = "assets/ssvc_decision_points";
     let schema_path = "assets/DecisionPoint_2_0_0.schema.json";
 
-    println!("cargo:rerun-if-changed={decision_points_dir}");
     println!("cargo:rerun-if-changed={schema_path}");
 
     let schema_file = fs::File::open(schema_path)?;
