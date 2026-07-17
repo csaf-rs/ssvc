@@ -56,10 +56,12 @@ pub fn validate_decision_points() -> Result<()> {
             let value_key = value["key"].as_str().unwrap();
             if !seen_value_keys.insert(value_key) {
                 return Err(anyhow::anyhow!(
-                    "Duplicate value key '{}' in decision point {}:{}",
+                    "Duplicate value key '{}' in decision point {}:{}:{} (file: {})",
                     value_key,
                     triple.0,
-                    triple.1
+                    triple.1,
+                    triple.2,
+                    path.display()
                 ));
             }
         }
