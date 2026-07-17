@@ -20,8 +20,10 @@ pub fn validate_decision_points() -> Result<()> {
     let validator =
         jsonschema::validator_for(&schema).map_err(|e| anyhow::anyhow!("Invalid schema: {}", e))?;
 
-    let mut validator_closure =
-        |path: &Path| utils::validate_json_file(path, &validator, "DecisionPoint_2_0_0");
+    let mut validator_closure = |path: &Path| {
+        println!("cargo:rerun-if-changed={}", path.display());
+        utils::validate_json_file(path, &validator, "DecisionPoint_2_0_0")
+    };
     utils::walk_json_files(Path::new(decision_points_dir), &mut validator_closure)?;
 
     Ok(())
