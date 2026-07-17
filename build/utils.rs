@@ -27,20 +27,23 @@ pub fn add_ignore_clippy(file: &mut syn::File) {
     file.attrs.push(doc_attr);
 }
 
-/// Validates a JSON file against a given schema
+/// Validates a JSON file against a given schema and returns the parsed JSON value
 ///
 /// # Arguments
 /// * `path` - Path to the JSON file to validate
 /// * `validator` - The JSON schema validator
 /// * `schema_name` - Name of the schema (used for error messages)
 ///
+/// # Returns
+/// The parsed JSON value if validation succeeds
+///
 /// # Errors
-/// Returns an error if the file cannot be read, parsed, or fails schema validation.
+/// Returns an error if the file cannot be read, parsed, or fails schema validation
 pub fn validate_json_file(
     path: &Path,
     validator: &jsonschema::Validator,
     schema_name: &str,
-) -> Result<()> {
+) -> Result<serde_json::Value> {
     let content = std::fs::read_to_string(path)?;
     let json: serde_json::Value = serde_json::from_str(&content)
         .map_err(|e| anyhow::anyhow!("Failed to parse JSON syntax in {}: {}", path.display(), e))?;
@@ -54,7 +57,7 @@ pub fn validate_json_file(
         ));
     }
 
-    Ok(())
+    Ok(json)
 }
 
 /// Recursively walks through a directory and processes all JSON files using the provided closure.
