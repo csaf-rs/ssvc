@@ -148,7 +148,7 @@ mod tests {
                 validate_namespace("ssvc/de-DE/.example.org#ref1/.example.org#ref2", false);
             assert!(result.is_ok());
             let parsed = result.unwrap();
-            assert_eq!(parsed.extensions.is_some_and(|ext| ext.len() == 3), true);
+            assert!(parsed.extensions.is_some_and(|ext| ext.len() == 3));
         }
 
         #[test]
