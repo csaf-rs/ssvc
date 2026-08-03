@@ -44,37 +44,40 @@ impl BaseNamespace {
         base: &str,
         allow_test: bool,
     ) -> Result<BaseNamespace, NamespaceError> {
+        // if there are fragments, separate them
+        let (name, fragment) = if let Some((name, fragment)) = base.split_once(FRAGMENT_DELIMITER) {
+            // fragment is present, check its not empty
+            if fragment.is_empty() {
+                return Err(NamespaceError::EmptyFragment);
+            }
+            (name, Some(fragment))
+        } else {
+            (base, None)
+        };
+
+        // check if base is not empty
+        if name.is_empty() {
+            return Err(NamespaceError::EmptyBase);
+        }
+
         // reserved forbidden namespaces that must never be used
-        if RESERVED_INVALID_NAMESPACES.contains(&base) {
+        if RESERVED_INVALID_NAMESPACES.contains(&name) {
             return Err(NamespaceError::ReservedForbiddenNamespace {
-                namespace: base.to_string(),
+                namespace: name.to_string(),
             });
         }
 
         // reserved test namespaces that are only allowed if allow_test is true
-        if RESERVED_TEST_NAMESPACES.contains(&base) && !allow_test {
+        if RESERVED_TEST_NAMESPACES.contains(&name) && !allow_test {
             return Err(NamespaceError::ReservedTestNamespace {
-                namespace: base.to_string(),
+                namespace: name.to_string(),
             });
         }
 
-        // if there are fragments, separate them
-        if let Some((name, fragment)) = base.split_once(FRAGMENT_DELIMITER) {
-            // fragment can't be empty
-            if fragment.is_empty() {
-                return Err(NamespaceError::EmptyFragment);
-            }
-
-            Ok(BaseNamespace::Registered {
-                name: name.to_string(),
-                fragment: Some(fragment.to_string()),
-            })
-        } else {
-            Ok(BaseNamespace::Registered {
-                name: base.to_string(),
-                fragment: None,
-            })
-        }
+        Ok(BaseNamespace::Registered {
+            name: name.to_string(),
+            fragment: fragment.map(|f| f.to_string()),
+        })
     }
 
     /// Parses an unregistered (prefixed with `x_`) base namespace.
@@ -96,7 +99,7 @@ impl BaseNamespace {
         // unregistered namespaces need to contain a fragment (and therefore a fragment delimiter)
         let (prefix, fragment) = base
             .split_once(FRAGMENT_DELIMITER)
-            .ok_or(NamespaceError::ExtensionSegmentMissingFragment)?;
+            .ok_or(NamespaceError::UnregisteredNamespaceMissingFragment)?;
 
         // reserved forbidden namespaces that must never be used
         if RESERVED_INVALID_NAMESPACES.contains(&prefix) {
@@ -162,6 +165,13 @@ mod test_registered {
                 Err(NamespaceError::ReservedTestNamespace { .. })
             ));
         }
+    }
+
+    #[test]
+    fn test_parse_registered_empty_base() {
+        let result = BaseNamespace::parse_base("#some-fragment", true);
+        println!("result: {:?}", result);
+        assert!(matches!(result, Err(NamespaceError::EmptyBase)));
     }
 
     #[test]

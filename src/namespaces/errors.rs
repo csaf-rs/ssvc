@@ -9,6 +9,9 @@ pub enum NamespaceError {
     #[error("Namespace length must be between 3 and 1000 characters, got {length}")]
     LengthOutOfRange { length: usize },
 
+    #[error("Base namespace cannot be empty")]
+    EmptyBase,
+
     #[error("Reverse domain name cannot be empty")]
     EmptyReverseDomain,
 
@@ -29,7 +32,7 @@ pub enum NamespaceError {
     #[error("Extension Segments must contain a fragment")]
     ExtensionSegmentMissingFragment,
 
-    #[error("Language tag cannot be empty in translation")]
+    #[error("Language tag cannot be empty")]
     EmptyLanguageTag,
 
     #[error("Invalid language tag '{tag}': must be a valid BCP 47 language tag")]
