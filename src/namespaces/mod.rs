@@ -3,17 +3,17 @@
 //! This module provides functionality to parse and validate SSVC namespaces
 //! according to the structure defined in the documentation.
 
-pub(crate) mod assets;
+pub(crate) mod constants;
 pub(crate) mod base_namespace;
 pub(crate) mod errors;
 pub(crate) mod extension;
 
-use crate::namespaces::assets::{
+use crate::namespaces::constants::{
     RESERVED_EXAMPLE_NAMESPACES, RESERVED_TEST_NAMESPACES, SECTION_DELIMITER,
 };
 use crate::namespaces::extension::{Extensions, parse_extensions};
 
-pub use assets::REGISTERED_NAMESPACES;
+pub use constants::REGISTERED_NAMESPACES;
 pub use base_namespace::BaseNamespace;
 pub use errors::NamespaceError;
 pub use extension::Extension;

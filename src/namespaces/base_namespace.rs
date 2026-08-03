@@ -1,5 +1,5 @@
 use crate::namespaces::NamespaceError;
-use crate::namespaces::assets::{
+use crate::namespaces::constants::{
     FRAGMENT_DELIMITER, RESERVED_INVALID_NAMESPACES, RESERVED_TEST_NAMESPACES, UNREGISTERED_PREFIX,
 };
 
