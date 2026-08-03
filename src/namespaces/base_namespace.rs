@@ -212,7 +212,7 @@ mod test_unregistered {
         let result = BaseNamespace::parse_base("x_com.example", true);
         assert!(matches!(
             result,
-            Err(NamespaceError::ExtensionSegmentMissingFragment)
+            Err(NamespaceError::UnregisteredNamespaceMissingFragment)
         ));
     }
 
