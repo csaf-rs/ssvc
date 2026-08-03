@@ -8,10 +8,12 @@ pub(crate) mod base_namespace;
 pub(crate) mod errors;
 pub(crate) mod extension;
 
-use crate::namespaces::assets::{RESERVED_EXAMPLE_NAMESPACES, RESERVED_TEST_NAMESPACES};
+use crate::namespaces::assets::{
+    RESERVED_EXAMPLE_NAMESPACES, RESERVED_TEST_NAMESPACES, SECTION_DELIMITER,
+};
 use crate::namespaces::extension::{Extensions, parse_extensions};
 
-pub use assets::{REGISTERED_NAMESPACES};
+pub use assets::REGISTERED_NAMESPACES;
 pub use base_namespace::BaseNamespace;
 pub use errors::NamespaceError;
 pub use extension::Extension;
@@ -46,7 +48,7 @@ impl ParsedNamespace {
             return Err(NamespaceError::LengthOutOfRange { length: len });
         }
 
-        let parts: Vec<&str> = namespace.split('/').collect();
+        let parts: Vec<&str> = namespace.split(SECTION_DELIMITER).collect();
         if parts.is_empty() {
             return Err(NamespaceError::Empty);
         }
@@ -111,6 +113,55 @@ pub fn validate_namespace(
 
 #[cfg(test)]
 mod tests {
+
+    mod validate_namespace {
+        use crate::{BaseNamespace, validate_namespace, NamespaceError};
+
+        #[test]
+        fn test_namespace_empty(){
+            let result = validate_namespace("", false);
+            assert_eq!(result, Err(NamespaceError::Empty));
+        }
+
+        #[test]
+        fn test_namespace_too_short() {
+            let result = validate_namespace("ab", false);
+            assert_eq!(result.err(), Some(NamespaceError::LengthOutOfRange { length: 2 }));
+        }
+
+        #[test]
+        fn test_namespace_too_long() {
+            let long_ns = "a".repeat(1001);
+            let result = validate_namespace(&long_ns, false);
+            assert_eq!(result.err(), Some(NamespaceError::LengthOutOfRange { length: 1001 }));
+        }
+
+        #[test]
+        fn test_multiple_extensions() {
+            let result =
+                validate_namespace("ssvc/de-DE/.example.org#ref1/.example.org#ref2", false);
+            assert!(result.is_ok());
+            let parsed = result.unwrap();
+            assert_eq!(parsed.extensions.is_some_and(|ext| ext.len() == 3), true);
+        }
+
+        #[test]
+        fn test_unregistered_multiple_dots_in_domain() {
+            let result = validate_namespace("x_com.example.subdomain#test", false);
+            assert!(result.is_ok());
+            let parsed = result.unwrap();
+            match parsed.base {
+                BaseNamespace::Unregistered {
+                    reverse_domain,
+                    fragment,
+                } => {
+                    assert_eq!(reverse_domain, "com.example.subdomain");
+                    assert_eq!(fragment, "test");
+                }
+                _ => panic!("Expected unregistered namespace"),
+            }
+        }
+    }
     mod csaf_6_2_34_tests {
         use crate::validate_namespace;
 

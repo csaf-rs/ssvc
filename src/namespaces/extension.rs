@@ -7,8 +7,13 @@ pub(crate) fn parse_extensions(parts: &[&str]) -> Result<Option<Extensions>, Nam
 
     for (idx, part) in parts.iter().enumerate() {
         if idx == 0 {
-            // First extension: must be a language tag or empty string, empty implies default language (en-US)
-            if !part.is_empty() {
+            // First extension: must be a language tag or empty string,
+            if part.is_empty() {
+                // empty implies default language (en-US)
+                extensions
+                    .get_or_insert_default()
+                    .push(Extension::DefaultLanguage);
+            } else {
                 extensions
                     .get_or_insert_default()
                     .push(Extension::parse_language_only_segment(part)?);
@@ -26,6 +31,8 @@ pub(crate) fn parse_extensions(parts: &[&str]) -> Result<Option<Extensions>, Nam
 /// A namespace extension segment.
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub enum Extension {
+    /// Represents the "default" language (en-US) when no language tag is provided at the first index.
+    DefaultLanguage,
     /// A BCP-47 language tag.
     Language(String),
     /// A reverse domain extension with a fragment.
@@ -173,6 +180,10 @@ impl Extension {
 
         Ok(())
     }
+
+    pub fn is_language(&self) -> bool {
+        matches!(self, Extension::Language(..) | Extension::DefaultLanguage)
+    }
 }
 
 #[cfg(test)]
@@ -196,7 +207,7 @@ mod tests {
         fn only_empty_extension() {
             // One empty object (represents default language)
             let result = parse_extensions(&[""]);
-            assert_eq!(result, Ok(Some(vec![])));
+            assert_eq!(result, Ok(Some(vec![Extension::DefaultLanguage])));
         }
 
         #[test]
@@ -215,10 +226,13 @@ mod tests {
             let result = parse_extensions(&["", ".com.example#fragment"]);
             assert_eq!(
                 result,
-                Ok(Some(vec![Extension::Domain {
-                    reverse_domain: "com.example".to_string(),
-                    fragment: "fragment".to_string(),
-                }]))
+                Ok(Some(vec![
+                    Extension::DefaultLanguage,
+                    Extension::Domain {
+                        reverse_domain: "com.example".to_string(),
+                        fragment: "fragment".to_string(),
+                    }
+                ]))
             );
         }
 

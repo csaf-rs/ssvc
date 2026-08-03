@@ -1,5 +1,7 @@
-use crate::namespaces::assets::{FRAGMENT_DELIMITER, UNREGISTERED_PREFIX, RESERVED_INVALID_NAMESPACES, RESERVED_TEST_NAMESPACES};
-use crate::namespaces::{NamespaceError};
+use crate::namespaces::NamespaceError;
+use crate::namespaces::assets::{
+    FRAGMENT_DELIMITER, RESERVED_INVALID_NAMESPACES, RESERVED_TEST_NAMESPACES, UNREGISTERED_PREFIX,
+};
 
 /// The base namespace, either registered or unregistered.
 #[derive(Debug, Clone, PartialEq, Eq)]
