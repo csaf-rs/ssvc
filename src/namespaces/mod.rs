@@ -3,8 +3,8 @@
 //! This module provides functionality to parse and validate SSVC namespaces
 //! according to the structure defined in the documentation.
 
-pub(crate) mod constants;
 pub(crate) mod base_namespace;
+pub(crate) mod constants;
 pub(crate) mod errors;
 pub(crate) mod extension;
 
@@ -13,8 +13,8 @@ use crate::namespaces::constants::{
 };
 use crate::namespaces::extension::{Extensions, parse_extensions};
 
-pub use constants::REGISTERED_NAMESPACES;
 pub use base_namespace::BaseNamespace;
+pub use constants::REGISTERED_NAMESPACES;
 pub use errors::NamespaceError;
 pub use extension::Extension;
 
@@ -115,10 +115,10 @@ pub fn validate_namespace(
 mod tests {
 
     mod validate_namespace {
-        use crate::{BaseNamespace, validate_namespace, NamespaceError};
+        use crate::{BaseNamespace, NamespaceError, validate_namespace};
 
         #[test]
-        fn test_namespace_empty(){
+        fn test_namespace_empty() {
             let result = validate_namespace("", false);
             assert_eq!(result, Err(NamespaceError::Empty));
         }
@@ -126,14 +126,20 @@ mod tests {
         #[test]
         fn test_namespace_too_short() {
             let result = validate_namespace("ab", false);
-            assert_eq!(result.err(), Some(NamespaceError::LengthOutOfRange { length: 2 }));
+            assert_eq!(
+                result.err(),
+                Some(NamespaceError::LengthOutOfRange { length: 2 })
+            );
         }
 
         #[test]
         fn test_namespace_too_long() {
             let long_ns = "a".repeat(1001);
             let result = validate_namespace(&long_ns, false);
-            assert_eq!(result.err(), Some(NamespaceError::LengthOutOfRange { length: 1001 }));
+            assert_eq!(
+                result.err(),
+                Some(NamespaceError::LengthOutOfRange { length: 1001 })
+            );
         }
 
         #[test]
