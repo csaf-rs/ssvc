@@ -4,7 +4,7 @@
 
 use crate::decision_point::DecisionPoint;
 use rust_embed::RustEmbed;
-use std::collections::{HashMap, HashSet};
+use std::collections::HashMap;
 use std::ops::Deref;
 use std::sync::LazyLock;
 
@@ -75,18 +75,6 @@ pub static DP_VALUE_KEY_ORDER: LazyLock<SsvcDecisionPointsLookupMap> = LazyLock:
     lookups
 });
 
-/// Derives all "registered" namespaces from the decision points. We assume that each namespace
-/// that occurs in at least one decision point in the SSVC repository is a "registered" namespace.
-pub static REGISTERED_NAMESPACES: LazyLock<HashSet<String>> = LazyLock::new(|| {
-    let mut namespaces = HashSet::new();
-
-    for decision_point_id in DECISION_POINTS.keys() {
-        namespaces.insert(decision_point_id.namespace.to_owned());
-    }
-
-    namespaces
-});
-
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -142,14 +130,6 @@ mod tests {
             order_map.get("A"),
             Some(&2),
             "Value with key 'A' should be at position 2"
-        );
-    }
-
-    #[test]
-    fn test_ssvc_namespace_registered() {
-        assert!(
-            REGISTERED_NAMESPACES.contains("ssvc"),
-            "ssvc namespace should be in REGISTERED_NAMESPACES"
         );
     }
 }

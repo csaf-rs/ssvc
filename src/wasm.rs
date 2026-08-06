@@ -52,7 +52,7 @@ mod tests {
             "selections": [
                 {
                     "key": "A",
-                    "namespace": "example",
+                    "namespace": "invalid",
                     "version": "1.0.0",
                     "values": [
                         {"key": "B"}

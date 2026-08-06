@@ -1,5 +1,5 @@
-use crate::assets::{DECISION_POINTS, DP_VALUE_KEY_ORDER, DecisionPointId, REGISTERED_NAMESPACES};
-use crate::namespaces::{BaseNamespace, validate_namespace};
+use crate::assets::{DECISION_POINTS, DP_VALUE_KEY_ORDER, DecisionPointId};
+use crate::namespaces::{BaseNamespace, REGISTERED_NAMESPACES, validate_namespace};
 use crate::selection_list::SelectionList;
 use std::ops::Deref;
 
@@ -100,7 +100,7 @@ pub fn validate_selection_list(
         };
 
         // Skip if the base namespace is not explicitly registered in SSVC
-        if !REGISTERED_NAMESPACES.contains(base_name.as_str()) {
+        if !REGISTERED_NAMESPACES.contains(&base_name.as_str()) {
             continue;
         }
 
@@ -127,7 +127,7 @@ pub fn validate_selection_list(
                 // All validation is done against the base namespace decision point
 
                 // If the namespace has no extensions, validate that name and definition match the base (if provided)
-                if parsed_ns.extensions.is_empty() {
+                if parsed_ns.extensions.is_none() {
                     if let Some(error) = validate_field_match(
                         &selection.name,
                         &dp.name,
@@ -202,7 +202,7 @@ pub fn validate_selection_list(
                             last_index = *i_dp_val;
 
                             // If the namespace has no extensions, validate value name and definition match base (if provided)
-                            if parsed_ns.extensions.is_empty() {
+                            if parsed_ns.extensions.is_none() {
                                 let base_val = &dp.values[*i_dp_val as usize];
                                 let context = format!("value '{}'", v_key);
 
