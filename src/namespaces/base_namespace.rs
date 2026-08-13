@@ -97,27 +97,27 @@ impl BaseNamespace {
         allow_test: bool,
     ) -> Result<BaseNamespace, NamespaceError> {
         // unregistered namespaces need to contain a fragment (and therefore a fragment delimiter)
-        let (prefix, fragment) = base
+        let (prefixed_reverse_domain, fragment) = base
             .split_once(FRAGMENT_DELIMITER)
             .ok_or(NamespaceError::UnregisteredNamespaceMissingFragment)?;
 
         // reserved forbidden namespaces that must never be used
-        if RESERVED_INVALID_NAMESPACES.contains(&prefix) {
+        if RESERVED_INVALID_NAMESPACES.contains(&prefixed_reverse_domain) {
             return Err(NamespaceError::ReservedForbiddenNamespace {
-                namespace: prefix.to_string(),
+                namespace: prefixed_reverse_domain.to_string(),
             });
         }
 
         // reserved test namespaces that are only allowed if allow_test is true
-        if RESERVED_TEST_NAMESPACES.contains(&prefix) && !allow_test {
+        if RESERVED_TEST_NAMESPACES.contains(&prefixed_reverse_domain) && !allow_test {
             return Err(NamespaceError::ReservedTestNamespace {
-                namespace: prefix.to_string(),
+                namespace: prefixed_reverse_domain.to_string(),
             });
         }
 
         // strip the "x_" prefix
         // unregistered namespaces must have a non-empty reverse domain
-        let reverse_domain = &prefix[2..];
+        let reverse_domain = &prefixed_reverse_domain[2..];
         if reverse_domain.is_empty() {
             return Err(NamespaceError::EmptyReverseDomain);
         }
