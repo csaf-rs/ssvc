@@ -1,15 +1,25 @@
-pub mod assets;
-pub mod namespaces;
-pub mod validation;
+mod assets;
+mod namespaces;
+mod validation;
 
-pub mod generated {
+mod generated {
     pub mod ssvc {
         pub mod decision_point;
         pub mod selection_list;
     }
 }
 
+// public API
+// validation schemas
+pub use assets::{DECISION_POINT_SCHEMA, SELECTION_LIST_SCHEMA};
+// generated structs
 pub use generated::ssvc::{decision_point, selection_list};
+// registered namespaces list, namespace validation function and assoc. structs
+pub use namespaces::{
+    BaseNamespace, Extension, NamespaceError, ParsedNamespace, REGISTERED_NAMESPACES,
+    validate_namespace,
+};
+// selection list validation function and assoc. structs
 pub use validation::{ValidationError, ValidationResult, validate_selection_list};
 
 #[cfg(feature = "wasm")]
