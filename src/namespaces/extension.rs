@@ -12,7 +12,7 @@ pub(crate) fn parse_extensions(parts: &[&str]) -> Result<Option<Extensions>, Nam
                 // empty implies default language (en-US)
                 extensions
                     .get_or_insert_default()
-                    .push(Extension::DefaultLanguage);
+                    .push(Extension::EmptyDefaultLanguage);
             } else {
                 extensions
                     .get_or_insert_default()
@@ -32,7 +32,7 @@ pub(crate) fn parse_extensions(parts: &[&str]) -> Result<Option<Extensions>, Nam
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub enum Extension {
     /// Represents the "default" language (en-US) when no language tag is provided at the first index.
-    DefaultLanguage,
+    EmptyDefaultLanguage,
     /// A BCP-47 language tag.
     Language(String),
     /// A reverse domain extension with a fragment.
@@ -182,7 +182,7 @@ impl Extension {
     }
 
     pub fn is_language(&self) -> bool {
-        matches!(self, Extension::Language(..) | Extension::DefaultLanguage)
+        matches!(self, Extension::Language(..) | Extension::EmptyDefaultLanguage)
     }
 }
 
@@ -207,7 +207,7 @@ mod tests {
         fn only_empty_extension() {
             // One empty object (represents default language)
             let result = parse_extensions(&[""]);
-            assert_eq!(result, Ok(Some(vec![Extension::DefaultLanguage])));
+            assert_eq!(result, Ok(Some(vec![Extension::EmptyDefaultLanguage])));
         }
 
         #[test]
@@ -227,7 +227,7 @@ mod tests {
             assert_eq!(
                 result,
                 Ok(Some(vec![
-                    Extension::DefaultLanguage,
+                    Extension::EmptyDefaultLanguage,
                     Extension::Domain {
                         reverse_domain: "com.example".to_string(),
                         fragment: "fragment".to_string(),
