@@ -35,16 +35,14 @@ jobs:
             ~/.cargo/registry
             ~/.cargo/git
           key: ${{ runner.os }}-cargo-registry-${{ hashFiles('**/Cargo.lock') }}
-      - name: Format check
-        run: |
-          rustup component add rustfmt
-          cargo fmt --all -- --check -l
+      - name: Run shared format and clippy checks
+        uses: csaf-rs/shared-workflows/.github/actions/rust-checks@main
+        with:
+          clippy-extra-args: "--all-features"
       - name: Doc check
         run: cargo doc --no-deps --document-private-items --locked --all-features
         env:
           RUSTDOCFLAGS: "-D warnings"
-      - name: Clippy check
-        run: cargo clippy --all-targets --locked --release --all-features -- -D warnings
       - name: Run tests
         run: cargo test --verbose --release --locked --all-features
       - name: Add wasm target
