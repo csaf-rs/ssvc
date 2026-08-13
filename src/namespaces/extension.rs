@@ -182,7 +182,10 @@ impl Extension {
     }
 
     pub fn is_language(&self) -> bool {
-        matches!(self, Extension::Language(..) | Extension::EmptyDefaultLanguage)
+        matches!(
+            self,
+            Extension::Language(..) | Extension::EmptyDefaultLanguage
+        )
     }
 }
 
