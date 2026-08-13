@@ -38,7 +38,7 @@ jobs:
       - name: Run shared format and clippy checks
         uses: csaf-rs/shared-workflows/.github/actions/rust-checks@main
         with:
-          clippy-extra-args: "--release --all-features"
+          clippy-extra-args: "--all-features"
       - name: Doc check
         run: cargo doc --no-deps --document-private-items --locked --all-features
         env:
