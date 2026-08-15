@@ -1,4 +1,5 @@
 use crate::NamespaceError;
+use crate::namespaces::constants::{DOMAIN_PREFIX, FRAGMENT_DELIMITER, LANGUAGE_DELIMITER};
 
 pub type Extensions = Vec<Extension>;
 
@@ -48,6 +49,34 @@ pub enum Extension {
     },
 }
 
+impl std::fmt::Display for Extension {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Extension::EmptyDefaultLanguage => write!(f, ""),
+            Extension::Language(lang) => write!(f, "{}", lang),
+            Extension::Domain {
+                reverse_domain,
+                fragment,
+            } => write!(
+                f,
+                "{}{}{}{}",
+                DOMAIN_PREFIX, reverse_domain, FRAGMENT_DELIMITER, fragment
+            ),
+            Extension::Translation {
+                reverse_domain,
+                fragment,
+                language,
+            } => {
+                write!(f, "{}{}", DOMAIN_PREFIX, reverse_domain)?;
+                if let Some(frag) = fragment {
+                    write!(f, "{}{}", FRAGMENT_DELIMITER, frag)?;
+                }
+                write!(f, "{}{}", LANGUAGE_DELIMITER, language)
+            }
+        }
+    }
+}
+
 impl Extension {
     /// Parses an extension segment into the appropriate extension enum kind.
     ///
@@ -64,11 +93,11 @@ impl Extension {
     /// * `Err(NamespaceError)` - If the segment is invalid or malformed
     fn parse_segment(segment: &str) -> Result<Extension, NamespaceError> {
         // segments not starting with "." are Language only Segments, i.e. just a BCP-47 tags
-        let Some(segment) = segment.strip_prefix('.') else {
+        let Some(segment) = segment.strip_prefix(DOMAIN_PREFIX) else {
             return Self::parse_language_only_segment(segment);
         };
 
-        if let Some((domain_part, language)) = segment.split_once('$') {
+        if let Some((domain_part, language)) = segment.split_once(LANGUAGE_DELIMITER) {
             // Translation segment: .domain#fragment$lang or .domain$lang
             Self::parse_translation(domain_part, language)
         } else {
@@ -104,7 +133,7 @@ impl Extension {
     /// * `Err(NamespaceError)` if the domain is empty or fragment is missing or empty
     fn parse_domain_extension(segment: &str) -> Result<Extension, NamespaceError> {
         // check if the fragment delimiter is present
-        if let Some((reverse_domain, fragment)) = segment.split_once('#') {
+        if let Some((reverse_domain, fragment)) = segment.split_once(FRAGMENT_DELIMITER) {
             // check if reverse domain or fragment are empty
             if reverse_domain.is_empty() {
                 return Err(NamespaceError::EmptyReverseDomain);
@@ -142,7 +171,7 @@ impl Extension {
         Self::validate_language_tag(language)?;
 
         // check if the domain part contains a fragment
-        if let Some((reverse_domain, fragment)) = domain_part.split_once('#') {
+        if let Some((reverse_domain, fragment)) = domain_part.split_once(FRAGMENT_DELIMITER) {
             // check if reverse domain or fragment are empty
             if reverse_domain.is_empty() {
                 return Err(NamespaceError::EmptyReverseDomain);

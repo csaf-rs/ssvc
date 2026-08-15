@@ -25,6 +25,18 @@ pub struct ParsedNamespace {
     pub extensions: Option<Extensions>,
 }
 
+impl std::fmt::Display for ParsedNamespace {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{}", self.base)?;
+        if let Some(ref exts) = self.extensions {
+            for ext in exts {
+                write!(f, "{}{}", SECTION_DELIMITER, ext)?;
+            }
+        }
+        Ok(())
+    }
+}
+
 impl ParsedNamespace {
     /// Parse a namespace string into its components, permitting "test" and "x_test" namespaces.
     pub fn parse_allow_test(namespace: &str) -> Result<Self, NamespaceError> {

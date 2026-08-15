@@ -16,6 +16,30 @@ pub enum BaseNamespace {
     },
 }
 
+impl std::fmt::Display for BaseNamespace {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            BaseNamespace::Registered { name, fragment } => {
+                write!(f, "{}", name)?;
+                if let Some(frag) = fragment {
+                    write!(f, "{}{}", FRAGMENT_DELIMITER, frag)?;
+                }
+                Ok(())
+            }
+            BaseNamespace::Unregistered {
+                reverse_domain,
+                fragment,
+            } => {
+                write!(
+                    f,
+                    "{}{}{}{}",
+                    UNREGISTERED_PREFIX, reverse_domain, FRAGMENT_DELIMITER, fragment
+                )
+            }
+        }
+    }
+}
+
 impl BaseNamespace {
     /// Dispatches parsing to either registered or unregistered base namespace parser
     /// based on whether the base starts with the unregistered prefix (`x_`).
