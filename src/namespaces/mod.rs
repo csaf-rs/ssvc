@@ -162,8 +162,6 @@ mod tests {
             let parsed = result.unwrap();
             assert!(parsed.extensions.is_some_and(|ext| ext.len() == 3));
         }
-
-
     }
     mod csaf_6_2_34_tests {
         use crate::validate_namespace;
@@ -242,25 +240,33 @@ mod tests {
         #[case::with_default_first_segment("ssvc/", false)]
         #[case::with_non_default_first_segment("ssvc/de-DE", false)]
         #[case::with_domain_extension("ssvc/de-DE/.example.organization#ref-arch-1", false)]
-        #[case::with_domain_extension_and_lang_tag("ssvc//.example.organization#ref-arch-1/de-DE", false)]
-        #[case::with_translation_with_fragment("ssvc//.example.organization#ref-arch-1$de-DE", false)]
+        #[case::with_domain_extension_and_lang_tag(
+            "ssvc//.example.organization#ref-arch-1/de-DE",
+            false
+        )]
+        #[case::with_translation_with_fragment(
+            "ssvc//.example.organization#ref-arch-1$de-DE",
+            false
+        )]
         #[case::with_translation_without_fragment("ssvc//.example.organization$de-DE", false)]
         fn test_round_trip(#[case] namespace_str: &str, #[case] allow_test: bool) {
             let parsed = if allow_test {
                 ParsedNamespace::parse_allow_test(namespace_str)
             } else {
                 ParsedNamespace::parse(namespace_str)
-            }.expect("Failed to parse");
-            
+            }
+            .expect("Failed to parse");
+
             let displayed = parsed.to_string();
             assert_eq!(displayed, namespace_str, "Display should match original");
-            
+
             let reparsed = if allow_test {
                 ParsedNamespace::parse_allow_test(&displayed)
             } else {
                 ParsedNamespace::parse(&displayed)
-            }.expect("Failed to reparse");
-            
+            }
+            .expect("Failed to reparse");
+
             assert_eq!(parsed, reparsed, "Reparsed should equal original");
         }
     }
