@@ -127,7 +127,7 @@ pub fn validate_namespace(
 mod tests {
 
     mod validate_namespace {
-        use crate::{BaseNamespace, NamespaceError, validate_namespace};
+        use crate::{NamespaceError, validate_namespace};
 
         #[test]
         fn test_namespace_empty() {
