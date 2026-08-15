@@ -230,7 +230,7 @@ mod tests {
             // No extensions provided (this should not happen, as the caller ensures
             // that there are extensions to be parsed.
             // But even if that pre-check is removed, the parser should not return an empty array,
-            // which would indicate that the first extensions was empty, i.e. the default langauge.
+            // which would indicate that the first extensions was an empty string, i.e. the default language.
             let result = parse_extensions(&[]);
             assert_eq!(result, Ok(None));
         }
