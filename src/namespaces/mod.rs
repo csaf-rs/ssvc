@@ -245,4 +245,38 @@ mod tests {
             );
         }
     }
+
+    mod display_round_trip {
+        use crate::ParsedNamespace;
+        use rstest::rstest;
+
+        #[rstest]
+        #[case::registered_without_fragment("ssvc", false)]
+        #[case::registered_with_fragment("ssvc#fragment", false)]
+        #[case::unregistered("x_com.example#fragment", false)]
+        #[case::with_default_first_segment("ssvc/", false)]
+        #[case::with_non_default_first_segment("ssvc/de-DE", false)]
+        #[case::with_domain_extension("ssvc/de-DE/.example.organization#ref-arch-1", false)]
+        #[case::with_domain_extension_and_lang_tag("ssvc//.example.organization#ref-arch-1/de-DE", false)]
+        #[case::with_translation_with_fragment("ssvc//.example.organization#ref-arch-1$de-DE", false)]
+        #[case::with_translation_without_fragment("ssvc//.example.organization$de-DE", false)]
+        fn test_round_trip(#[case] namespace_str: &str, #[case] allow_test: bool) {
+            let parsed = if allow_test {
+                ParsedNamespace::parse_allow_test(namespace_str)
+            } else {
+                ParsedNamespace::parse(namespace_str)
+            }.expect("Failed to parse");
+            
+            let displayed = parsed.to_string();
+            assert_eq!(displayed, namespace_str, "Display should match original");
+            
+            let reparsed = if allow_test {
+                ParsedNamespace::parse_allow_test(&displayed)
+            } else {
+                ParsedNamespace::parse(&displayed)
+            }.expect("Failed to reparse");
+            
+            assert_eq!(parsed, reparsed, "Reparsed should equal original");
+        }
+    }
 }
