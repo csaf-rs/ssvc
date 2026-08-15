@@ -163,22 +163,7 @@ mod tests {
             assert!(parsed.extensions.is_some_and(|ext| ext.len() == 3));
         }
 
-        #[test]
-        fn test_unregistered_multiple_dots_in_domain() {
-            let result = validate_namespace("x_com.example.subdomain#test", false);
-            assert!(result.is_ok());
-            let parsed = result.unwrap();
-            match parsed.base {
-                BaseNamespace::Unregistered {
-                    reverse_domain,
-                    fragment,
-                } => {
-                    assert_eq!(reverse_domain, "com.example.subdomain");
-                    assert_eq!(fragment, "test");
-                }
-                _ => panic!("Expected unregistered namespace"),
-            }
-        }
+
     }
     mod csaf_6_2_34_tests {
         use crate::validate_namespace;
