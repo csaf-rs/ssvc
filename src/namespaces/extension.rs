@@ -1,5 +1,7 @@
 use crate::NamespaceError;
-use crate::namespaces::constants::{DOMAIN_PREFIX, FRAGMENT_DELIMITER, LANGUAGE_DELIMITER};
+use crate::namespaces::constants::{
+    EXTENSION_REVERSE_DOMAIN_PREFIX, EXTENSION_TRANSLATION_PREFIX, FRAGMENT_DELIMITER,
+};
 
 pub type Extensions = Vec<Extension>;
 
@@ -60,18 +62,18 @@ impl std::fmt::Display for Extension {
             } => write!(
                 f,
                 "{}{}{}{}",
-                DOMAIN_PREFIX, reverse_domain, FRAGMENT_DELIMITER, fragment
+                EXTENSION_REVERSE_DOMAIN_PREFIX, reverse_domain, FRAGMENT_DELIMITER, fragment
             ),
             Extension::Translation {
                 reverse_domain,
                 fragment,
                 language,
             } => {
-                write!(f, "{}{}", DOMAIN_PREFIX, reverse_domain)?;
+                write!(f, "{}{}", EXTENSION_REVERSE_DOMAIN_PREFIX, reverse_domain)?;
                 if let Some(frag) = fragment {
                     write!(f, "{}{}", FRAGMENT_DELIMITER, frag)?;
                 }
-                write!(f, "{}{}", LANGUAGE_DELIMITER, language)
+                write!(f, "{}{}", EXTENSION_TRANSLATION_PREFIX, language)
             }
         }
     }
@@ -93,11 +95,11 @@ impl Extension {
     /// * `Err(NamespaceError)` - If the segment is invalid or malformed
     fn parse_segment(segment: &str) -> Result<Extension, NamespaceError> {
         // segments not starting with "." are Language only Segments, i.e. just a BCP-47 tags
-        let Some(segment) = segment.strip_prefix(DOMAIN_PREFIX) else {
+        let Some(segment) = segment.strip_prefix(EXTENSION_REVERSE_DOMAIN_PREFIX) else {
             return Self::parse_language_only_segment(segment);
         };
 
-        if let Some((domain_part, language)) = segment.split_once(LANGUAGE_DELIMITER) {
+        if let Some((domain_part, language)) = segment.split_once(EXTENSION_TRANSLATION_PREFIX) {
             // Translation segment: .domain#fragment$lang or .domain$lang
             Self::parse_translation(domain_part, language)
         } else {
