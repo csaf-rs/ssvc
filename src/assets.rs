@@ -2,9 +2,10 @@
 //!
 //! This module provides lookups to access the underlying decision point JSON files published by the SSVC repository.
 
+use crate::BaseNamespace;
 use crate::decision_point::DecisionPoint;
 use rust_embed::RustEmbed;
-use std::collections::HashMap;
+use std::collections::{HashMap, HashSet};
 use std::ops::Deref;
 use std::sync::LazyLock;
 
@@ -24,7 +25,7 @@ struct SsvcDecisionPointJsonFiles;
 /// A unique identifier for a decision point composed of namespace, key, and version.
 #[derive(Debug, Clone, Eq, PartialEq, Hash)]
 pub struct DecisionPointId {
-    pub namespace: String,
+    pub namespace: BaseNamespace,
     pub key: String,
     pub version: String,
 }
@@ -41,7 +42,7 @@ pub static DECISION_POINTS: LazyLock<SsvcDecisionPointsMap> = LazyLock::new(|| {
             match serde_json::from_str::<DecisionPoint>(content) {
                 Ok(dp) => {
                     let key = DecisionPointId {
-                        namespace: dp.namespace.deref().to_owned(),
+                        namespace: BaseNamespace::parse_base(dp.namespace.deref(), true).unwrap(),
                         key: dp.key.deref().to_owned(),
                         version: dp.version.deref().to_owned(),
                     };
@@ -75,14 +76,33 @@ pub static DP_VALUE_KEY_ORDER: LazyLock<SsvcDecisionPointsLookupMap> = LazyLock:
     lookups
 });
 
+/// Collects all available registered namespaces from the decision points. These are the namespaces our
+/// library "knows" and can validate against.
+pub static AVAILABLE_REGISTERED_NAMESPACES: LazyLock<HashSet<BaseNamespace>> =
+    LazyLock::new(|| {
+        let mut namespaces = HashSet::new();
+
+        for decision_point_id in DECISION_POINTS.keys().filter(|decision_point_id| {
+            matches!(
+                decision_point_id.namespace,
+                BaseNamespace::Registered { .. }
+            )
+        }) {
+            namespaces.insert(decision_point_id.namespace.to_owned());
+        }
+
+        namespaces
+    });
+
 #[cfg(test)]
 mod tests {
     use super::*;
+    use rstest::rstest;
 
     #[test]
     fn test_ssvc_exploitation_1_0_0_lookup() {
         let key = DecisionPointId {
-            namespace: "ssvc".to_string(),
+            namespace: BaseNamespace::parse_base("ssvc", false).unwrap(),
             key: "E".to_string(),
             version: "1.0.0".to_string(),
         };
@@ -104,7 +124,7 @@ mod tests {
     #[test]
     fn test_ssvc_exploitation_1_0_0_value_keys_order() {
         let key = DecisionPointId {
-            namespace: "ssvc".to_string(),
+            namespace: BaseNamespace::parse_base("ssvc", false).unwrap(),
             key: "E".to_string(),
             version: "1.0.0".to_string(),
         };
@@ -130,6 +150,20 @@ mod tests {
             order_map.get("A"),
             Some(&2),
             "Value with key 'A' should be at position 2"
+        );
+    }
+
+    #[rstest]
+    #[case::ssvc_is_available("ssvc", true)]
+    #[case::example_is_not_available("ex", false)]
+    fn test_available_registered_namespaces_lookup(
+        #[case] namespace: &str,
+        #[case] expected: bool,
+    ) {
+        let parsed_namespaces = BaseNamespace::parse_base(namespace, false).unwrap();
+        assert_eq!(
+            AVAILABLE_REGISTERED_NAMESPACES.contains(&parsed_namespaces),
+            expected
         );
     }
 }

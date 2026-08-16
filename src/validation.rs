@@ -1,5 +1,6 @@
+use crate::AVAILABLE_REGISTERED_NAMESPACES;
 use crate::assets::{DECISION_POINTS, DP_VALUE_KEY_ORDER, DecisionPointId};
-use crate::namespaces::{BaseNamespace, REGISTERED_NAMESPACES, validate_namespace};
+use crate::namespaces::validate_namespace;
 use crate::selection_list::SelectionList;
 use std::ops::Deref;
 
@@ -92,17 +93,17 @@ pub fn validate_selection_list(
             }
         };
 
-        // Extract base namespace name (without extensions and fragment)
-        let base_name = match parsed_ns.base {
-            BaseNamespace::Registered { name, .. } => name,
-            // Skip unregistered namespaces - they are not validated against known decision points
-            BaseNamespace::Unregistered { .. } => continue,
-        };
-
         // Skip if the base namespace is not explicitly registered in SSVC
-        if !REGISTERED_NAMESPACES.contains(&base_name.as_str()) {
+        if !parsed_ns.is_registered() {
             continue;
         }
+
+        // Skip if the base namespace is not within our assets
+        if !AVAILABLE_REGISTERED_NAMESPACES.contains(&parsed_ns.base) {
+            continue;
+        }
+
+        let parsed_ns_str = &parsed_ns.base.to_string();
 
         // Look up the decision point using base namespace (without extensions).
         // This implements the extension validation rule: extensions apply to
@@ -110,7 +111,7 @@ pub fn validate_selection_list(
         let s_key = selection.key.deref().to_owned();
         let version = selection.version.deref().to_owned();
         let dp_key = DecisionPointId {
-            namespace: base_name.clone(),
+            namespace: parsed_ns.base,
             key: s_key.clone(),
             version: version.clone(),
         };
@@ -133,7 +134,7 @@ pub fn validate_selection_list(
                         &dp.name,
                         "name",
                         selection.namespace.deref(),
-                        &base_name,
+                        parsed_ns_str.as_str(),
                         "decision point",
                         i_s,
                         &[],
@@ -146,7 +147,7 @@ pub fn validate_selection_list(
                         &dp.definition,
                         "definition",
                         selection.namespace.deref(),
-                        &base_name,
+                        parsed_ns_str.as_str(),
                         "decision point",
                         i_s,
                         &[],
@@ -211,7 +212,7 @@ pub fn validate_selection_list(
                                     &base_val.name,
                                     "name",
                                     selection.namespace.deref(),
-                                    &base_name,
+                                    parsed_ns_str.as_str(),
                                     &context,
                                     i_s,
                                     &["values", &i_val.to_string()],
@@ -224,7 +225,7 @@ pub fn validate_selection_list(
                                     &base_val.definition,
                                     "definition",
                                     selection.namespace.deref(),
-                                    &base_name,
+                                    parsed_ns_str.as_str(),
                                     &context,
                                     i_s,
                                     &["values", &i_val.to_string()],
