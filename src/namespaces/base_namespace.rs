@@ -4,7 +4,7 @@ use crate::namespaces::constants::{
 };
 
 /// The base namespace, either registered or unregistered.
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum BaseNamespace {
     Registered {
         name: String,
@@ -43,7 +43,7 @@ impl std::fmt::Display for BaseNamespace {
 impl BaseNamespace {
     /// Dispatches parsing to either registered or unregistered base namespace parser
     /// based on whether the base starts with the unregistered prefix (`x_`).
-    pub(super) fn parse_base(
+    pub(crate) fn parse_base(
         base: &str,
         allow_test: bool,
     ) -> Result<BaseNamespace, NamespaceError> {

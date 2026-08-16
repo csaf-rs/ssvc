@@ -11,7 +11,7 @@ mod generated {
 
 // public API
 // validation schemas
-pub use assets::{DECISION_POINT_SCHEMA, SELECTION_LIST_SCHEMA};
+pub use assets::{AVAILABLE_REGISTERED_NAMESPACES, DECISION_POINT_SCHEMA, SELECTION_LIST_SCHEMA};
 // generated structs
 pub use generated::ssvc::{decision_point, selection_list};
 // registered namespaces list, namespace validation function and assoc. structs
