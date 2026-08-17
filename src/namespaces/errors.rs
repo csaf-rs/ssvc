@@ -18,6 +18,9 @@ pub enum NamespaceError {
     #[error("Fragment cannot be empty after '#'")]
     EmptyFragment,
 
+    #[error("Namespace '{namespace}' is not a registered namespace")]
+    InvalidRegisteredNamespace { namespace: String },
+
     /// "invalid" or "x_invalid"
     #[error("Reserved forbidden namespace '{namespace}' must not be used")]
     ReservedForbiddenNamespace { namespace: String },
