@@ -4,6 +4,9 @@ mod validation;
 
 mod generated {
     pub mod ssvc {
+        #[path = "./decision_point_assets.generated.rs"]
+        pub mod decision_point_assets;
+
         pub mod decision_point;
         pub mod selection_list;
     }
