@@ -1,5 +1,7 @@
 pub(crate) const UNREGISTERED_PREFIX: &str = "x_";
+pub(crate) const EXTENSION_REVERSE_DOMAIN_PREFIX: &str = ".";
 pub(crate) const FRAGMENT_DELIMITER: &str = "#";
+pub(crate) const EXTENSION_TRANSLATION_PREFIX: &str = "$";
 pub(crate) const SECTION_DELIMITER: &str = "/";
 
 pub(crate) const RESERVED_INVALID_NAMESPACES: &[&str] = &["invalid", "x_invalid"];
