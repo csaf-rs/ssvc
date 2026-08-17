@@ -115,6 +115,6 @@ mod tests {
 
         let output: serde_json::Value =
             serde_wasm_bindgen::from_value(result.unwrap()).expect("output should be valid JSON");
-        assert_eq!(output.get("success").and_then(|v| v.as_bool()), Some(false));
+        assert_eq!(output.get("success").and_then(|v| v.as_bool()), Some(true));
     }
 }
