@@ -175,7 +175,10 @@ fn example_namespace_passes() {
 #[rstest]
 #[case::allow_test_true(true, true)]
 #[case::allow_test_false(false, false)]
-fn test_namespaces_passes_or_fails_depending_on_arg(#[case] allow_test: bool, #[case] expected: bool) {
+fn test_namespaces_passes_or_fails_depending_on_arg(
+    #[case] allow_test: bool,
+    #[case] expected: bool,
+) {
     let json_data = r#"{
               "schemaVersion": "2.0.0",
               "selections": [
@@ -200,5 +203,4 @@ fn test_namespaces_passes_or_fails_depending_on_arg(#[case] allow_test: bool, #[
     let result = validate_selection_list(&selection_list, allow_test);
 
     assert_eq!(result.success, expected);
-
 }
