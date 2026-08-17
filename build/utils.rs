@@ -74,6 +74,7 @@ pub fn walk_json_files(dir: &Path, process: &mut dyn FnMut(&Path) -> Result<()>)
         if path.is_dir() {
             walk_json_files(&path, process)?;
         } else if path.extension().is_some_and(|ext| ext == "json") {
+            println!("cargo:rerun-if-changed={}", path.display());
             process(&path)?;
         }
     }

@@ -4,7 +4,7 @@
 
 use crate::BaseNamespace;
 use crate::decision_point::DecisionPoint;
-use rust_embed::RustEmbed;
+use crate::generated::ssvc::decision_point_assets;
 use std::collections::{HashMap, HashSet};
 use std::ops::Deref;
 use std::sync::LazyLock;
@@ -14,13 +14,6 @@ pub static SELECTION_LIST_SCHEMA: &str = include_str!("../assets/SelectionList_2
 
 /// The embedded Decision Point JSON Schema content.
 pub static DECISION_POINT_SCHEMA: &str = include_str!("../assets/DecisionPoint_2_0_0.schema.json");
-
-/// Recursively loads all decision point JSON descriptions from `assets/ssvc_decision_points`. (Which is
-/// mirrored from the SSVC repository at `../ssvc/data/json/decision_points`.)
-#[derive(RustEmbed)]
-#[folder = "assets/ssvc_decision_points/"]
-#[include = "*.json"]
-struct SsvcDecisionPointJsonFiles;
 
 /// A unique identifier for a decision point composed of namespace, key, and version.
 #[derive(Debug, Clone, Eq, PartialEq, Hash)]
@@ -33,41 +26,8 @@ pub struct DecisionPointId {
 type SsvcDecisionPointsMap = HashMap<DecisionPointId, DecisionPoint>;
 /// Derives a lookup of all available decision points.
 /// Entries are stored in a `HashMap` indexed by their respective DecisionPointId (namespace, key, version) for lookup.
-pub static DECISION_POINTS: LazyLock<SsvcDecisionPointsMap> = LazyLock::new(|| {
-    let mut decision_points = HashMap::new();
-
-    for filename in SsvcDecisionPointJsonFiles::iter() {
-        if let Some(file) = SsvcDecisionPointJsonFiles::get(&filename) {
-            let content = std::str::from_utf8(&file.data).unwrap();
-            match serde_json::from_str::<DecisionPoint>(content) {
-                Ok(dp) => {
-                    let namespace = match BaseNamespace::parse_base(dp.namespace.deref(), true) {
-                        Ok(ns) => ns,
-                        Err(err) => {
-                            // TODO: This should be caught or at least pre-validation at compile time.
-                            eprintln!(
-                                "Warning: Failed to parse namespace for decision point from file {filename}: {err}"
-                            );
-                            continue;
-                        }
-                    };
-                    let key = DecisionPointId {
-                        namespace,
-                        key: dp.key.deref().to_owned(),
-                        version: dp.version.deref().to_owned(),
-                    };
-                    decision_points.insert(key, dp);
-                }
-                Err(err) => {
-                    // TODO: This should be caught or at least pre-validation at compile time.
-                    eprintln!("Warning: Failed to parse decision point from file {filename}: {err}")
-                }
-            }
-        }
-    }
-
-    decision_points
-});
+pub static DECISION_POINTS: LazyLock<SsvcDecisionPointsMap> =
+    LazyLock::new(decision_point_assets::get_decision_points);
 
 type SsvcDecisionPointsLookupMap = HashMap<DecisionPointId, HashMap<String, i32>>;
 /// Derives a lookup mapping the known decision points to their decision point value keys and their respective position.
