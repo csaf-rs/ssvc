@@ -103,11 +103,7 @@ impl ParsedNamespace {
     }
 }
 
-/// Validate a namespace string according to SSVC namespace rules.
-///
-/// This function parses and validates the namespace structure but does not
-/// check if registered namespaces are actually registered in the system (that
-/// check happens during selection list validation).
+/// Parses and validates a namespace string according to SSVC namespace structure and rules.
 ///
 /// # Arguments
 /// * `namespace` - The namespace string to validate
