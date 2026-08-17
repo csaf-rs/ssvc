@@ -93,8 +93,8 @@ pub fn validate_selection_list(
             }
         };
 
-        // Skip if the base namespace is not explicitly registered in SSVC
-        if !parsed_ns.is_registered() {
+        // Skip if the base namespace is unregistered
+        if parsed_ns.is_unregistered() {
             continue;
         }
 
