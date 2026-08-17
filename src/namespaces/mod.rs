@@ -103,7 +103,7 @@ impl ParsedNamespace {
     }
 }
 
-/// Parses and validate a namespace string according to SSVC namespace structure and rules.
+/// Parses and validates a namespace string according to SSVC namespace structure and rules.
 ///
 /// # Arguments
 /// * `namespace` - The namespace string to validate
