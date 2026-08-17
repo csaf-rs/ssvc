@@ -155,7 +155,7 @@ mod tests {
 
     #[rstest]
     #[case::ssvc_is_available("ssvc", true)]
-    #[case::example_is_not_available("ex", false)]
+    #[case::example_is_not_available("example", false)]
     fn test_available_registered_namespaces_lookup(
         #[case] namespace: &str,
         #[case] expected: bool,
