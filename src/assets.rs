@@ -2,7 +2,7 @@
 //!
 //! This module provides lookups to access the underlying decision point JSON files published by the SSVC repository.
 
-use crate::{BaseNamespace};
+use crate::BaseNamespace;
 use crate::decision_point::DecisionPoint;
 use rust_embed::RustEmbed;
 use std::collections::{HashMap, HashSet};
@@ -42,10 +42,12 @@ pub static DECISION_POINTS: LazyLock<SsvcDecisionPointsMap> = LazyLock::new(|| {
             match serde_json::from_str::<DecisionPoint>(content) {
                 Ok(dp) => {
                     let namespace = match BaseNamespace::parse_base(dp.namespace.deref(), true) {
-                        Ok(ns) => {ns}
+                        Ok(ns) => ns,
                         Err(err) => {
                             // TODO: This should be caught or at least pre-validation at compile time.
-                            eprintln!("Warning: Failed to parse namespace for decision point from file {filename}: {err}");
+                            eprintln!(
+                                "Warning: Failed to parse namespace for decision point from file {filename}: {err}"
+                            );
                             continue;
                         }
                     };
