@@ -1,6 +1,7 @@
 use crate::namespaces::NamespaceError;
 use crate::namespaces::constants::{
-    FRAGMENT_DELIMITER, RESERVED_INVALID_NAMESPACES, RESERVED_TEST_NAMESPACES, UNREGISTERED_PREFIX,
+    FRAGMENT_DELIMITER, REGISTERED_NAMESPACES, RESERVED_INVALID_NAMESPACES,
+    RESERVED_TEST_NAMESPACES, UNREGISTERED_PREFIX,
 };
 
 /// The base namespace, either registered or unregistered.
@@ -98,6 +99,13 @@ impl BaseNamespace {
             });
         }
 
+        // only the "known" registered namespaces are allowed as registered namespace names
+        if !REGISTERED_NAMESPACES.contains(&name) {
+            return Err(NamespaceError::InvalidRegisteredNamespace {
+                namespace: name.to_string(),
+            });
+        }
+
         Ok(BaseNamespace::Registered {
             name: name.to_string(),
             fragment: fragment.map(|f| f.to_string()),
@@ -164,6 +172,34 @@ mod test_registered {
     use rstest::rstest;
 
     #[test]
+    fn test_parse_ssvc() {
+        let result = BaseNamespace::parse_base("ssvc", true);
+        assert!(result.is_ok());
+
+        match result.unwrap() {
+            BaseNamespace::Registered { name, fragment } => {
+                assert_eq!(name, "ssvc");
+                assert!(fragment.is_none());
+            }
+            BaseNamespace::Unregistered { .. } => panic!("Expected Registered variant"),
+        }
+    }
+
+    #[test]
+    fn test_parse_nist_800_30() {
+        let result = BaseNamespace::parse_base("nist#800-30", true);
+        assert!(result.is_ok());
+
+        match result.unwrap() {
+            BaseNamespace::Registered { name, fragment } => {
+                assert_eq!(name, "nist");
+                assert_eq!(fragment, Some("800-30".to_string()));
+            }
+            BaseNamespace::Unregistered { .. } => panic!("Expected Registered variant"),
+        }
+    }
+
+    #[test]
     fn test_parse_registered_forbidden_namespace() {
         let result = BaseNamespace::parse_base("invalid", true);
         assert!(matches!(
@@ -189,6 +225,15 @@ mod test_registered {
                 Err(NamespaceError::ReservedTestNamespace { .. })
             ));
         }
+    }
+
+    #[test]
+    fn test_parse_invalid_registered_namespace() {
+        let result = BaseNamespace::parse_base("sxyz", true);
+        assert!(matches!(
+            result,
+            Err(NamespaceError::InvalidRegisteredNamespace { .. })
+        ));
     }
 
     #[test]
