@@ -53,6 +53,9 @@ jobs:
         run: |
           cargo publish --dry-run -p ssvc --verbose --no-verify --locked
 
+  coverage:
+    uses: csaf-rs/shared-workflows/.github/workflows/rust-coverage.yml@400ee021e6bdeb7e2808264749e2fe20b25401e8 # v1.3.0
+
   publish-crates:
     runs-on: ubuntu-latest
     permissions:
