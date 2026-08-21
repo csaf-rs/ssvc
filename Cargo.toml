@@ -7,6 +7,7 @@ publish = true
 description = "Implementation of the SSVC specification in Rust"
 license = "Apache-2.0"
 repository = "https://github.com/csaf-rs/ssvc"
+exclude = ["/ssvc"]
 
 [lib]
 crate-type = ["cdylib", "rlib"]
