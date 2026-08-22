@@ -1,0 +1,1509 @@
+{
+  "basic": {
+    "BP": {
+      "versions": {
+        "1.0.0": {
+          "first_commit": "c853ebfed619bb62cf9316d2030096916d057e49",
+          "first_commit_date": "2023-10-16T13:48:10-04:00",
+          "first_commit_subject": "Add SSVC python module (#342)",
+          "first_release_date": "2024-03-08T18:15:50Z",
+          "first_release_tag": "v2024.3",
+          "name": "Boundary Proximity",
+          "retroactive": true,
+          "retroactive_note": "First encoding of core SSVC decision points as Python objects. The underlying decision point already existed in the SSVC spec/docs (v1.0/2019-12, v1.1/2020-09, v2.0/2021-05 or v2.1/2023-07 depending on the version number) well before this commit.",
+          "source_file": "src/ssvc/decision_points/basic/near_boundary.py"
+        }
+      }
+    },
+    "CIS_WEP": {
+      "versions": {
+        "1.0.0": {
+          "first_commit": "2f555c8d9f3cd6568a7aa350382ccd3c237b7c49",
+          "first_commit_date": "2025-08-28T12:24:59-04:00",
+          "first_commit_subject": "add decision points to cover probability ranges and quantiles",
+          "first_release_date": "2025-09-17T17:36:41Z",
+          "first_release_tag": "v2025.9",
+          "name": "CIS-CTI Words of Estimative Probability",
+          "retroactive": false,
+          "retroactive_note": "Newly authored generic/basic decision points, not a backfill of pre-existing SSVC spec content.",
+          "source_file": "src/ssvc/decision_points/basic/probability/cis_wep.py"
+        }
+      }
+    },
+    "MEDIAN": {
+      "versions": {
+        "1.0.0": {
+          "first_commit": "c853ebfed619bb62cf9316d2030096916d057e49",
+          "first_commit_date": "2023-10-16T13:48:10-04:00",
+          "first_commit_subject": "Add SSVC python module (#342)",
+          "first_release_date": "2024-03-08T18:15:50Z",
+          "first_release_tag": "v2024.3",
+          "name": "Median Split",
+          "retroactive": true,
+          "retroactive_note": "First encoding of core SSVC decision points as Python objects. The underlying decision point already existed in the SSVC spec/docs (v1.0/2019-12, v1.1/2020-09, v2.0/2021-05 or v2.1/2023-07 depending on the version number) well before this commit.",
+          "source_file": "src/ssvc/decision_points/basic/quantiles/median.py"
+        }
+      }
+    },
+    "P_2A": {
+      "versions": {
+        "1.0.0": {
+          "first_commit": "c853ebfed619bb62cf9316d2030096916d057e49",
+          "first_commit_date": "2023-10-16T13:48:10-04:00",
+          "first_commit_subject": "Add SSVC python module (#342)",
+          "first_release_date": "2024-03-08T18:15:50Z",
+          "first_release_tag": "v2024.3",
+          "name": "Probability Scale in 2 equal levels, ascending",
+          "retroactive": true,
+          "retroactive_note": "First encoding of core SSVC decision points as Python objects. The underlying decision point already existed in the SSVC spec/docs (v1.0/2019-12, v1.1/2020-09, v2.0/2021-05 or v2.1/2023-07 depending on the version number) well before this commit.",
+          "source_file": "src/ssvc/decision_points/basic/probability/two_equal.py"
+        }
+      }
+    },
+    "P_5A": {
+      "versions": {
+        "1.0.0": {
+          "first_commit": "c853ebfed619bb62cf9316d2030096916d057e49",
+          "first_commit_date": "2023-10-16T13:48:10-04:00",
+          "first_commit_subject": "Add SSVC python module (#342)",
+          "first_release_date": "2024-03-08T18:15:50Z",
+          "first_release_tag": "v2024.3",
+          "name": "Probability Scale in 5 equal levels, ascending",
+          "retroactive": true,
+          "retroactive_note": "First encoding of core SSVC decision points as Python objects. The underlying decision point already existed in the SSVC spec/docs (v1.0/2019-12, v1.1/2020-09, v2.0/2021-05 or v2.1/2023-07 depending on the version number) well before this commit.",
+          "source_file": "src/ssvc/decision_points/basic/probability/five_equal.py"
+        }
+      }
+    },
+    "P_5W": {
+      "versions": {
+        "1.0.0": {
+          "first_commit": "c853ebfed619bb62cf9316d2030096916d057e49",
+          "first_commit_date": "2023-10-16T13:48:10-04:00",
+          "first_commit_subject": "Add SSVC python module (#342)",
+          "first_release_date": "2024-03-08T18:15:50Z",
+          "first_release_tag": "v2024.3",
+          "name": "Probability Scale in 5 weighted levels, ascending",
+          "retroactive": true,
+          "retroactive_note": "First encoding of core SSVC decision points as Python objects. The underlying decision point already existed in the SSVC spec/docs (v1.0/2019-12, v1.1/2020-09, v2.0/2021-05 or v2.1/2023-07 depending on the version number) well before this commit.",
+          "source_file": "src/ssvc/decision_points/basic/probability/five_weighted.py"
+        }
+      }
+    },
+    "QUARTILES": {
+      "versions": {
+        "1.0.0": {
+          "first_commit": "c853ebfed619bb62cf9316d2030096916d057e49",
+          "first_commit_date": "2023-10-16T13:48:10-04:00",
+          "first_commit_subject": "Add SSVC python module (#342)",
+          "first_release_date": "2024-03-08T18:15:50Z",
+          "first_release_tag": "v2024.3",
+          "name": "Quartiles",
+          "retroactive": true,
+          "retroactive_note": "First encoding of core SSVC decision points as Python objects. The underlying decision point already existed in the SSVC spec/docs (v1.0/2019-12, v1.1/2020-09, v2.0/2021-05 or v2.1/2023-07 depending on the version number) well before this commit.",
+          "source_file": "src/ssvc/decision_points/basic/quantiles/quartiles.py"
+        }
+      }
+    },
+    "QUINTILES": {
+      "versions": {
+        "1.0.0": {
+          "first_commit": "2f555c8d9f3cd6568a7aa350382ccd3c237b7c49",
+          "first_commit_date": "2025-08-28T12:24:59-04:00",
+          "first_commit_subject": "add decision points to cover probability ranges and quantiles",
+          "first_release_date": "2025-09-17T17:36:41Z",
+          "first_release_tag": "v2025.9",
+          "name": "Quintiles",
+          "retroactive": false,
+          "retroactive_note": "Newly authored generic/basic decision points, not a backfill of pre-existing SSVC spec content.",
+          "source_file": "src/ssvc/decision_points/basic/quantiles/quintiles.py"
+        }
+      }
+    }
+  },
+  "cisa": {
+    "KEV": {
+      "versions": {
+        "1.0.0": {
+          "first_commit": "e2583ec3b440283ebf553d7e55b3cdc8b83470a1",
+          "first_commit_date": "2023-10-17T15:45:24-04:00",
+          "first_commit_subject": "Add python decision points for critical software, high value assets, and in KEV (#346)",
+          "first_release_date": "2024-03-08T18:15:50Z",
+          "first_release_tag": "v2024.3",
+          "name": "In KEV",
+          "retroactive": false,
+          "retroactive_note": "First introduction of these CISA-related and example decision points; no earlier public definition is known, so this is treated as their genuine origin.",
+          "source_file": "src/ssvc/decision_points/cisa/in_kev.py"
+        }
+      }
+    },
+    "MP": {
+      "versions": {
+        "1.0.0": {
+          "first_commit": "046cbb3d4c3d81f20bd4589fcb657ecfbd91fea5",
+          "first_commit_date": "2024-02-05T14:36:05-05:00",
+          "first_commit_subject": "Add CISA custom decision points (#427)",
+          "first_release_date": "2024-03-08T18:15:50Z",
+          "first_release_tag": "v2024.3",
+          "name": "Mission Prevalence",
+          "retroactive": false,
+          "retroactive_note": "First introduction of these CISA-specific decision points; no earlier public definition is known, so this is treated as their genuine origin.",
+          "source_file": "src/ssvc/decision_points/cisa/mission_prevalence.py"
+        }
+      }
+    },
+    "PE": {
+      "versions": {
+        "1.0.0": {
+          "first_commit": "e2583ec3b440283ebf553d7e55b3cdc8b83470a1",
+          "first_commit_date": "2023-10-17T15:45:24-04:00",
+          "first_commit_subject": "Add python decision points for critical software, high value assets, and in KEV (#346)",
+          "first_release_date": "2024-03-08T18:15:50Z",
+          "first_release_tag": "v2024.3",
+          "name": "Publicly Exposed",
+          "retroactive": false,
+          "retroactive_note": "First introduction of these CISA-related and example decision points; no earlier public definition is known, so this is treated as their genuine origin.",
+          "source_file": "src/ssvc/decision_points/cisa/publicly_exposed.py"
+        }
+      }
+    }
+  },
+  "cvss": {
+    "A": {
+      "versions": {
+        "1.0.0": {
+          "first_commit": "292a97732515de2a6bf166803d0f1363d011cc34",
+          "first_commit_date": "2023-11-07T12:33:11-05:00",
+          "first_commit_subject": "Add CVSS-based (v1, v2, v3) decision points as python classes (#343)",
+          "first_release_date": "2024-03-08T18:15:50Z",
+          "first_release_tag": "v2024.3",
+          "name": "Availability Impact",
+          "retroactive": true,
+          "retroactive_note": "Encodes CVSS v1 (2005)/v2 (2007)/v3.0 (2015)/v3.1 (2019) metric definitions, all pre-dating this repository, as Python objects.",
+          "source_file": "src/ssvc/decision_points/cvss/availability_impact.py"
+        },
+        "2.0.0": {
+          "first_commit": "292a97732515de2a6bf166803d0f1363d011cc34",
+          "first_commit_date": "2023-11-07T12:33:11-05:00",
+          "first_commit_subject": "Add CVSS-based (v1, v2, v3) decision points as python classes (#343)",
+          "first_release_date": "2024-03-08T18:15:50Z",
+          "first_release_tag": "v2024.3",
+          "name": "Availability Impact",
+          "retroactive": true,
+          "retroactive_note": "Encodes CVSS v1 (2005)/v2 (2007)/v3.0 (2015)/v3.1 (2019) metric definitions, all pre-dating this repository, as Python objects.",
+          "source_file": "src/ssvc/decision_points/cvss/availability_impact.py"
+        }
+      }
+    },
+    "AC": {
+      "versions": {
+        "1.0.0": {
+          "first_commit": "292a97732515de2a6bf166803d0f1363d011cc34",
+          "first_commit_date": "2023-11-07T12:33:11-05:00",
+          "first_commit_subject": "Add CVSS-based (v1, v2, v3) decision points as python classes (#343)",
+          "first_release_date": "2024-03-08T18:15:50Z",
+          "first_release_tag": "v2024.3",
+          "name": "Access Complexity",
+          "retroactive": true,
+          "retroactive_note": "Encodes CVSS v1 (2005)/v2 (2007)/v3.0 (2015)/v3.1 (2019) metric definitions, all pre-dating this repository, as Python objects.",
+          "source_file": "src/ssvc/decision_points/cvss/attack_complexity.py"
+        },
+        "2.0.0": {
+          "first_commit": "292a97732515de2a6bf166803d0f1363d011cc34",
+          "first_commit_date": "2023-11-07T12:33:11-05:00",
+          "first_commit_subject": "Add CVSS-based (v1, v2, v3) decision points as python classes (#343)",
+          "first_release_date": "2024-03-08T18:15:50Z",
+          "first_release_tag": "v2024.3",
+          "name": "Access Complexity",
+          "retroactive": true,
+          "retroactive_note": "Encodes CVSS v1 (2005)/v2 (2007)/v3.0 (2015)/v3.1 (2019) metric definitions, all pre-dating this repository, as Python objects.",
+          "source_file": "src/ssvc/decision_points/cvss/attack_complexity.py"
+        },
+        "3.0.0": {
+          "first_commit": "292a97732515de2a6bf166803d0f1363d011cc34",
+          "first_commit_date": "2023-11-07T12:33:11-05:00",
+          "first_commit_subject": "Add CVSS-based (v1, v2, v3) decision points as python classes (#343)",
+          "first_release_date": "2024-03-08T18:15:50Z",
+          "first_release_tag": "v2024.3",
+          "name": "Attack Complexity",
+          "retroactive": true,
+          "retroactive_note": "Encodes CVSS v1 (2005)/v2 (2007)/v3.0 (2015)/v3.1 (2019) metric definitions, all pre-dating this repository, as Python objects.",
+          "source_file": "src/ssvc/decision_points/cvss/attack_complexity.py"
+        },
+        "3.0.1": {
+          "first_commit": "ba72fce1c1020f5f6dc4bfafe7a807e1e06bf747",
+          "first_commit_date": "2023-11-17T11:14:41-05:00",
+          "first_commit_subject": "Add CVSSv4 Decision Points (#377)",
+          "first_release_date": "2024-03-08T18:15:50Z",
+          "first_release_tag": "v2024.3",
+          "name": "Attack Complexity",
+          "retroactive": false,
+          "retroactive_note": "CVSS v4.0 was published by FIRST in November 2023 \u2014 the same month as this commit. Likely close to the real-world availability date rather than a retroactive backfill.",
+          "source_file": "src/ssvc/decision_points/cvss/attack_complexity.py"
+        }
+      }
+    },
+    "AR": {
+      "versions": {
+        "1.0.0": {
+          "first_commit": "292a97732515de2a6bf166803d0f1363d011cc34",
+          "first_commit_date": "2023-11-07T12:33:11-05:00",
+          "first_commit_subject": "Add CVSS-based (v1, v2, v3) decision points as python classes (#343)",
+          "first_release_date": "2024-03-08T18:15:50Z",
+          "first_release_tag": "v2024.3",
+          "name": "Availability Requirement",
+          "retroactive": true,
+          "retroactive_note": "Encodes CVSS v1 (2005)/v2 (2007)/v3.0 (2015)/v3.1 (2019) metric definitions, all pre-dating this repository, as Python objects.",
+          "source_file": "src/ssvc/decision_points/cvss/availability_requirement.py"
+        },
+        "1.1.0": {
+          "first_commit": "ba72fce1c1020f5f6dc4bfafe7a807e1e06bf747",
+          "first_commit_date": "2023-11-17T11:14:41-05:00",
+          "first_commit_subject": "Add CVSSv4 Decision Points (#377)",
+          "first_release_date": "2024-03-08T18:15:50Z",
+          "first_release_tag": "v2024.3",
+          "name": "Availability Requirement",
+          "retroactive": false,
+          "retroactive_note": "CVSS v4.0 was published by FIRST in November 2023 \u2014 the same month as this commit. Likely close to the real-world availability date rather than a retroactive backfill.",
+          "source_file": "src/ssvc/decision_points/cvss/availability_requirement.py"
+        },
+        "1.1.1": {
+          "first_commit": "ba72fce1c1020f5f6dc4bfafe7a807e1e06bf747",
+          "first_commit_date": "2023-11-17T11:14:41-05:00",
+          "first_commit_subject": "Add CVSSv4 Decision Points (#377)",
+          "first_release_date": "2024-03-08T18:15:50Z",
+          "first_release_tag": "v2024.3",
+          "name": "Availability Requirement",
+          "retroactive": false,
+          "retroactive_note": "CVSS v4.0 was published by FIRST in November 2023 \u2014 the same month as this commit. Likely close to the real-world availability date rather than a retroactive backfill.",
+          "source_file": "src/ssvc/decision_points/cvss/availability_requirement.py"
+        }
+      }
+    },
+    "AT": {
+      "versions": {
+        "1.0.0": {
+          "first_commit": "ba72fce1c1020f5f6dc4bfafe7a807e1e06bf747",
+          "first_commit_date": "2023-11-17T11:14:41-05:00",
+          "first_commit_subject": "Add CVSSv4 Decision Points (#377)",
+          "first_release_date": "2024-03-08T18:15:50Z",
+          "first_release_tag": "v2024.3",
+          "name": "Attack Requirements",
+          "retroactive": false,
+          "retroactive_note": "CVSS v4.0 was published by FIRST in November 2023 \u2014 the same month as this commit. Likely close to the real-world availability date rather than a retroactive backfill.",
+          "source_file": "src/ssvc/decision_points/cvss/attack_requirements.py"
+        }
+      }
+    },
+    "AU": {
+      "versions": {
+        "1.0.0": {
+          "first_commit": "ba72fce1c1020f5f6dc4bfafe7a807e1e06bf747",
+          "first_commit_date": "2023-11-17T11:14:41-05:00",
+          "first_commit_subject": "Add CVSSv4 Decision Points (#377)",
+          "first_release_date": "2024-03-08T18:15:50Z",
+          "first_release_tag": "v2024.3",
+          "name": "Automatable",
+          "retroactive": false,
+          "retroactive_note": "CVSS v4.0 was published by FIRST in November 2023 \u2014 the same month as this commit. Likely close to the real-world availability date rather than a retroactive backfill.",
+          "source_file": "src/ssvc/decision_points/cvss/supplemental/automatable.py"
+        }
+      }
+    },
+    "AV": {
+      "versions": {
+        "1.0.0": {
+          "first_commit": "292a97732515de2a6bf166803d0f1363d011cc34",
+          "first_commit_date": "2023-11-07T12:33:11-05:00",
+          "first_commit_subject": "Add CVSS-based (v1, v2, v3) decision points as python classes (#343)",
+          "first_release_date": "2024-03-08T18:15:50Z",
+          "first_release_tag": "v2024.3",
+          "name": "Access Vector",
+          "retroactive": true,
+          "retroactive_note": "Encodes CVSS v1 (2005)/v2 (2007)/v3.0 (2015)/v3.1 (2019) metric definitions, all pre-dating this repository, as Python objects.",
+          "source_file": "src/ssvc/decision_points/cvss/attack_vector.py"
+        },
+        "2.0.0": {
+          "first_commit": "292a97732515de2a6bf166803d0f1363d011cc34",
+          "first_commit_date": "2023-11-07T12:33:11-05:00",
+          "first_commit_subject": "Add CVSS-based (v1, v2, v3) decision points as python classes (#343)",
+          "first_release_date": "2024-03-08T18:15:50Z",
+          "first_release_tag": "v2024.3",
+          "name": "Access Vector",
+          "retroactive": true,
+          "retroactive_note": "Encodes CVSS v1 (2005)/v2 (2007)/v3.0 (2015)/v3.1 (2019) metric definitions, all pre-dating this repository, as Python objects.",
+          "source_file": "src/ssvc/decision_points/cvss/attack_vector.py"
+        },
+        "3.0.0": {
+          "first_commit": "292a97732515de2a6bf166803d0f1363d011cc34",
+          "first_commit_date": "2023-11-07T12:33:11-05:00",
+          "first_commit_subject": "Add CVSS-based (v1, v2, v3) decision points as python classes (#343)",
+          "first_release_date": "2024-03-08T18:15:50Z",
+          "first_release_tag": "v2024.3",
+          "name": "Attack Vector",
+          "retroactive": true,
+          "retroactive_note": "Encodes CVSS v1 (2005)/v2 (2007)/v3.0 (2015)/v3.1 (2019) metric definitions, all pre-dating this repository, as Python objects.",
+          "source_file": "src/ssvc/decision_points/cvss/attack_vector.py"
+        },
+        "3.0.1": {
+          "first_commit": "ba72fce1c1020f5f6dc4bfafe7a807e1e06bf747",
+          "first_commit_date": "2023-11-17T11:14:41-05:00",
+          "first_commit_subject": "Add CVSSv4 Decision Points (#377)",
+          "first_release_date": "2024-03-08T18:15:50Z",
+          "first_release_tag": "v2024.3",
+          "name": "Attack Vector",
+          "retroactive": false,
+          "retroactive_note": "CVSS v4.0 was published by FIRST in November 2023 \u2014 the same month as this commit. Likely close to the real-world availability date rather than a retroactive backfill.",
+          "source_file": "src/ssvc/decision_points/cvss/attack_vector.py"
+        }
+      }
+    },
+    "Au": {
+      "versions": {
+        "1.0.0": {
+          "first_commit": "292a97732515de2a6bf166803d0f1363d011cc34",
+          "first_commit_date": "2023-11-07T12:33:11-05:00",
+          "first_commit_subject": "Add CVSS-based (v1, v2, v3) decision points as python classes (#343)",
+          "first_release_date": "2024-03-08T18:15:50Z",
+          "first_release_tag": "v2024.3",
+          "name": "Authentication",
+          "retroactive": true,
+          "retroactive_note": "Encodes CVSS v1 (2005)/v2 (2007)/v3.0 (2015)/v3.1 (2019) metric definitions, all pre-dating this repository, as Python objects.",
+          "source_file": "src/ssvc/decision_points/cvss/authentication.py"
+        },
+        "2.0.0": {
+          "first_commit": "292a97732515de2a6bf166803d0f1363d011cc34",
+          "first_commit_date": "2023-11-07T12:33:11-05:00",
+          "first_commit_subject": "Add CVSS-based (v1, v2, v3) decision points as python classes (#343)",
+          "first_release_date": "2024-03-08T18:15:50Z",
+          "first_release_tag": "v2024.3",
+          "name": "Authentication",
+          "retroactive": true,
+          "retroactive_note": "Encodes CVSS v1 (2005)/v2 (2007)/v3.0 (2015)/v3.1 (2019) metric definitions, all pre-dating this repository, as Python objects.",
+          "source_file": "src/ssvc/decision_points/cvss/authentication.py"
+        }
+      }
+    },
+    "C": {
+      "versions": {
+        "1.0.0": {
+          "first_commit": "292a97732515de2a6bf166803d0f1363d011cc34",
+          "first_commit_date": "2023-11-07T12:33:11-05:00",
+          "first_commit_subject": "Add CVSS-based (v1, v2, v3) decision points as python classes (#343)",
+          "first_release_date": "2024-03-08T18:15:50Z",
+          "first_release_tag": "v2024.3",
+          "name": "Confidentiality Impact",
+          "retroactive": true,
+          "retroactive_note": "Encodes CVSS v1 (2005)/v2 (2007)/v3.0 (2015)/v3.1 (2019) metric definitions, all pre-dating this repository, as Python objects.",
+          "source_file": "src/ssvc/decision_points/cvss/confidentiality_impact.py"
+        },
+        "2.0.0": {
+          "first_commit": "292a97732515de2a6bf166803d0f1363d011cc34",
+          "first_commit_date": "2023-11-07T12:33:11-05:00",
+          "first_commit_subject": "Add CVSS-based (v1, v2, v3) decision points as python classes (#343)",
+          "first_release_date": "2024-03-08T18:15:50Z",
+          "first_release_tag": "v2024.3",
+          "name": "Confidentiality Impact",
+          "retroactive": true,
+          "retroactive_note": "Encodes CVSS v1 (2005)/v2 (2007)/v3.0 (2015)/v3.1 (2019) metric definitions, all pre-dating this repository, as Python objects.",
+          "source_file": "src/ssvc/decision_points/cvss/confidentiality_impact.py"
+        }
+      }
+    },
+    "CDP": {
+      "versions": {
+        "1.0.0": {
+          "first_commit": "292a97732515de2a6bf166803d0f1363d011cc34",
+          "first_commit_date": "2023-11-07T12:33:11-05:00",
+          "first_commit_subject": "Add CVSS-based (v1, v2, v3) decision points as python classes (#343)",
+          "first_release_date": "2024-03-08T18:15:50Z",
+          "first_release_tag": "v2024.3",
+          "name": "Collateral Damage Potential",
+          "retroactive": true,
+          "retroactive_note": "Encodes CVSS v1 (2005)/v2 (2007)/v3.0 (2015)/v3.1 (2019) metric definitions, all pre-dating this repository, as Python objects.",
+          "source_file": "src/ssvc/decision_points/cvss/collateral_damage_potential.py"
+        },
+        "2.0.0": {
+          "first_commit": "292a97732515de2a6bf166803d0f1363d011cc34",
+          "first_commit_date": "2023-11-07T12:33:11-05:00",
+          "first_commit_subject": "Add CVSS-based (v1, v2, v3) decision points as python classes (#343)",
+          "first_release_date": "2024-03-08T18:15:50Z",
+          "first_release_tag": "v2024.3",
+          "name": "Collateral Damage Potential",
+          "retroactive": true,
+          "retroactive_note": "Encodes CVSS v1 (2005)/v2 (2007)/v3.0 (2015)/v3.1 (2019) metric definitions, all pre-dating this repository, as Python objects.",
+          "source_file": "src/ssvc/decision_points/cvss/collateral_damage_potential.py"
+        }
+      }
+    },
+    "CR": {
+      "versions": {
+        "1.0.0": {
+          "first_commit": "292a97732515de2a6bf166803d0f1363d011cc34",
+          "first_commit_date": "2023-11-07T12:33:11-05:00",
+          "first_commit_subject": "Add CVSS-based (v1, v2, v3) decision points as python classes (#343)",
+          "first_release_date": "2024-03-08T18:15:50Z",
+          "first_release_tag": "v2024.3",
+          "name": "Confidentiality Requirement",
+          "retroactive": true,
+          "retroactive_note": "Encodes CVSS v1 (2005)/v2 (2007)/v3.0 (2015)/v3.1 (2019) metric definitions, all pre-dating this repository, as Python objects.",
+          "source_file": "src/ssvc/decision_points/cvss/confidentiality_requirement.py"
+        },
+        "1.1.0": {
+          "first_commit": "ba72fce1c1020f5f6dc4bfafe7a807e1e06bf747",
+          "first_commit_date": "2023-11-17T11:14:41-05:00",
+          "first_commit_subject": "Add CVSSv4 Decision Points (#377)",
+          "first_release_date": "2024-03-08T18:15:50Z",
+          "first_release_tag": "v2024.3",
+          "name": "Confidentiality Requirement",
+          "retroactive": false,
+          "retroactive_note": "CVSS v4.0 was published by FIRST in November 2023 \u2014 the same month as this commit. Likely close to the real-world availability date rather than a retroactive backfill.",
+          "source_file": "src/ssvc/decision_points/cvss/confidentiality_requirement.py"
+        },
+        "1.1.1": {
+          "first_commit": "ba72fce1c1020f5f6dc4bfafe7a807e1e06bf747",
+          "first_commit_date": "2023-11-17T11:14:41-05:00",
+          "first_commit_subject": "Add CVSSv4 Decision Points (#377)",
+          "first_release_date": "2024-03-08T18:15:50Z",
+          "first_release_tag": "v2024.3",
+          "name": "Confidentiality Requirement",
+          "retroactive": false,
+          "retroactive_note": "CVSS v4.0 was published by FIRST in November 2023 \u2014 the same month as this commit. Likely close to the real-world availability date rather than a retroactive backfill.",
+          "source_file": "src/ssvc/decision_points/cvss/confidentiality_requirement.py"
+        }
+      }
+    },
+    "E": {
+      "versions": {
+        "1.0.0": {
+          "first_commit": "292a97732515de2a6bf166803d0f1363d011cc34",
+          "first_commit_date": "2023-11-07T12:33:11-05:00",
+          "first_commit_subject": "Add CVSS-based (v1, v2, v3) decision points as python classes (#343)",
+          "first_release_date": "2024-03-08T18:15:50Z",
+          "first_release_tag": "v2024.3",
+          "name": "Exploitability",
+          "retroactive": true,
+          "retroactive_note": "Encodes CVSS v1 (2005)/v2 (2007)/v3.0 (2015)/v3.1 (2019) metric definitions, all pre-dating this repository, as Python objects.",
+          "source_file": "src/ssvc/decision_points/cvss/exploit_maturity.py"
+        },
+        "1.1.0": {
+          "first_commit": "292a97732515de2a6bf166803d0f1363d011cc34",
+          "first_commit_date": "2023-11-07T12:33:11-05:00",
+          "first_commit_subject": "Add CVSS-based (v1, v2, v3) decision points as python classes (#343)",
+          "first_release_date": "2024-03-08T18:15:50Z",
+          "first_release_tag": "v2024.3",
+          "name": "Exploitability",
+          "retroactive": true,
+          "retroactive_note": "Encodes CVSS v1 (2005)/v2 (2007)/v3.0 (2015)/v3.1 (2019) metric definitions, all pre-dating this repository, as Python objects.",
+          "source_file": "src/ssvc/decision_points/cvss/exploit_maturity.py"
+        },
+        "1.2.0": {
+          "first_commit": "ba72fce1c1020f5f6dc4bfafe7a807e1e06bf747",
+          "first_commit_date": "2023-11-17T11:14:41-05:00",
+          "first_commit_subject": "Add CVSSv4 Decision Points (#377)",
+          "first_release_date": "2024-03-08T18:15:50Z",
+          "first_release_tag": "v2024.3",
+          "name": "Exploit Code Maturity",
+          "retroactive": false,
+          "retroactive_note": "CVSS v4.0 was published by FIRST in November 2023 \u2014 the same month as this commit. Likely close to the real-world availability date rather than a retroactive backfill.",
+          "source_file": "src/ssvc/decision_points/cvss/exploit_maturity.py"
+        },
+        "2.0.0": {
+          "first_commit": "ba72fce1c1020f5f6dc4bfafe7a807e1e06bf747",
+          "first_commit_date": "2023-11-17T11:14:41-05:00",
+          "first_commit_subject": "Add CVSSv4 Decision Points (#377)",
+          "first_release_date": "2024-03-08T18:15:50Z",
+          "first_release_tag": "v2024.3",
+          "name": "Exploit Maturity",
+          "retroactive": false,
+          "retroactive_note": "CVSS v4.0 was published by FIRST in November 2023 \u2014 the same month as this commit. Likely close to the real-world availability date rather than a retroactive backfill.",
+          "source_file": "src/ssvc/decision_points/cvss/exploit_maturity.py"
+        }
+      }
+    },
+    "EQ1": {
+      "versions": {
+        "1.0.0": {
+          "first_commit": "c853ebfed619bb62cf9316d2030096916d057e49",
+          "first_commit_date": "2023-10-16T13:48:10-04:00",
+          "first_commit_subject": "Add SSVC python module (#342)",
+          "first_release_date": "2024-03-08T18:15:50Z",
+          "first_release_tag": "v2024.3",
+          "name": "Equivalence Set 1",
+          "retroactive": true,
+          "retroactive_note": "First encoding of core SSVC decision points as Python objects. The underlying decision point already existed in the SSVC spec/docs (v1.0/2019-12, v1.1/2020-09, v2.0/2021-05 or v2.1/2023-07 depending on the version number) well before this commit.",
+          "source_file": "src/ssvc/decision_points/cvss/equivalence_set_1.py"
+        }
+      }
+    },
+    "EQ2": {
+      "versions": {
+        "1.0.0": {
+          "first_commit": "c853ebfed619bb62cf9316d2030096916d057e49",
+          "first_commit_date": "2023-10-16T13:48:10-04:00",
+          "first_commit_subject": "Add SSVC python module (#342)",
+          "first_release_date": "2024-03-08T18:15:50Z",
+          "first_release_tag": "v2024.3",
+          "name": "Equivalence Set 2",
+          "retroactive": true,
+          "retroactive_note": "First encoding of core SSVC decision points as Python objects. The underlying decision point already existed in the SSVC spec/docs (v1.0/2019-12, v1.1/2020-09, v2.0/2021-05 or v2.1/2023-07 depending on the version number) well before this commit.",
+          "source_file": "src/ssvc/decision_points/cvss/equivalence_set_2.py"
+        }
+      }
+    },
+    "EQ3": {
+      "versions": {
+        "1.0.0": {
+          "first_commit": "c853ebfed619bb62cf9316d2030096916d057e49",
+          "first_commit_date": "2023-10-16T13:48:10-04:00",
+          "first_commit_subject": "Add SSVC python module (#342)",
+          "first_release_date": "2024-03-08T18:15:50Z",
+          "first_release_tag": "v2024.3",
+          "name": "Equivalence Set 3",
+          "retroactive": true,
+          "retroactive_note": "First encoding of core SSVC decision points as Python objects. The underlying decision point already existed in the SSVC spec/docs (v1.0/2019-12, v1.1/2020-09, v2.0/2021-05 or v2.1/2023-07 depending on the version number) well before this commit.",
+          "source_file": "src/ssvc/decision_points/cvss/equivalence_set_3.py"
+        }
+      }
+    },
+    "EQ4": {
+      "versions": {
+        "1.0.0": {
+          "first_commit": "c853ebfed619bb62cf9316d2030096916d057e49",
+          "first_commit_date": "2023-10-16T13:48:10-04:00",
+          "first_commit_subject": "Add SSVC python module (#342)",
+          "first_release_date": "2024-03-08T18:15:50Z",
+          "first_release_tag": "v2024.3",
+          "name": "Equivalence Set 4",
+          "retroactive": true,
+          "retroactive_note": "First encoding of core SSVC decision points as Python objects. The underlying decision point already existed in the SSVC spec/docs (v1.0/2019-12, v1.1/2020-09, v2.0/2021-05 or v2.1/2023-07 depending on the version number) well before this commit.",
+          "source_file": "src/ssvc/decision_points/cvss/equivalence_set_4.py"
+        }
+      }
+    },
+    "EQ5": {
+      "versions": {
+        "1.0.0": {
+          "first_commit": "c853ebfed619bb62cf9316d2030096916d057e49",
+          "first_commit_date": "2023-10-16T13:48:10-04:00",
+          "first_commit_subject": "Add SSVC python module (#342)",
+          "first_release_date": "2024-03-08T18:15:50Z",
+          "first_release_tag": "v2024.3",
+          "name": "Equivalence Set 5",
+          "retroactive": true,
+          "retroactive_note": "First encoding of core SSVC decision points as Python objects. The underlying decision point already existed in the SSVC spec/docs (v1.0/2019-12, v1.1/2020-09, v2.0/2021-05 or v2.1/2023-07 depending on the version number) well before this commit.",
+          "source_file": "src/ssvc/decision_points/cvss/equivalence_set_5.py"
+        }
+      }
+    },
+    "EQ6": {
+      "versions": {
+        "1.0.0": {
+          "first_commit": "2d115aa28ad47b11d3237b459b6a8885ff3bc4ef",
+          "first_commit_date": "2025-02-18T15:32:47-05:00",
+          "first_commit_subject": "Split CVSS equivalence sets (#685)",
+          "first_release_date": "2025-02-27T16:43:40Z",
+          "first_release_tag": "v2025.2",
+          "name": "Equivalence Set 6",
+          "retroactive": true,
+          "retroactive_note": "CVSS v4 equivalence sets are conceptually part of the CVSS v4.0 spec (Nov 2023); this commit only splits an existing compound object into separate per-equivalence-set Python objects.",
+          "source_file": "src/ssvc/decision_points/cvss/equivalence_set_6.py"
+        }
+      }
+    },
+    "I": {
+      "versions": {
+        "1.0.0": {
+          "first_commit": "292a97732515de2a6bf166803d0f1363d011cc34",
+          "first_commit_date": "2023-11-07T12:33:11-05:00",
+          "first_commit_subject": "Add CVSS-based (v1, v2, v3) decision points as python classes (#343)",
+          "first_release_date": "2024-03-08T18:15:50Z",
+          "first_release_tag": "v2024.3",
+          "name": "Integrity Impact",
+          "retroactive": true,
+          "retroactive_note": "Encodes CVSS v1 (2005)/v2 (2007)/v3.0 (2015)/v3.1 (2019) metric definitions, all pre-dating this repository, as Python objects.",
+          "source_file": "src/ssvc/decision_points/cvss/integrity_impact.py"
+        },
+        "2.0.0": {
+          "first_commit": "292a97732515de2a6bf166803d0f1363d011cc34",
+          "first_commit_date": "2023-11-07T12:33:11-05:00",
+          "first_commit_subject": "Add CVSS-based (v1, v2, v3) decision points as python classes (#343)",
+          "first_release_date": "2024-03-08T18:15:50Z",
+          "first_release_tag": "v2024.3",
+          "name": "Integrity Impact",
+          "retroactive": true,
+          "retroactive_note": "Encodes CVSS v1 (2005)/v2 (2007)/v3.0 (2015)/v3.1 (2019) metric definitions, all pre-dating this repository, as Python objects.",
+          "source_file": "src/ssvc/decision_points/cvss/integrity_impact.py"
+        }
+      }
+    },
+    "IB": {
+      "versions": {
+        "1.0.0": {
+          "first_commit": "292a97732515de2a6bf166803d0f1363d011cc34",
+          "first_commit_date": "2023-11-07T12:33:11-05:00",
+          "first_commit_subject": "Add CVSS-based (v1, v2, v3) decision points as python classes (#343)",
+          "first_release_date": "2024-03-08T18:15:50Z",
+          "first_release_tag": "v2024.3",
+          "name": "Impact Bias",
+          "retroactive": true,
+          "retroactive_note": "Encodes CVSS v1 (2005)/v2 (2007)/v3.0 (2015)/v3.1 (2019) metric definitions, all pre-dating this repository, as Python objects.",
+          "source_file": "src/ssvc/decision_points/cvss/impact_bias.py"
+        }
+      }
+    },
+    "IR": {
+      "versions": {
+        "1.0.0": {
+          "first_commit": "292a97732515de2a6bf166803d0f1363d011cc34",
+          "first_commit_date": "2023-11-07T12:33:11-05:00",
+          "first_commit_subject": "Add CVSS-based (v1, v2, v3) decision points as python classes (#343)",
+          "first_release_date": "2024-03-08T18:15:50Z",
+          "first_release_tag": "v2024.3",
+          "name": "Integrity Requirement",
+          "retroactive": true,
+          "retroactive_note": "Encodes CVSS v1 (2005)/v2 (2007)/v3.0 (2015)/v3.1 (2019) metric definitions, all pre-dating this repository, as Python objects.",
+          "source_file": "src/ssvc/decision_points/cvss/integrity_requirement.py"
+        },
+        "1.1.0": {
+          "first_commit": "ba72fce1c1020f5f6dc4bfafe7a807e1e06bf747",
+          "first_commit_date": "2023-11-17T11:14:41-05:00",
+          "first_commit_subject": "Add CVSSv4 Decision Points (#377)",
+          "first_release_date": "2024-03-08T18:15:50Z",
+          "first_release_tag": "v2024.3",
+          "name": "Integrity Requirement",
+          "retroactive": false,
+          "retroactive_note": "CVSS v4.0 was published by FIRST in November 2023 \u2014 the same month as this commit. Likely close to the real-world availability date rather than a retroactive backfill.",
+          "source_file": "src/ssvc/decision_points/cvss/integrity_requirement.py"
+        },
+        "1.1.1": {
+          "first_commit": "c97ea2af8877d28496e9a05cd60135edbfa2002c",
+          "first_commit_date": "2025-02-20T15:56:52-05:00",
+          "first_commit_subject": "Add CVSS vector elements as decision point docs (#691)",
+          "first_release_date": "2025-02-27T16:43:40Z",
+          "first_release_tag": "v2025.2",
+          "name": "Integrity Requirement",
+          "retroactive": true,
+          "retroactive_note": "VC/VI/VA are part of the CVSS v4.0 spec (published Nov 2023); this commit only adds them as separate Python objects more than a year later.",
+          "source_file": "src/ssvc/decision_points/cvss/integrity_requirement.py"
+        }
+      }
+    },
+    "PR": {
+      "versions": {
+        "1.0.0": {
+          "first_commit": "292a97732515de2a6bf166803d0f1363d011cc34",
+          "first_commit_date": "2023-11-07T12:33:11-05:00",
+          "first_commit_subject": "Add CVSS-based (v1, v2, v3) decision points as python classes (#343)",
+          "first_release_date": "2024-03-08T18:15:50Z",
+          "first_release_tag": "v2024.3",
+          "name": "Privileges Required",
+          "retroactive": true,
+          "retroactive_note": "Encodes CVSS v1 (2005)/v2 (2007)/v3.0 (2015)/v3.1 (2019) metric definitions, all pre-dating this repository, as Python objects.",
+          "source_file": "src/ssvc/decision_points/cvss/privileges_required.py"
+        },
+        "1.0.1": {
+          "first_commit": "ba72fce1c1020f5f6dc4bfafe7a807e1e06bf747",
+          "first_commit_date": "2023-11-17T11:14:41-05:00",
+          "first_commit_subject": "Add CVSSv4 Decision Points (#377)",
+          "first_release_date": "2024-03-08T18:15:50Z",
+          "first_release_tag": "v2024.3",
+          "name": "Privileges Required",
+          "retroactive": false,
+          "retroactive_note": "CVSS v4.0 was published by FIRST in November 2023 \u2014 the same month as this commit. Likely close to the real-world availability date rather than a retroactive backfill.",
+          "source_file": "src/ssvc/decision_points/cvss/privileges_required.py"
+        }
+      }
+    },
+    "QS": {
+      "versions": {
+        "1.0.0": {
+          "first_commit": "c853ebfed619bb62cf9316d2030096916d057e49",
+          "first_commit_date": "2023-10-16T13:48:10-04:00",
+          "first_commit_subject": "Add SSVC python module (#342)",
+          "first_release_date": "2024-03-08T18:15:50Z",
+          "first_release_tag": "v2024.3",
+          "name": "CVSS Qualitative Severity Rating Scale",
+          "retroactive": true,
+          "retroactive_note": "First encoding of core SSVC decision points as Python objects. The underlying decision point already existed in the SSVC spec/docs (v1.0/2019-12, v1.1/2020-09, v2.0/2021-05 or v2.1/2023-07 depending on the version number) well before this commit.",
+          "source_file": "src/ssvc/decision_points/cvss/qualitative_severity.py"
+        }
+      }
+    },
+    "R": {
+      "versions": {
+        "1.0.0": {
+          "first_commit": "ba72fce1c1020f5f6dc4bfafe7a807e1e06bf747",
+          "first_commit_date": "2023-11-17T11:14:41-05:00",
+          "first_commit_subject": "Add CVSSv4 Decision Points (#377)",
+          "first_release_date": "2024-03-08T18:15:50Z",
+          "first_release_tag": "v2024.3",
+          "name": "Recovery",
+          "retroactive": false,
+          "retroactive_note": "CVSS v4.0 was published by FIRST in November 2023 \u2014 the same month as this commit. Likely close to the real-world availability date rather than a retroactive backfill.",
+          "source_file": "src/ssvc/decision_points/cvss/supplemental/recovery.py"
+        }
+      }
+    },
+    "RC": {
+      "versions": {
+        "1.0.0": {
+          "first_commit": "292a97732515de2a6bf166803d0f1363d011cc34",
+          "first_commit_date": "2023-11-07T12:33:11-05:00",
+          "first_commit_subject": "Add CVSS-based (v1, v2, v3) decision points as python classes (#343)",
+          "first_release_date": "2024-03-08T18:15:50Z",
+          "first_release_tag": "v2024.3",
+          "name": "Report Confidence",
+          "retroactive": true,
+          "retroactive_note": "Encodes CVSS v1 (2005)/v2 (2007)/v3.0 (2015)/v3.1 (2019) metric definitions, all pre-dating this repository, as Python objects.",
+          "source_file": "src/ssvc/decision_points/cvss/report_confidence.py"
+        },
+        "1.1.0": {
+          "first_commit": "292a97732515de2a6bf166803d0f1363d011cc34",
+          "first_commit_date": "2023-11-07T12:33:11-05:00",
+          "first_commit_subject": "Add CVSS-based (v1, v2, v3) decision points as python classes (#343)",
+          "first_release_date": "2024-03-08T18:15:50Z",
+          "first_release_tag": "v2024.3",
+          "name": "Report Confidence",
+          "retroactive": true,
+          "retroactive_note": "Encodes CVSS v1 (2005)/v2 (2007)/v3.0 (2015)/v3.1 (2019) metric definitions, all pre-dating this repository, as Python objects.",
+          "source_file": "src/ssvc/decision_points/cvss/report_confidence.py"
+        },
+        "2.0.0": {
+          "first_commit": "292a97732515de2a6bf166803d0f1363d011cc34",
+          "first_commit_date": "2023-11-07T12:33:11-05:00",
+          "first_commit_subject": "Add CVSS-based (v1, v2, v3) decision points as python classes (#343)",
+          "first_release_date": "2024-03-08T18:15:50Z",
+          "first_release_tag": "v2024.3",
+          "name": "Report Confidence",
+          "retroactive": true,
+          "retroactive_note": "Encodes CVSS v1 (2005)/v2 (2007)/v3.0 (2015)/v3.1 (2019) metric definitions, all pre-dating this repository, as Python objects.",
+          "source_file": "src/ssvc/decision_points/cvss/report_confidence.py"
+        }
+      }
+    },
+    "RE": {
+      "versions": {
+        "1.0.0": {
+          "first_commit": "ba72fce1c1020f5f6dc4bfafe7a807e1e06bf747",
+          "first_commit_date": "2023-11-17T11:14:41-05:00",
+          "first_commit_subject": "Add CVSSv4 Decision Points (#377)",
+          "first_release_date": "2024-03-08T18:15:50Z",
+          "first_release_tag": "v2024.3",
+          "name": "Vulnerability Response Effort",
+          "retroactive": false,
+          "retroactive_note": "CVSS v4.0 was published by FIRST in November 2023 \u2014 the same month as this commit. Likely close to the real-world availability date rather than a retroactive backfill.",
+          "source_file": "src/ssvc/decision_points/cvss/supplemental/vulnerability_response_effort.py"
+        }
+      }
+    },
+    "RL": {
+      "versions": {
+        "1.0.0": {
+          "first_commit": "292a97732515de2a6bf166803d0f1363d011cc34",
+          "first_commit_date": "2023-11-07T12:33:11-05:00",
+          "first_commit_subject": "Add CVSS-based (v1, v2, v3) decision points as python classes (#343)",
+          "first_release_date": "2024-03-08T18:15:50Z",
+          "first_release_tag": "v2024.3",
+          "name": "Remediation Level",
+          "retroactive": true,
+          "retroactive_note": "Encodes CVSS v1 (2005)/v2 (2007)/v3.0 (2015)/v3.1 (2019) metric definitions, all pre-dating this repository, as Python objects.",
+          "source_file": "src/ssvc/decision_points/cvss/remediation_level.py"
+        },
+        "1.1.0": {
+          "first_commit": "292a97732515de2a6bf166803d0f1363d011cc34",
+          "first_commit_date": "2023-11-07T12:33:11-05:00",
+          "first_commit_subject": "Add CVSS-based (v1, v2, v3) decision points as python classes (#343)",
+          "first_release_date": "2024-03-08T18:15:50Z",
+          "first_release_tag": "v2024.3",
+          "name": "Remediation Level",
+          "retroactive": true,
+          "retroactive_note": "Encodes CVSS v1 (2005)/v2 (2007)/v3.0 (2015)/v3.1 (2019) metric definitions, all pre-dating this repository, as Python objects.",
+          "source_file": "src/ssvc/decision_points/cvss/remediation_level.py"
+        }
+      }
+    },
+    "S": {
+      "versions": {
+        "1.0.0": {
+          "first_commit": "292a97732515de2a6bf166803d0f1363d011cc34",
+          "first_commit_date": "2023-11-07T12:33:11-05:00",
+          "first_commit_subject": "Add CVSS-based (v1, v2, v3) decision points as python classes (#343)",
+          "first_release_date": "2024-03-08T18:15:50Z",
+          "first_release_tag": "v2024.3",
+          "name": "Scope",
+          "retroactive": true,
+          "retroactive_note": "Encodes CVSS v1 (2005)/v2 (2007)/v3.0 (2015)/v3.1 (2019) metric definitions, all pre-dating this repository, as Python objects.",
+          "source_file": "src/ssvc/decision_points/cvss/scope.py"
+        }
+      }
+    },
+    "SA": {
+      "versions": {
+        "1.0.0": {
+          "first_commit": "ba72fce1c1020f5f6dc4bfafe7a807e1e06bf747",
+          "first_commit_date": "2023-11-17T11:14:41-05:00",
+          "first_commit_subject": "Add CVSSv4 Decision Points (#377)",
+          "first_release_date": "2024-03-08T18:15:50Z",
+          "first_release_tag": "v2024.3",
+          "name": "Availability Impact to the Subsequent System",
+          "retroactive": false,
+          "retroactive_note": "CVSS v4.0 was published by FIRST in November 2023 \u2014 the same month as this commit. Likely close to the real-world availability date rather than a retroactive backfill.",
+          "source_file": "src/ssvc/decision_points/cvss/subsequent_availability_impact.py"
+        }
+      }
+    },
+    "SC": {
+      "versions": {
+        "1.0.0": {
+          "first_commit": "ba72fce1c1020f5f6dc4bfafe7a807e1e06bf747",
+          "first_commit_date": "2023-11-17T11:14:41-05:00",
+          "first_commit_subject": "Add CVSSv4 Decision Points (#377)",
+          "first_release_date": "2024-03-08T18:15:50Z",
+          "first_release_tag": "v2024.3",
+          "name": "Confidentiality Impact to the Subsequent System",
+          "retroactive": false,
+          "retroactive_note": "CVSS v4.0 was published by FIRST in November 2023 \u2014 the same month as this commit. Likely close to the real-world availability date rather than a retroactive backfill.",
+          "source_file": "src/ssvc/decision_points/cvss/subsequent_confidentiality_impact.py"
+        }
+      }
+    },
+    "SF": {
+      "versions": {
+        "1.0.0": {
+          "first_commit": "ba72fce1c1020f5f6dc4bfafe7a807e1e06bf747",
+          "first_commit_date": "2023-11-17T11:14:41-05:00",
+          "first_commit_subject": "Add CVSSv4 Decision Points (#377)",
+          "first_release_date": "2024-03-08T18:15:50Z",
+          "first_release_tag": "v2024.3",
+          "name": "Safety",
+          "retroactive": false,
+          "retroactive_note": "CVSS v4.0 was published by FIRST in November 2023 \u2014 the same month as this commit. Likely close to the real-world availability date rather than a retroactive backfill.",
+          "source_file": "src/ssvc/decision_points/cvss/supplemental/safety.py"
+        }
+      }
+    },
+    "SI": {
+      "versions": {
+        "1.0.0": {
+          "first_commit": "ba72fce1c1020f5f6dc4bfafe7a807e1e06bf747",
+          "first_commit_date": "2023-11-17T11:14:41-05:00",
+          "first_commit_subject": "Add CVSSv4 Decision Points (#377)",
+          "first_release_date": "2024-03-08T18:15:50Z",
+          "first_release_tag": "v2024.3",
+          "name": "Integrity Impact to the Subsequent System",
+          "retroactive": false,
+          "retroactive_note": "CVSS v4.0 was published by FIRST in November 2023 \u2014 the same month as this commit. Likely close to the real-world availability date rather than a retroactive backfill.",
+          "source_file": "src/ssvc/decision_points/cvss/subsequent_integrity_impact.py"
+        }
+      }
+    },
+    "TD": {
+      "versions": {
+        "1.0.0": {
+          "first_commit": "292a97732515de2a6bf166803d0f1363d011cc34",
+          "first_commit_date": "2023-11-07T12:33:11-05:00",
+          "first_commit_subject": "Add CVSS-based (v1, v2, v3) decision points as python classes (#343)",
+          "first_release_date": "2024-03-08T18:15:50Z",
+          "first_release_tag": "v2024.3",
+          "name": "Target Distribution",
+          "retroactive": true,
+          "retroactive_note": "Encodes CVSS v1 (2005)/v2 (2007)/v3.0 (2015)/v3.1 (2019) metric definitions, all pre-dating this repository, as Python objects.",
+          "source_file": "src/ssvc/decision_points/cvss/target_distribution.py"
+        },
+        "1.1.0": {
+          "first_commit": "292a97732515de2a6bf166803d0f1363d011cc34",
+          "first_commit_date": "2023-11-07T12:33:11-05:00",
+          "first_commit_subject": "Add CVSS-based (v1, v2, v3) decision points as python classes (#343)",
+          "first_release_date": "2024-03-08T18:15:50Z",
+          "first_release_tag": "v2024.3",
+          "name": "Target Distribution",
+          "retroactive": true,
+          "retroactive_note": "Encodes CVSS v1 (2005)/v2 (2007)/v3.0 (2015)/v3.1 (2019) metric definitions, all pre-dating this repository, as Python objects.",
+          "source_file": "src/ssvc/decision_points/cvss/target_distribution.py"
+        }
+      }
+    },
+    "U": {
+      "versions": {
+        "1.0.0": {
+          "first_commit": "ba72fce1c1020f5f6dc4bfafe7a807e1e06bf747",
+          "first_commit_date": "2023-11-17T11:14:41-05:00",
+          "first_commit_subject": "Add CVSSv4 Decision Points (#377)",
+          "first_release_date": "2024-03-08T18:15:50Z",
+          "first_release_tag": "v2024.3",
+          "name": "Provider Urgency",
+          "retroactive": false,
+          "retroactive_note": "CVSS v4.0 was published by FIRST in November 2023 \u2014 the same month as this commit. Likely close to the real-world availability date rather than a retroactive backfill.",
+          "source_file": "src/ssvc/decision_points/cvss/supplemental/provider_urgency.py"
+        }
+      }
+    },
+    "UI": {
+      "versions": {
+        "1.0.0": {
+          "first_commit": "292a97732515de2a6bf166803d0f1363d011cc34",
+          "first_commit_date": "2023-11-07T12:33:11-05:00",
+          "first_commit_subject": "Add CVSS-based (v1, v2, v3) decision points as python classes (#343)",
+          "first_release_date": "2024-03-08T18:15:50Z",
+          "first_release_tag": "v2024.3",
+          "name": "User Interaction",
+          "retroactive": true,
+          "retroactive_note": "Encodes CVSS v1 (2005)/v2 (2007)/v3.0 (2015)/v3.1 (2019) metric definitions, all pre-dating this repository, as Python objects.",
+          "source_file": "src/ssvc/decision_points/cvss/user_interaction.py"
+        },
+        "2.0.0": {
+          "first_commit": "ba72fce1c1020f5f6dc4bfafe7a807e1e06bf747",
+          "first_commit_date": "2023-11-17T11:14:41-05:00",
+          "first_commit_subject": "Add CVSSv4 Decision Points (#377)",
+          "first_release_date": "2024-03-08T18:15:50Z",
+          "first_release_tag": "v2024.3",
+          "name": "User Interaction",
+          "retroactive": false,
+          "retroactive_note": "CVSS v4.0 was published by FIRST in November 2023 \u2014 the same month as this commit. Likely close to the real-world availability date rather than a retroactive backfill.",
+          "source_file": "src/ssvc/decision_points/cvss/user_interaction.py"
+        }
+      }
+    },
+    "V": {
+      "versions": {
+        "1.0.0": {
+          "first_commit": "ba72fce1c1020f5f6dc4bfafe7a807e1e06bf747",
+          "first_commit_date": "2023-11-17T11:14:41-05:00",
+          "first_commit_subject": "Add CVSSv4 Decision Points (#377)",
+          "first_release_date": "2024-03-08T18:15:50Z",
+          "first_release_tag": "v2024.3",
+          "name": "Value Density",
+          "retroactive": false,
+          "retroactive_note": "CVSS v4.0 was published by FIRST in November 2023 \u2014 the same month as this commit. Likely close to the real-world availability date rather than a retroactive backfill.",
+          "source_file": "src/ssvc/decision_points/cvss/supplemental/value_density.py"
+        }
+      }
+    },
+    "VA": {
+      "versions": {
+        "3.0.0": {
+          "first_commit": "c97ea2af8877d28496e9a05cd60135edbfa2002c",
+          "first_commit_date": "2025-02-20T15:56:52-05:00",
+          "first_commit_subject": "Add CVSS vector elements as decision point docs (#691)",
+          "first_release_date": "2025-02-27T16:43:40Z",
+          "first_release_tag": "v2025.2",
+          "name": "Availability Impact to the Vulnerable System",
+          "retroactive": true,
+          "retroactive_note": "VC/VI/VA are part of the CVSS v4.0 spec (published Nov 2023); this commit only adds them as separate Python objects more than a year later.",
+          "source_file": "src/ssvc/decision_points/cvss/availability_impact.py"
+        }
+      }
+    },
+    "VC": {
+      "versions": {
+        "3.0.0": {
+          "first_commit": "c97ea2af8877d28496e9a05cd60135edbfa2002c",
+          "first_commit_date": "2025-02-20T15:56:52-05:00",
+          "first_commit_subject": "Add CVSS vector elements as decision point docs (#691)",
+          "first_release_date": "2025-02-27T16:43:40Z",
+          "first_release_tag": "v2025.2",
+          "name": "Confidentiality Impact to the Vulnerable System",
+          "retroactive": true,
+          "retroactive_note": "VC/VI/VA are part of the CVSS v4.0 spec (published Nov 2023); this commit only adds them as separate Python objects more than a year later.",
+          "source_file": "src/ssvc/decision_points/cvss/confidentiality_impact.py"
+        }
+      }
+    },
+    "VI": {
+      "versions": {
+        "3.0.0": {
+          "first_commit": "c97ea2af8877d28496e9a05cd60135edbfa2002c",
+          "first_commit_date": "2025-02-20T15:56:52-05:00",
+          "first_commit_subject": "Add CVSS vector elements as decision point docs (#691)",
+          "first_release_date": "2025-02-27T16:43:40Z",
+          "first_release_tag": "v2025.2",
+          "name": "Integrity Impact to the Vulnerable System",
+          "retroactive": true,
+          "retroactive_note": "VC/VI/VA are part of the CVSS v4.0 spec (published Nov 2023); this commit only adds them as separate Python objects more than a year later.",
+          "source_file": "src/ssvc/decision_points/cvss/integrity_impact.py"
+        }
+      }
+    }
+  },
+  "example": {
+    "H": {
+      "versions": {
+        "1.0.0": {
+          "first_commit": "e2583ec3b440283ebf553d7e55b3cdc8b83470a1",
+          "first_commit_date": "2023-10-17T15:45:24-04:00",
+          "first_commit_subject": "Add python decision points for critical software, high value assets, and in KEV (#346)",
+          "first_release_date": "2024-03-08T18:15:50Z",
+          "first_release_tag": "v2024.3",
+          "name": "Humidity Value above 40%",
+          "retroactive": false,
+          "retroactive_note": "First introduction of these CISA-related and example decision points; no earlier public definition is known, so this is treated as their genuine origin.",
+          "source_file": "src/ssvc/decision_points/example/humidity.py"
+        }
+      }
+    },
+    "W": {
+      "versions": {
+        "1.0.0": {
+          "first_commit": "c853ebfed619bb62cf9316d2030096916d057e49",
+          "first_commit_date": "2023-10-16T13:48:10-04:00",
+          "first_commit_subject": "Add SSVC python module (#342)",
+          "first_release_date": "2024-03-08T18:15:50Z",
+          "first_release_tag": "v2024.3",
+          "name": "Weather Forecast",
+          "retroactive": true,
+          "retroactive_note": "First encoding of core SSVC decision points as Python objects. The underlying decision point already existed in the SSVC spec/docs (v1.0/2019-12, v1.1/2020-09, v2.0/2021-05 or v2.1/2023-07 depending on the version number) well before this commit.",
+          "source_file": "src/ssvc/decision_points/example/weather.py"
+        }
+      }
+    }
+  },
+  "nist": {
+    "P_5X": {
+      "versions": {
+        "1.0.0": {
+          "first_commit": "c853ebfed619bb62cf9316d2030096916d057e49",
+          "first_commit_date": "2023-10-16T13:48:10-04:00",
+          "first_commit_subject": "Add SSVC python module (#342)",
+          "first_release_date": "2024-03-08T18:15:50Z",
+          "first_release_tag": "v2024.3",
+          "name": "Probability Scale in 5 weighted levels, ascending",
+          "retroactive": true,
+          "retroactive_note": "First encoding of core SSVC decision points as Python objects. The underlying decision point already existed in the SSVC spec/docs (v1.0/2019-12, v1.1/2020-09, v2.0/2021-05 or v2.1/2023-07 depending on the version number) well before this commit.",
+          "source_file": "src/ssvc/decision_points/nist/sp800_30_r1_g.py"
+        }
+      }
+    }
+  },
+  "ssvc": {
+    "A": {
+      "versions": {
+        "2.0.0": {
+          "first_commit": "0fecedf367f26157a6922bf762b309a386ec392c",
+          "first_commit_date": "2023-11-14T14:26:35-05:00",
+          "first_commit_subject": "Tool to auto populate documentation examples for decision point objects (#370)",
+          "first_release_date": "2024-03-08T18:15:50Z",
+          "first_release_tag": "v2024.3",
+          "name": "Automatable",
+          "retroactive": null,
+          "retroactive_note": "Pickaxe matched this commit because of a formatting/tooling change touching the file; it is unclear whether the version itself is genuinely new here or already existed in a different literal form beforehand. Treat this date with low confidence.",
+          "source_file": "src/ssvc/decision_points/ssvc/automatable.py"
+        }
+      }
+    },
+    "CS": {
+      "versions": {
+        "1.0.0": {
+          "first_commit": "e2583ec3b440283ebf553d7e55b3cdc8b83470a1",
+          "first_commit_date": "2023-10-17T15:45:24-04:00",
+          "first_commit_subject": "Add python decision points for critical software, high value assets, and in KEV (#346)",
+          "first_release_date": "2024-03-08T18:15:50Z",
+          "first_release_tag": "v2024.3",
+          "name": "Critical Software",
+          "retroactive": false,
+          "retroactive_note": "First introduction of these CISA-related and example decision points; no earlier public definition is known, so this is treated as their genuine origin.",
+          "source_file": "src/ssvc/decision_points/ssvc/critical_software.py"
+        }
+      }
+    },
+    "E": {
+      "versions": {
+        "1.0.0": {
+          "first_commit": "c853ebfed619bb62cf9316d2030096916d057e49",
+          "first_commit_date": "2023-10-16T13:48:10-04:00",
+          "first_commit_subject": "Add SSVC python module (#342)",
+          "first_release_date": "2024-03-08T18:15:50Z",
+          "first_release_tag": "v2024.3",
+          "name": "Exploitation",
+          "retroactive": true,
+          "retroactive_note": "First encoding of core SSVC decision points as Python objects. The underlying decision point already existed in the SSVC spec/docs (v1.0/2019-12, v1.1/2020-09, v2.0/2021-05 or v2.1/2023-07 depending on the version number) well before this commit.",
+          "source_file": "src/ssvc/decision_points/ssvc/exploitation.py"
+        },
+        "1.1.0": {
+          "first_commit": "58bf6298018c0cc9df76b4973106a141b4ec25d1",
+          "first_commit_date": "2024-02-13T13:32:26-05:00",
+          "first_commit_subject": "Update Exploitation:PoC definition (#442)",
+          "first_release_date": "2024-03-08T18:15:50Z",
+          "first_release_tag": "v2024.3",
+          "name": "Exploitation",
+          "retroactive": false,
+          "retroactive_note": "Genuine definition update at the time of the commit.",
+          "source_file": "src/ssvc/decision_points/ssvc/exploitation.py"
+        }
+      }
+    },
+    "EXP": {
+      "versions": {
+        "1.0.0": {
+          "first_commit": "c853ebfed619bb62cf9316d2030096916d057e49",
+          "first_commit_date": "2023-10-16T13:48:10-04:00",
+          "first_commit_subject": "Add SSVC python module (#342)",
+          "first_release_date": "2024-03-08T18:15:50Z",
+          "first_release_tag": "v2024.3",
+          "name": "System Exposure",
+          "retroactive": true,
+          "retroactive_note": "First encoding of core SSVC decision points as Python objects. The underlying decision point already existed in the SSVC spec/docs (v1.0/2019-12, v1.1/2020-09, v2.0/2021-05 or v2.1/2023-07 depending on the version number) well before this commit.",
+          "source_file": "src/ssvc/decision_points/ssvc/system_exposure.py"
+        },
+        "1.0.1": {
+          "first_commit": "c853ebfed619bb62cf9316d2030096916d057e49",
+          "first_commit_date": "2023-10-16T13:48:10-04:00",
+          "first_commit_subject": "Add SSVC python module (#342)",
+          "first_release_date": "2024-03-08T18:15:50Z",
+          "first_release_tag": "v2024.3",
+          "name": "System Exposure",
+          "retroactive": true,
+          "retroactive_note": "First encoding of core SSVC decision points as Python objects. The underlying decision point already existed in the SSVC spec/docs (v1.0/2019-12, v1.1/2020-09, v2.0/2021-05 or v2.1/2023-07 depending on the version number) well before this commit.",
+          "source_file": "src/ssvc/decision_points/ssvc/system_exposure.py"
+        }
+      }
+    },
+    "HI": {
+      "versions": {
+        "2.0.0": {
+          "first_commit": "046cbb3d4c3d81f20bd4589fcb657ecfbd91fea5",
+          "first_commit_date": "2024-02-05T14:36:05-05:00",
+          "first_commit_subject": "Add CISA custom decision points (#427)",
+          "first_release_date": "2024-03-08T18:15:50Z",
+          "first_release_tag": "v2024.3",
+          "name": "Human Impact",
+          "retroactive": false,
+          "retroactive_note": "First introduction of these CISA-specific decision points; no earlier public definition is known, so this is treated as their genuine origin.",
+          "source_file": "src/ssvc/decision_points/ssvc/human_impact.py"
+        },
+        "2.0.1": {
+          "first_commit": "524ad63e76dec34f1bed25a93a862e45feac317b",
+          "first_commit_date": "2024-02-07T16:17:34-05:00",
+          "first_commit_subject": "Realign Safety decision points IEC 61508 (#439)",
+          "first_release_date": "2024-03-08T18:15:50Z",
+          "first_release_tag": "v2024.3",
+          "name": "Human Impact",
+          "retroactive": false,
+          "retroactive_note": "Genuine content update realigning the Safety Impact decision point with the IEC 61508 standard at the time of the commit.",
+          "source_file": "src/ssvc/decision_points/ssvc/human_impact.py"
+        },
+        "2.0.2": {
+          "first_commit": "2c7fc6031fd8bd1af8cb83c9d772d4f41616c8c6",
+          "first_commit_date": "2025-08-12T16:42:31-04:00",
+          "first_commit_subject": "rev human impact decision point to reflect that None and Degraded were combined a while back.",
+          "first_release_date": "2025-09-17T17:36:41Z",
+          "first_release_tag": "v2025.9",
+          "name": "Human Impact",
+          "retroactive": true,
+          "retroactive_note": "Commit message states the conceptual merge of values happened earlier; this commit only updates the code to match, so the version's *real* availability likely pre-dates this commit.",
+          "source_file": "src/ssvc/decision_points/ssvc/human_impact.py"
+        }
+      }
+    },
+    "HVA": {
+      "versions": {
+        "1.0.0": {
+          "first_commit": "e2583ec3b440283ebf553d7e55b3cdc8b83470a1",
+          "first_commit_date": "2023-10-17T15:45:24-04:00",
+          "first_commit_subject": "Add python decision points for critical software, high value assets, and in KEV (#346)",
+          "first_release_date": "2024-03-08T18:15:50Z",
+          "first_release_tag": "v2024.3",
+          "name": "High Value Asset",
+          "retroactive": false,
+          "retroactive_note": "First introduction of these CISA-related and example decision points; no earlier public definition is known, so this is treated as their genuine origin.",
+          "source_file": "src/ssvc/decision_points/ssvc/high_value_asset.py"
+        }
+      }
+    },
+    "MI": {
+      "versions": {
+        "1.0.0": {
+          "first_commit": "c853ebfed619bb62cf9316d2030096916d057e49",
+          "first_commit_date": "2023-10-16T13:48:10-04:00",
+          "first_commit_subject": "Add SSVC python module (#342)",
+          "first_release_date": "2024-03-08T18:15:50Z",
+          "first_release_tag": "v2024.3",
+          "name": "Mission Impact",
+          "retroactive": true,
+          "retroactive_note": "First encoding of core SSVC decision points as Python objects. The underlying decision point already existed in the SSVC spec/docs (v1.0/2019-12, v1.1/2020-09, v2.0/2021-05 or v2.1/2023-07 depending on the version number) well before this commit.",
+          "source_file": "src/ssvc/decision_points/ssvc/mission_impact.py"
+        },
+        "2.0.0": {
+          "first_commit": "e2583ec3b440283ebf553d7e55b3cdc8b83470a1",
+          "first_commit_date": "2023-10-17T15:45:24-04:00",
+          "first_commit_subject": "Add python decision points for critical software, high value assets, and in KEV (#346)",
+          "first_release_date": "2024-03-08T18:15:50Z",
+          "first_release_tag": "v2024.3",
+          "name": "Mission Impact",
+          "retroactive": false,
+          "retroactive_note": "First introduction of these CISA-related and example decision points; no earlier public definition is known, so this is treated as their genuine origin.",
+          "source_file": "src/ssvc/decision_points/ssvc/mission_impact.py"
+        }
+      }
+    },
+    "MWI": {
+      "versions": {
+        "1.0.0": {
+          "first_commit": "c853ebfed619bb62cf9316d2030096916d057e49",
+          "first_commit_date": "2023-10-16T13:48:10-04:00",
+          "first_commit_subject": "Add SSVC python module (#342)",
+          "first_release_date": "2024-03-08T18:15:50Z",
+          "first_release_tag": "v2024.3",
+          "name": "Mission and Well-Being Impact",
+          "retroactive": true,
+          "retroactive_note": "First encoding of core SSVC decision points as Python objects. The underlying decision point already existed in the SSVC spec/docs (v1.0/2019-12, v1.1/2020-09, v2.0/2021-05 or v2.1/2023-07 depending on the version number) well before this commit.",
+          "source_file": "src/ssvc/decision_points/ssvc/human_impact.py"
+        }
+      }
+    },
+    "PSI": {
+      "versions": {
+        "2.0.0": {
+          "first_commit": "046cbb3d4c3d81f20bd4589fcb657ecfbd91fea5",
+          "first_commit_date": "2024-02-05T14:36:05-05:00",
+          "first_commit_subject": "Add CISA custom decision points (#427)",
+          "first_release_date": "2024-03-08T18:15:50Z",
+          "first_release_tag": "v2024.3",
+          "name": "Public Safety Impact",
+          "retroactive": false,
+          "retroactive_note": "First introduction of these CISA-specific decision points; no earlier public definition is known, so this is treated as their genuine origin.",
+          "source_file": "src/ssvc/decision_points/ssvc/public_safety_impact.py"
+        },
+        "2.0.1": {
+          "first_commit": "524ad63e76dec34f1bed25a93a862e45feac317b",
+          "first_commit_date": "2024-02-07T16:17:34-05:00",
+          "first_commit_subject": "Realign Safety decision points IEC 61508 (#439)",
+          "first_release_date": "2024-03-08T18:15:50Z",
+          "first_release_tag": "v2024.3",
+          "name": "Public Safety Impact",
+          "retroactive": false,
+          "retroactive_note": "Genuine content update realigning the Safety Impact decision point with the IEC 61508 standard at the time of the commit.",
+          "source_file": "src/ssvc/decision_points/ssvc/public_safety_impact.py"
+        }
+      }
+    },
+    "PVA": {
+      "versions": {
+        "1.0.0": {
+          "first_commit": "c853ebfed619bb62cf9316d2030096916d057e49",
+          "first_commit_date": "2023-10-16T13:48:10-04:00",
+          "first_commit_subject": "Add SSVC python module (#342)",
+          "first_release_date": "2024-03-08T18:15:50Z",
+          "first_release_tag": "v2024.3",
+          "name": "Public Value Added",
+          "retroactive": true,
+          "retroactive_note": "First encoding of core SSVC decision points as Python objects. The underlying decision point already existed in the SSVC spec/docs (v1.0/2019-12, v1.1/2020-09, v2.0/2021-05 or v2.1/2023-07 depending on the version number) well before this commit.",
+          "source_file": "src/ssvc/decision_points/ssvc/public_value_added.py"
+        }
+      }
+    },
+    "PWI": {
+      "versions": {
+        "1.1.0": {
+          "first_commit": "c768c820084d6a364ebd1f98073e3f98504abfc6",
+          "first_commit_date": "2025-08-13T12:03:35-04:00",
+          "first_commit_subject": "bump public_well_being version",
+          "first_release_date": "2025-09-17T17:36:41Z",
+          "first_release_tag": "v2025.9",
+          "name": "Public Well-Being Impact",
+          "retroactive": false,
+          "retroactive_note": "Genuine version bump at the time of the commit.",
+          "source_file": "src/ssvc/decision_points/ssvc/public_safety_impact.py"
+        }
+      }
+    },
+    "RC": {
+      "versions": {
+        "1.0.0": {
+          "first_commit": "c853ebfed619bb62cf9316d2030096916d057e49",
+          "first_commit_date": "2023-10-16T13:48:10-04:00",
+          "first_commit_subject": "Add SSVC python module (#342)",
+          "first_release_date": "2024-03-08T18:15:50Z",
+          "first_release_tag": "v2024.3",
+          "name": "Report Credibility",
+          "retroactive": true,
+          "retroactive_note": "First encoding of core SSVC decision points as Python objects. The underlying decision point already existed in the SSVC spec/docs (v1.0/2019-12, v1.1/2020-09, v2.0/2021-05 or v2.1/2023-07 depending on the version number) well before this commit.",
+          "source_file": "src/ssvc/decision_points/ssvc/report_credibility.py"
+        }
+      }
+    },
+    "RP": {
+      "versions": {
+        "1.0.0": {
+          "first_commit": "c853ebfed619bb62cf9316d2030096916d057e49",
+          "first_commit_date": "2023-10-16T13:48:10-04:00",
+          "first_commit_subject": "Add SSVC python module (#342)",
+          "first_release_date": "2024-03-08T18:15:50Z",
+          "first_release_tag": "v2024.3",
+          "name": "Report Public",
+          "retroactive": true,
+          "retroactive_note": "First encoding of core SSVC decision points as Python objects. The underlying decision point already existed in the SSVC spec/docs (v1.0/2019-12, v1.1/2020-09, v2.0/2021-05 or v2.1/2023-07 depending on the version number) well before this commit.",
+          "source_file": "src/ssvc/decision_points/ssvc/report_public.py"
+        }
+      }
+    },
+    "SC": {
+      "versions": {
+        "1.0.0": {
+          "first_commit": "c853ebfed619bb62cf9316d2030096916d057e49",
+          "first_commit_date": "2023-10-16T13:48:10-04:00",
+          "first_commit_subject": "Add SSVC python module (#342)",
+          "first_release_date": "2024-03-08T18:15:50Z",
+          "first_release_tag": "v2024.3",
+          "name": "Supplier Cardinality",
+          "retroactive": true,
+          "retroactive_note": "First encoding of core SSVC decision points as Python objects. The underlying decision point already existed in the SSVC spec/docs (v1.0/2019-12, v1.1/2020-09, v2.0/2021-05 or v2.1/2023-07 depending on the version number) well before this commit.",
+          "source_file": "src/ssvc/decision_points/ssvc/supplier_cardinality.py"
+        }
+      }
+    },
+    "SCON": {
+      "versions": {
+        "1.0.0": {
+          "first_commit": "c853ebfed619bb62cf9316d2030096916d057e49",
+          "first_commit_date": "2023-10-16T13:48:10-04:00",
+          "first_commit_subject": "Add SSVC python module (#342)",
+          "first_release_date": "2024-03-08T18:15:50Z",
+          "first_release_tag": "v2024.3",
+          "name": "Supplier Contacted",
+          "retroactive": true,
+          "retroactive_note": "First encoding of core SSVC decision points as Python objects. The underlying decision point already existed in the SSVC spec/docs (v1.0/2019-12, v1.1/2020-09, v2.0/2021-05 or v2.1/2023-07 depending on the version number) well before this commit.",
+          "source_file": "src/ssvc/decision_points/ssvc/supplier_contacted.py"
+        }
+      }
+    },
+    "SE": {
+      "versions": {
+        "1.0.0": {
+          "first_commit": "c853ebfed619bb62cf9316d2030096916d057e49",
+          "first_commit_date": "2023-10-16T13:48:10-04:00",
+          "first_commit_subject": "Add SSVC python module (#342)",
+          "first_release_date": "2024-03-08T18:15:50Z",
+          "first_release_tag": "v2024.3",
+          "name": "Supplier Engagement",
+          "retroactive": true,
+          "retroactive_note": "First encoding of core SSVC decision points as Python objects. The underlying decision point already existed in the SSVC spec/docs (v1.0/2019-12, v1.1/2020-09, v2.0/2021-05 or v2.1/2023-07 depending on the version number) well before this commit.",
+          "source_file": "src/ssvc/decision_points/ssvc/supplier_engagement.py"
+        }
+      }
+    },
+    "SI": {
+      "versions": {
+        "1.0.0": {
+          "first_commit": "c853ebfed619bb62cf9316d2030096916d057e49",
+          "first_commit_date": "2023-10-16T13:48:10-04:00",
+          "first_commit_subject": "Add SSVC python module (#342)",
+          "first_release_date": "2024-03-08T18:15:50Z",
+          "first_release_tag": "v2024.3",
+          "name": "Safety Impact",
+          "retroactive": true,
+          "retroactive_note": "First encoding of core SSVC decision points as Python objects. The underlying decision point already existed in the SSVC spec/docs (v1.0/2019-12, v1.1/2020-09, v2.0/2021-05 or v2.1/2023-07 depending on the version number) well before this commit.",
+          "source_file": "src/ssvc/decision_points/ssvc/safety_impact.py"
+        },
+        "2.0.0": {
+          "first_commit": "524ad63e76dec34f1bed25a93a862e45feac317b",
+          "first_commit_date": "2024-02-07T16:17:34-05:00",
+          "first_commit_subject": "Realign Safety decision points IEC 61508 (#439)",
+          "first_release_date": "2024-03-08T18:15:50Z",
+          "first_release_tag": "v2024.3",
+          "name": "Safety Impact",
+          "retroactive": false,
+          "retroactive_note": "Genuine content update realigning the Safety Impact decision point with the IEC 61508 standard at the time of the commit.",
+          "source_file": "src/ssvc/decision_points/ssvc/safety_impact.py"
+        },
+        "2.0.1": {
+          "first_commit": "3a51d13d11f296887ecd82791893c2b4649bd3f1",
+          "first_commit_date": "2025-09-15T11:22:14-04:00",
+          "first_commit_subject": "add safety v2.0.1 with updated definitions that do not include HTML",
+          "first_release_date": "2025-09-17T17:36:41Z",
+          "first_release_tag": "v2025.9",
+          "name": "Safety Impact",
+          "retroactive": false,
+          "retroactive_note": "Genuine (mostly cosmetic/formatting) content update at the time of the commit.",
+          "source_file": "src/ssvc/decision_points/ssvc/safety_impact.py"
+        }
+      }
+    },
+    "SINV": {
+      "versions": {
+        "1.0.0": {
+          "first_commit": "c853ebfed619bb62cf9316d2030096916d057e49",
+          "first_commit_date": "2023-10-16T13:48:10-04:00",
+          "first_commit_subject": "Add SSVC python module (#342)",
+          "first_release_date": "2024-03-08T18:15:50Z",
+          "first_release_tag": "v2024.3",
+          "name": "Supplier Involvement",
+          "retroactive": true,
+          "retroactive_note": "First encoding of core SSVC decision points as Python objects. The underlying decision point already existed in the SSVC spec/docs (v1.0/2019-12, v1.1/2020-09, v2.0/2021-05 or v2.1/2023-07 depending on the version number) well before this commit.",
+          "source_file": "src/ssvc/decision_points/ssvc/supplier_involvement.py"
+        }
+      }
+    },
+    "TI": {
+      "versions": {
+        "1.0.0": {
+          "first_commit": "c853ebfed619bb62cf9316d2030096916d057e49",
+          "first_commit_date": "2023-10-16T13:48:10-04:00",
+          "first_commit_subject": "Add SSVC python module (#342)",
+          "first_release_date": "2024-03-08T18:15:50Z",
+          "first_release_tag": "v2024.3",
+          "name": "Technical Impact",
+          "retroactive": true,
+          "retroactive_note": "First encoding of core SSVC decision points as Python objects. The underlying decision point already existed in the SSVC spec/docs (v1.0/2019-12, v1.1/2020-09, v2.0/2021-05 or v2.1/2023-07 depending on the version number) well before this commit.",
+          "source_file": "src/ssvc/decision_points/ssvc/technical_impact.py"
+        }
+      }
+    },
+    "U": {
+      "versions": {
+        "1.0.0": {
+          "first_commit": "c853ebfed619bb62cf9316d2030096916d057e49",
+          "first_commit_date": "2023-10-16T13:48:10-04:00",
+          "first_commit_subject": "Add SSVC python module (#342)",
+          "first_release_date": "2024-03-08T18:15:50Z",
+          "first_release_tag": "v2024.3",
+          "name": "Utility",
+          "retroactive": true,
+          "retroactive_note": "First encoding of core SSVC decision points as Python objects. The underlying decision point already existed in the SSVC spec/docs (v1.0/2019-12, v1.1/2020-09, v2.0/2021-05 or v2.1/2023-07 depending on the version number) well before this commit.",
+          "source_file": "src/ssvc/decision_points/ssvc/utility.py"
+        },
+        "1.0.1": {
+          "first_commit": "c853ebfed619bb62cf9316d2030096916d057e49",
+          "first_commit_date": "2023-10-16T13:48:10-04:00",
+          "first_commit_subject": "Add SSVC python module (#342)",
+          "first_release_date": "2024-03-08T18:15:50Z",
+          "first_release_tag": "v2024.3",
+          "name": "Utility",
+          "retroactive": true,
+          "retroactive_note": "First encoding of core SSVC decision points as Python objects. The underlying decision point already existed in the SSVC spec/docs (v1.0/2019-12, v1.1/2020-09, v2.0/2021-05 or v2.1/2023-07 depending on the version number) well before this commit.",
+          "source_file": "src/ssvc/decision_points/ssvc/utility.py"
+        }
+      }
+    },
+    "V": {
+      "versions": {
+        "1.0.0": {
+          "first_commit": "c853ebfed619bb62cf9316d2030096916d057e49",
+          "first_commit_date": "2023-10-16T13:48:10-04:00",
+          "first_commit_subject": "Add SSVC python module (#342)",
+          "first_release_date": "2024-03-08T18:15:50Z",
+          "first_release_tag": "v2024.3",
+          "name": "Virulence",
+          "retroactive": true,
+          "retroactive_note": "First encoding of core SSVC decision points as Python objects. The underlying decision point already existed in the SSVC spec/docs (v1.0/2019-12, v1.1/2020-09, v2.0/2021-05 or v2.1/2023-07 depending on the version number) well before this commit.",
+          "source_file": "src/ssvc/decision_points/ssvc/automatable.py"
+        }
+      }
+    },
+    "VD": {
+      "versions": {
+        "1.0.0": {
+          "first_commit": "c853ebfed619bb62cf9316d2030096916d057e49",
+          "first_commit_date": "2023-10-16T13:48:10-04:00",
+          "first_commit_subject": "Add SSVC python module (#342)",
+          "first_release_date": "2024-03-08T18:15:50Z",
+          "first_release_tag": "v2024.3",
+          "name": "Value Density",
+          "retroactive": true,
+          "retroactive_note": "First encoding of core SSVC decision points as Python objects. The underlying decision point already existed in the SSVC spec/docs (v1.0/2019-12, v1.1/2020-09, v2.0/2021-05 or v2.1/2023-07 depending on the version number) well before this commit.",
+          "source_file": "src/ssvc/decision_points/ssvc/value_density.py"
+        }
+      }
+    }
+  }
+}

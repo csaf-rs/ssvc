@@ -7,9 +7,10 @@ rows = []
 with open(INPUT_FILE) as f:
     for line in f:
         parts = line.rstrip("\n").split("|")
-        namespace, path, varname, name, key, version, commit_date, tag, tag_date = parts
+        namespace, path, varname, name, key, version, commit, commit_date, subject, tag, tag_date = parts
         rows.append(dict(namespace=namespace, path=path, varname=varname, name=name, key=key,
-                          version=version, commit_date=commit_date, tag=tag, tag_date=tag_date))
+                          version=version, commit=commit, commit_date=commit_date, subject=subject,
+                          tag=tag, tag_date=tag_date))
 
 def fmt(d):
     if d in (None, "None"):
