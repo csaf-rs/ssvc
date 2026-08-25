@@ -151,8 +151,7 @@ mod tests {
         let js_input = value
             .serialize(&serde_wasm_bindgen::Serializer::json_compatible())
             .expect("input should convert to JSON-compatible JsValue");
-        let result =
-            validate_selection_list_from_typed(Ts::new_unchecked(js_input), false);
+        let result = validate_selection_list_from_typed(Ts::new_unchecked(js_input), false);
         assert!(result.is_ok());
 
         let output: serde_json::Value = serde_wasm_bindgen::from_value(result.unwrap().into())
