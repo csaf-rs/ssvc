@@ -5,12 +5,14 @@ use crate::selection_list::SelectionList;
 use std::ops::Deref;
 
 #[derive(Debug, Clone, PartialEq, Eq, serde::Serialize, serde::Deserialize)]
+#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 pub struct ValidationResult {
     pub success: bool,
     pub errors: Vec<ValidationError>,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, serde::Serialize, serde::Deserialize)]
+#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 pub struct ValidationError {
     pub message: String,
     #[serde(rename = "instancePath")]
