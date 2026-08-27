@@ -27,6 +27,66 @@ pub fn add_ignore_clippy(file: &mut syn::File) {
     file.attrs.push(doc_attr);
 }
 
+/// Adds `#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]` to every top-level
+/// struct and enum in the file, so that enabling the `wasm` feature generates
+/// TypeScript bindings for these types, while the file remains valid and
+/// dependency-free without that feature.
+pub fn add_tsify_derive(file: &mut syn::File) {
+    let attr: syn::Attribute =
+        syn::parse_quote! { #[cfg_attr(feature = "wasm", derive(tsify::Tsify))] };
+    for item in &mut file.items {
+        match item {
+            syn::Item::Struct(s) => s.attrs.push(attr.clone()),
+            syn::Item::Enum(e) => e.attrs.push(attr.clone()),
+            _ => {}
+        }
+    }
+}
+
+/// Adds `#[cfg_attr(feature = "wasm", tsify(type = "string"))]` to any struct
+/// field typed as `chrono::DateTime<_>`. Without this override, tsify would
+/// otherwise emit an unresolvable `DateTime<Utc>` reference in the generated
+/// `.d.ts`, since chrono types have no built-in TypeScript mapping. Chrono
+/// already (de)serializes `DateTime` as an RFC 3339 string, so `string` is the
+/// correct runtime-accurate type.
+pub fn add_tsify_datetime_type_override(file: &mut syn::File) {
+    let attr: syn::Attribute =
+        syn::parse_quote! { #[cfg_attr(feature = "wasm", tsify(type = "string"))] };
+    for item in &mut file.items {
+        let syn::Item::Struct(s) = item else { continue };
+        let syn::Fields::Named(fields) = &mut s.fields else {
+            continue;
+        };
+        for field in &mut fields.named {
+            if is_chrono_date_time(&field.ty) {
+                field.attrs.push(attr.clone());
+            }
+        }
+    }
+}
+
+/// Returns whether `ty` is (or wraps) a `chrono::DateTime<_>` type, e.g.
+/// `::chrono::DateTime<::chrono::offset::Utc>` or `Option<DateTime<Utc>>`.
+fn is_chrono_date_time(ty: &syn::Type) -> bool {
+    let syn::Type::Path(type_path) = ty else {
+        return false;
+    };
+    let Some(segment) = type_path.path.segments.last() else {
+        return false;
+    };
+    if segment.ident == "DateTime" {
+        return true;
+    }
+    if segment.ident == "Option" {
+        if let syn::PathArguments::AngleBracketed(args) = &segment.arguments {
+            return args.args.iter().any(|arg| {
+                matches!(arg, syn::GenericArgument::Type(inner) if is_chrono_date_time(inner))
+            });
+        }
+    }
+    false
+}
+
 /// Validates a JSON file against a given schema and returns the parsed JSON value
 ///
 /// # Arguments

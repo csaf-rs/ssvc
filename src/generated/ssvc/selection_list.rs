@@ -51,6 +51,7 @@ pub mod error {
 /// </details>
 #[derive(::serde::Serialize, Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
 #[serde(transparent)]
+#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 pub struct Definition(::std::string::String);
 impl ::std::ops::Deref for Definition {
     type Target = ::std::string::String;
@@ -136,6 +137,7 @@ impl<'de> ::serde::Deserialize<'de> for Definition {
 /// </details>
 #[derive(::serde::Serialize, Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
 #[serde(transparent)]
+#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 pub struct Key(::std::string::String);
 impl ::std::ops::Deref for Key {
     type Target = ::std::string::String;
@@ -260,6 +262,7 @@ Other required fields in the DecisionPointValue object, such as name and descrip
 /// </details>
 #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug, Eq, PartialEq)]
 #[serde(deny_unknown_fields)]
+#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 pub struct MinimalDecisionPointValue {
     #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
     pub definition: ::std::option::Option<Definition>,
@@ -287,6 +290,7 @@ impl MinimalDecisionPointValue {
 /// </details>
 #[derive(::serde::Serialize, Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
 #[serde(transparent)]
+#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 pub struct Name(::std::string::String);
 impl ::std::ops::Deref for Name {
     type Target = ::std::string::String;
@@ -369,6 +373,7 @@ impl<'de> ::serde::Deserialize<'de> for Name {
 /// </details>
 #[derive(::serde::Serialize, Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
 #[serde(transparent)]
+#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 pub struct Namespace(::std::string::String);
 impl ::std::ops::Deref for Namespace {
     type Target = ::std::string::String;
@@ -476,6 +481,7 @@ This object is intentionally minimal and contains only the URL and an optional d
 /// </details>
 #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug, Eq, PartialEq)]
 #[serde(deny_unknown_fields)]
+#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 pub struct Reference {
     pub summary: ::std::string::String,
     pub uri: Uri,
@@ -596,6 +602,7 @@ Other fields like name and description may be copied from the decision point, bu
 /// </details>
 #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug, Eq, PartialEq)]
 #[serde(deny_unknown_fields)]
+#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 pub struct Selection {
     #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
     pub definition: ::std::option::Option<Definition>,
@@ -724,6 +731,7 @@ impl Selection {
 /// </details>
 #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug, Eq, PartialEq)]
 #[serde(deny_unknown_fields)]
+#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 pub struct SelectionList {
     ///A list of resources that provide additional context about the decision points found in this selection.
     #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
@@ -740,6 +748,7 @@ pub struct SelectionList {
     #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
     pub target_ids: ::std::option::Option<Vec<::std::string::String>>,
     ///Timestamp of the selections, in RFC 3339 format.
+    #[cfg_attr(feature = "wasm", tsify(type = "string"))]
     pub timestamp: ::chrono::DateTime<::chrono::offset::Utc>,
 }
 impl SelectionList {
@@ -762,6 +771,7 @@ impl SelectionList {
 /// </details>
 #[derive(::serde::Serialize, Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
 #[serde(transparent)]
+#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 pub struct Uri(::std::string::String);
 impl ::std::ops::Deref for Uri {
     type Target = ::std::string::String;
@@ -841,6 +851,7 @@ impl<'de> ::serde::Deserialize<'de> for Uri {
 /// </details>
 #[derive(::serde::Serialize, Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
 #[serde(transparent)]
+#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 pub struct Version(::std::string::String);
 impl ::std::ops::Deref for Version {
     type Target = ::std::string::String;

@@ -5,14 +5,16 @@ use typify::{TypeSpace, TypeSpaceSettings};
 use super::utils;
 use anyhow::Result;
 
-pub const SCHEMA_TARGETS: &[(&str, &str)] = &[
+pub const SCHEMA_TARGETS: &[(&str, &str, bool)] = &[
     (
         "assets/SelectionList_2_0_0.schema.json",
         "src/generated/ssvc/selection_list.rs",
+        true,
     ),
     (
         "assets/DecisionPoint_2_0_0.schema.json",
         "src/generated/ssvc/decision_point.rs",
+        false,
     ),
 ];
 
@@ -21,9 +23,9 @@ pub const SCHEMA_TARGETS: &[(&str, &str)] = &[
 /// # Errors
 /// Returns an error if schema reading, type generation, or file writing fails.
 pub fn build_all_schemas() -> Result<()> {
-    for (file_path, target_path) in SCHEMA_TARGETS {
+    for (file_path, target_path, with_tsify) in SCHEMA_TARGETS {
         println!("cargo:rerun-if-changed={file_path}");
-        build_from_schema(file_path, target_path)?;
+        build_from_schema(file_path, target_path, *with_tsify)?;
     }
     Ok(())
 }
@@ -33,10 +35,11 @@ pub fn build_all_schemas() -> Result<()> {
 /// # Arguments
 /// * `file_path` - Path to the JSON schema file
 /// * `target_path` - Path where generated Rust code will be written
+/// * `with_tsify` - Whether to add `Tsify` derives to generated structs/enums
 ///
 /// # Errors
 /// Returns an error if schema reading, type generation, or file writing fails.
-pub fn build_from_schema(file_path: &str, target_path: &str) -> Result<()> {
+pub fn build_from_schema(file_path: &str, target_path: &str, with_tsify: bool) -> Result<()> {
     let file = std::fs::File::open(file_path)?;
     let schema = serde_json::from_reader(file)?;
 
@@ -52,6 +55,10 @@ pub fn build_from_schema(file_path: &str, target_path: &str) -> Result<()> {
     utils::add_generated_code_header(&mut syn_file);
     utils::add_ignore_rustfmt(&mut syn_file);
     utils::add_ignore_clippy(&mut syn_file);
+    if with_tsify {
+        utils::add_tsify_derive(&mut syn_file);
+        utils::add_tsify_datetime_type_override(&mut syn_file);
+    }
 
     let content = prettyplease::unparse(&syn_file);
 
