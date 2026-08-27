@@ -5,14 +5,16 @@ use typify::{TypeSpace, TypeSpaceSettings};
 use super::utils;
 use anyhow::Result;
 
-pub const SCHEMA_TARGETS: &[(&str, &str)] = &[
+pub const SCHEMA_TARGETS: &[(&str, &str, bool)] = &[
     (
         "assets/SelectionList_2_0_0.schema.json",
         "src/generated/ssvc/selection_list.rs",
+        true,
     ),
     (
         "assets/DecisionPoint_2_0_0.schema.json",
         "src/generated/ssvc/decision_point.rs",
+        false,
     ),
 ];
 
@@ -21,12 +23,9 @@ pub const SCHEMA_TARGETS: &[(&str, &str)] = &[
 /// # Errors
 /// Returns an error if schema reading, type generation, or file writing fails.
 pub fn build_all_schemas() -> Result<()> {
-    for (file_path, target_path) in SCHEMA_TARGETS {
+    for (file_path, target_path, with_tsify) in SCHEMA_TARGETS {
         println!("cargo:rerun-if-changed={file_path}");
-        // Only the SelectionList schema is part of the wasm-exposed API surface,
-        // so only its generated types need `Tsify` derives.
-        let with_tsify = *target_path == "src/generated/ssvc/selection_list.rs";
-        build_from_schema(file_path, target_path, with_tsify)?;
+        build_from_schema(file_path, target_path, *with_tsify)?;
     }
     Ok(())
 }
