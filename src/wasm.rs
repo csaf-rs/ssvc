@@ -26,23 +26,10 @@ pub fn validate_selection_list_from_string(
     result.into_ts().map_err(JsError::from)
 }
 
-#[wasm_bindgen(js_name = validateSelectionListValue)]
-pub fn validate_selection_list_from_jsvalue(
-    json_value: JsValue,
-    allow_test_namespaces: bool,
-) -> Result<Ts<ValidationResult>, JsError> {
-    let selection_list: SelectionList = serde_wasm_bindgen::from_value(json_value)
-        .map_err(|e| JsError::new(&format!("Invalid SelectionList JSON value: {e}")))?;
-
-    let result = validate_selection_list(&selection_list, allow_test_namespaces);
-
-    result.into_ts().map_err(JsError::from)
-}
-
 /// Validates a strongly-typed `SelectionList`, giving TypeScript callers full
 /// type-checking and autocompletion on the input instead of `any`.
-#[wasm_bindgen(js_name = validateSelectionListTyped)]
-pub fn validate_selection_list_from_typed(
+#[wasm_bindgen(js_name = validateSelectionListFromValue)]
+pub fn validate_selection_list_from_value(
     selection_list: Ts<SelectionList>,
     allow_test_namespaces: bool,
 ) -> Result<Ts<ValidationResult>, JsError> {
@@ -151,7 +138,7 @@ mod tests {
         let js_input = value
             .serialize(&serde_wasm_bindgen::Serializer::json_compatible())
             .expect("input should convert to JSON-compatible JsValue");
-        let result = validate_selection_list_from_typed(Ts::new_unchecked(js_input), false);
+        let result = validate_selection_list_from_value(Ts::new_unchecked(js_input), false);
         assert!(result.is_ok());
 
         let output: serde_json::Value = serde_wasm_bindgen::from_value(result.unwrap().into())
