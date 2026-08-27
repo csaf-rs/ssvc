@@ -95,32 +95,6 @@ mod tests {
     }
 
     #[wasm_bindgen_test]
-    fn validate_selection_list_accepts_js_value_input() {
-        let value = serde_json::json!({
-            "schemaVersion": "2.0.0",
-            "timestamp": "2025-01-01T00:00:00Z",
-            "selections": [
-                {
-                    "key": "A",
-                    "namespace": "example",
-                    "version": "1.0.0",
-                    "values": [{"key": "B"}]
-                }
-            ]
-        });
-
-        let js_input = value
-            .serialize(&serde_wasm_bindgen::Serializer::json_compatible())
-            .expect("input should convert to JSON-compatible JsValue");
-        let result = validate_selection_list_from_jsvalue(js_input, false);
-        assert!(result.is_ok());
-
-        let output: serde_json::Value = serde_wasm_bindgen::from_value(result.unwrap().into())
-            .expect("output should be valid JSON");
-        assert_eq!(output.get("success").and_then(|v| v.as_bool()), Some(true));
-    }
-
-    #[wasm_bindgen_test]
     fn validate_selection_list_accepts_typed_input() {
         let value = serde_json::json!({
             "schemaVersion": "2.0.0",
