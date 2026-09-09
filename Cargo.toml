@@ -38,4 +38,4 @@ jsonschema = { version = "0.53", default-features = false }
 
 [dev-dependencies]
 wasm-bindgen-test = "0.3"
-rstest = "0.26"
+rstest = "0.27"
