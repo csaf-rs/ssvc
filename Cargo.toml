@@ -9,6 +9,9 @@ license = "Apache-2.0"
 repository = "https://github.com/csaf-rs/ssvc"
 exclude = ["/ssvc"]
 
+[lints.rust]
+unsafe_code = "forbid"
+
 [lib]
 crate-type = ["cdylib", "rlib"]
 
