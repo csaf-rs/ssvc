@@ -5,126 +5,7 @@
  */
 #![cfg_attr(any(), rustfmt::skip)]
 #![allow(clippy::all)]
-/// Error types.
-pub mod error {
-    /// Error from a `TryFrom` or `FromStr` implementation.
-    pub struct ConversionError(::std::borrow::Cow<'static, str>);
-    impl ::std::error::Error for ConversionError {}
-    impl ::std::fmt::Display for ConversionError {
-        fn fmt(
-            &self,
-            f: &mut ::std::fmt::Formatter<'_>,
-        ) -> Result<(), ::std::fmt::Error> {
-            ::std::fmt::Display::fmt(&self.0, f)
-        }
-    }
-    impl ::std::fmt::Debug for ConversionError {
-        fn fmt(
-            &self,
-            f: &mut ::std::fmt::Formatter<'_>,
-        ) -> Result<(), ::std::fmt::Error> {
-            ::std::fmt::Debug::fmt(&self.0, f)
-        }
-    }
-    impl From<&'static str> for ConversionError {
-        fn from(value: &'static str) -> Self {
-            Self(value.into())
-        }
-    }
-    impl From<String> for ConversionError {
-        fn from(value: String) -> Self {
-            Self(value.into())
-        }
-    }
-}
 ///This schema defines the structure to represent an SSVC DecisionPoint object.
-///
-/// <details><summary>JSON schema</summary>
-///
-/// ```json
-///{
-///  "$id": "https://certcc.github.io/SSVC/data/schema/v2/DecisionPoint_2_0_0.schema.json",
-///  "title": "DecisionPoint",
-///  "description": "This schema defines the structure to represent an SSVC DecisionPoint object.",
-///  "type": "object",
-///  "required": [
-///    "definition",
-///    "key",
-///    "name",
-///    "namespace",
-///    "schemaVersion",
-///    "values"
-///  ],
-///  "properties": {
-///    "definition": {
-///      "title": "Definition",
-///      "type": "string",
-///      "minLength": 1
-///    },
-///    "key": {
-///      "title": "Key",
-///      "description": "A short, non-empty string identifier for the object. Keys must start with an alphanumeric, contain only alphanumerics and `_`, and end with an alphanumeric.(`T*` is explicitly grandfathered in as a valid key, but should not be used for new objects.)",
-///      "examples": [
-///        "E",
-///        "A",
-///        "SI",
-///        "L",
-///        "M",
-///        "H",
-///        "Mixed_case_OK",
-///        "alph4num3ric"
-///      ],
-///      "type": "string",
-///      "minLength": 1,
-///      "pattern": "^(([a-zA-Z0-9])|([a-zA-Z0-9][a-zA-Z0-9_]*[a-zA-Z0-9])|(T\\*))$"
-///    },
-///    "name": {
-///      "title": "Name",
-///      "type": "string",
-///      "minLength": 1
-///    },
-///    "namespace": {
-///      "title": "Namespace",
-///      "description": "The namespace of the SSVC object.",
-///      "examples": [
-///        "ssvc",
-///        "cisa",
-///        "x_example.test#test//.example.test#private-extension",
-///        "ssvc/de-DE/.example.organization#reference-arch-1"
-///      ],
-///      "type": "string",
-///      "maxLength": 1000,
-///      "minLength": 3,
-///      "pattern": "^(x_([a-z]|[0-9])(((([a-z]|[0-9])|-)){0,61}([a-z]|[0-9]))?(\\.([a-z]|[0-9])(((([a-z]|[0-9])|-)){0,61}([a-z]|[0-9]))?)+#(([a-z]|[0-9]))+((\\.|-)(([a-z]|[0-9]))+)*|[a-z]([a-z]|[0-9])(((\\.|-))?(([a-z]|[0-9]))+)+(#(([a-z]|[0-9]))+((\\.|-)(([a-z]|[0-9]))+)*)?)((/|/(([a-zA-Z]{2,3}(-[a-zA-Z]{3}(-[a-zA-Z]{3}){0,2})?|[a-zA-Z]{4,8})(-[a-zA-Z]{4})?(-([a-zA-Z]{2}|[0-9]{3}))?(-(([a-zA-Z0-9]){5,8}|[0-9]([a-zA-Z0-9]){3}))*(-[0-9A-WY-Za-wy-z](-([a-zA-Z0-9]){2,8})+)*(-[xX](-([a-zA-Z0-9]){2,8})+)?|[xX](-([a-zA-Z0-9]){2,8})+|i-default|i-mingo))((/((([a-zA-Z]{2,3}(-[a-zA-Z]{3}(-[a-zA-Z]{3}){0,2})?|[a-zA-Z]{4,8})(-[a-zA-Z]{4})?(-([a-zA-Z]{2}|[0-9]{3}))?(-(([a-zA-Z0-9]){5,8}|[0-9]([a-zA-Z0-9]){3}))*(-[0-9A-WY-Za-wy-z](-([a-zA-Z0-9]){2,8})+)*(-[xX](-([a-zA-Z0-9]){2,8})+)?|[xX](-([a-zA-Z0-9]){2,8})+|i-default|i-mingo)|\\.([a-z]|[0-9])(((([a-z]|[0-9])|-)){0,61}([a-z]|[0-9]))?(\\.([a-z]|[0-9])(((([a-z]|[0-9])|-)){0,61}([a-z]|[0-9]))?)+#(([a-z]|[0-9]))+((\\.|-)(([a-z]|[0-9]))+)*|\\.(([a-z]|[0-9])(((([a-z]|[0-9])|-)){0,61}([a-z]|[0-9]))?(\\.([a-z]|[0-9])(((([a-z]|[0-9])|-)){0,61}([a-z]|[0-9]))?)+|([a-z]|[0-9])(((([a-z]|[0-9])|-)){0,61}([a-z]|[0-9]))?(\\.([a-z]|[0-9])(((([a-z]|[0-9])|-)){0,61}([a-z]|[0-9]))?)+#(([a-z]|[0-9]))+((\\.|-)(([a-z]|[0-9]))+)*)\\$(([a-zA-Z]{2,3}(-[a-zA-Z]{3}(-[a-zA-Z]{3}){0,2})?|[a-zA-Z]{4,8})(-[a-zA-Z]{4})?(-([a-zA-Z]{2}|[0-9]{3}))?(-(([a-zA-Z0-9]){5,8}|[0-9]([a-zA-Z0-9]){3}))*(-[0-9A-WY-Za-wy-z](-([a-zA-Z0-9]){2,8})+)*(-[xX](-([a-zA-Z0-9]){2,8})+)?|[xX](-([a-zA-Z0-9]){2,8})+|i-default|i-mingo)))+)?)?$"
-///    },
-///    "schemaVersion": {
-///      "title": "Schemaversion",
-///      "type": "string",
-///      "const": "2.0.0"
-///    },
-///    "values": {
-///      "title": "Values",
-///      "type": "array",
-///      "items": {
-///        "$ref": "#/$defs/DecisionPointValue"
-///      }
-///    },
-///    "version": {
-///      "title": "Version",
-///      "description": "The version of the SSVC object. This must be a valid semantic version string.",
-///      "default": "0.0.1",
-///      "examples": [
-///        "1.0.0",
-///        "2.1.3"
-///      ],
-///      "type": "string",
-///      "minLength": 5,
-///      "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-((?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\\.(?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\\+([0-9a-zA-Z-]+(?:\\.[0-9a-zA-Z-]+)*))?$"
-///    }
-///  }
-///}
-/// ```
-/// </details>
 #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug, Eq, PartialEq)]
 pub struct DecisionPoint {
     pub definition: Definition,
@@ -153,51 +34,6 @@ Each value should have the following attributes:
 - description (str): A description
 - key (str): A key (a short, unique string) that can be used to identify the value in a shorthand way
 - _comment (str): An optional comment that will be included in the object.*/
-///
-/// <details><summary>JSON schema</summary>
-///
-/// ```json
-///{
-///  "title": "DecisionPointValue",
-///  "description": "Models a single value option for a decision point.\n\nEach value should have the following attributes:\n\n- name (str): A name\n- description (str): A description\n- key (str): A key (a short, unique string) that can be used to identify the value in a shorthand way\n- _comment (str): An optional comment that will be included in the object.",
-///  "type": "object",
-///  "required": [
-///    "definition",
-///    "key",
-///    "name"
-///  ],
-///  "properties": {
-///    "definition": {
-///      "title": "Definition",
-///      "type": "string",
-///      "minLength": 1
-///    },
-///    "key": {
-///      "title": "Key",
-///      "description": "A short, non-empty string identifier for the object. Keys must start with an alphanumeric, contain only alphanumerics and `_`, and end with an alphanumeric.(`T*` is explicitly grandfathered in as a valid key, but should not be used for new objects.)",
-///      "examples": [
-///        "E",
-///        "A",
-///        "SI",
-///        "L",
-///        "M",
-///        "H",
-///        "Mixed_case_OK",
-///        "alph4num3ric"
-///      ],
-///      "type": "string",
-///      "minLength": 1,
-///      "pattern": "^(([a-zA-Z0-9])|([a-zA-Z0-9][a-zA-Z0-9_]*[a-zA-Z0-9])|(T\\*))$"
-///    },
-///    "name": {
-///      "title": "Name",
-///      "type": "string",
-///      "minLength": 1
-///    }
-///  }
-///}
-/// ```
-/// </details>
 #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug, Eq, PartialEq)]
 pub struct DecisionPointValue {
     pub definition: Definition,
@@ -211,17 +47,6 @@ impl DecisionPointValue {
     }
 }
 ///`Definition`
-///
-/// <details><summary>JSON schema</summary>
-///
-/// ```json
-///{
-///  "title": "Definition",
-///  "type": "string",
-///  "minLength": 1
-///}
-/// ```
-/// </details>
 #[derive(::serde::Serialize, Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
 #[serde(transparent)]
 pub struct Definition(::std::string::String);
@@ -255,14 +80,6 @@ impl ::std::convert::TryFrom<&str> for Definition {
         value.parse()
     }
 }
-impl ::std::convert::TryFrom<&::std::string::String> for Definition {
-    type Error = self::error::ConversionError;
-    fn try_from(
-        value: &::std::string::String,
-    ) -> ::std::result::Result<Self, self::error::ConversionError> {
-        value.parse()
-    }
-}
 impl ::std::convert::TryFrom<::std::string::String> for Definition {
     type Error = self::error::ConversionError;
     fn try_from(
@@ -284,29 +101,6 @@ impl<'de> ::serde::Deserialize<'de> for Definition {
     }
 }
 ///A short, non-empty string identifier for the object. Keys must start with an alphanumeric, contain only alphanumerics and `_`, and end with an alphanumeric.(`T*` is explicitly grandfathered in as a valid key, but should not be used for new objects.)
-///
-/// <details><summary>JSON schema</summary>
-///
-/// ```json
-///{
-///  "title": "Key",
-///  "description": "A short, non-empty string identifier for the object. Keys must start with an alphanumeric, contain only alphanumerics and `_`, and end with an alphanumeric.(`T*` is explicitly grandfathered in as a valid key, but should not be used for new objects.)",
-///  "examples": [
-///    "E",
-///    "A",
-///    "SI",
-///    "L",
-///    "M",
-///    "H",
-///    "Mixed_case_OK",
-///    "alph4num3ric"
-///  ],
-///  "type": "string",
-///  "minLength": 1,
-///  "pattern": "^(([a-zA-Z0-9])|([a-zA-Z0-9][a-zA-Z0-9_]*[a-zA-Z0-9])|(T\\*))$"
-///}
-/// ```
-/// </details>
 #[derive(::serde::Serialize, Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
 #[serde(transparent)]
 pub struct Key(::std::string::String);
@@ -353,14 +147,6 @@ impl ::std::convert::TryFrom<&str> for Key {
         value.parse()
     }
 }
-impl ::std::convert::TryFrom<&::std::string::String> for Key {
-    type Error = self::error::ConversionError;
-    fn try_from(
-        value: &::std::string::String,
-    ) -> ::std::result::Result<Self, self::error::ConversionError> {
-        value.parse()
-    }
-}
 impl ::std::convert::TryFrom<::std::string::String> for Key {
     type Error = self::error::ConversionError;
     fn try_from(
@@ -382,17 +168,6 @@ impl<'de> ::serde::Deserialize<'de> for Key {
     }
 }
 ///`Name`
-///
-/// <details><summary>JSON schema</summary>
-///
-/// ```json
-///{
-///  "title": "Name",
-///  "type": "string",
-///  "minLength": 1
-///}
-/// ```
-/// </details>
 #[derive(::serde::Serialize, Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
 #[serde(transparent)]
 pub struct Name(::std::string::String);
@@ -426,14 +201,6 @@ impl ::std::convert::TryFrom<&str> for Name {
         value.parse()
     }
 }
-impl ::std::convert::TryFrom<&::std::string::String> for Name {
-    type Error = self::error::ConversionError;
-    fn try_from(
-        value: &::std::string::String,
-    ) -> ::std::result::Result<Self, self::error::ConversionError> {
-        value.parse()
-    }
-}
 impl ::std::convert::TryFrom<::std::string::String> for Name {
     type Error = self::error::ConversionError;
     fn try_from(
@@ -455,26 +222,6 @@ impl<'de> ::serde::Deserialize<'de> for Name {
     }
 }
 ///The namespace of the SSVC object.
-///
-/// <details><summary>JSON schema</summary>
-///
-/// ```json
-///{
-///  "title": "Namespace",
-///  "description": "The namespace of the SSVC object.",
-///  "examples": [
-///    "ssvc",
-///    "cisa",
-///    "x_example.test#test//.example.test#private-extension",
-///    "ssvc/de-DE/.example.organization#reference-arch-1"
-///  ],
-///  "type": "string",
-///  "maxLength": 1000,
-///  "minLength": 3,
-///  "pattern": "^(x_([a-z]|[0-9])(((([a-z]|[0-9])|-)){0,61}([a-z]|[0-9]))?(\\.([a-z]|[0-9])(((([a-z]|[0-9])|-)){0,61}([a-z]|[0-9]))?)+#(([a-z]|[0-9]))+((\\.|-)(([a-z]|[0-9]))+)*|[a-z]([a-z]|[0-9])(((\\.|-))?(([a-z]|[0-9]))+)+(#(([a-z]|[0-9]))+((\\.|-)(([a-z]|[0-9]))+)*)?)((/|/(([a-zA-Z]{2,3}(-[a-zA-Z]{3}(-[a-zA-Z]{3}){0,2})?|[a-zA-Z]{4,8})(-[a-zA-Z]{4})?(-([a-zA-Z]{2}|[0-9]{3}))?(-(([a-zA-Z0-9]){5,8}|[0-9]([a-zA-Z0-9]){3}))*(-[0-9A-WY-Za-wy-z](-([a-zA-Z0-9]){2,8})+)*(-[xX](-([a-zA-Z0-9]){2,8})+)?|[xX](-([a-zA-Z0-9]){2,8})+|i-default|i-mingo))((/((([a-zA-Z]{2,3}(-[a-zA-Z]{3}(-[a-zA-Z]{3}){0,2})?|[a-zA-Z]{4,8})(-[a-zA-Z]{4})?(-([a-zA-Z]{2}|[0-9]{3}))?(-(([a-zA-Z0-9]){5,8}|[0-9]([a-zA-Z0-9]){3}))*(-[0-9A-WY-Za-wy-z](-([a-zA-Z0-9]){2,8})+)*(-[xX](-([a-zA-Z0-9]){2,8})+)?|[xX](-([a-zA-Z0-9]){2,8})+|i-default|i-mingo)|\\.([a-z]|[0-9])(((([a-z]|[0-9])|-)){0,61}([a-z]|[0-9]))?(\\.([a-z]|[0-9])(((([a-z]|[0-9])|-)){0,61}([a-z]|[0-9]))?)+#(([a-z]|[0-9]))+((\\.|-)(([a-z]|[0-9]))+)*|\\.(([a-z]|[0-9])(((([a-z]|[0-9])|-)){0,61}([a-z]|[0-9]))?(\\.([a-z]|[0-9])(((([a-z]|[0-9])|-)){0,61}([a-z]|[0-9]))?)+|([a-z]|[0-9])(((([a-z]|[0-9])|-)){0,61}([a-z]|[0-9]))?(\\.([a-z]|[0-9])(((([a-z]|[0-9])|-)){0,61}([a-z]|[0-9]))?)+#(([a-z]|[0-9]))+((\\.|-)(([a-z]|[0-9]))+)*)\\$(([a-zA-Z]{2,3}(-[a-zA-Z]{3}(-[a-zA-Z]{3}){0,2})?|[a-zA-Z]{4,8})(-[a-zA-Z]{4})?(-([a-zA-Z]{2}|[0-9]{3}))?(-(([a-zA-Z0-9]){5,8}|[0-9]([a-zA-Z0-9]){3}))*(-[0-9A-WY-Za-wy-z](-([a-zA-Z0-9]){2,8})+)*(-[xX](-([a-zA-Z0-9]){2,8})+)?|[xX](-([a-zA-Z0-9]){2,8})+|i-default|i-mingo)))+)?)?$"
-///}
-/// ```
-/// </details>
 #[derive(::serde::Serialize, Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
 #[serde(transparent)]
 pub struct Namespace(::std::string::String);
@@ -524,14 +271,6 @@ impl ::std::convert::TryFrom<&str> for Namespace {
         value.parse()
     }
 }
-impl ::std::convert::TryFrom<&::std::string::String> for Namespace {
-    type Error = self::error::ConversionError;
-    fn try_from(
-        value: &::std::string::String,
-    ) -> ::std::result::Result<Self, self::error::ConversionError> {
-        value.parse()
-    }
-}
 impl ::std::convert::TryFrom<::std::string::String> for Namespace {
     type Error = self::error::ConversionError;
     fn try_from(
@@ -553,24 +292,6 @@ impl<'de> ::serde::Deserialize<'de> for Namespace {
     }
 }
 ///The version of the SSVC object. This must be a valid semantic version string.
-///
-/// <details><summary>JSON schema</summary>
-///
-/// ```json
-///{
-///  "title": "Version",
-///  "description": "The version of the SSVC object. This must be a valid semantic version string.",
-///  "default": "0.0.1",
-///  "examples": [
-///    "1.0.0",
-///    "2.1.3"
-///  ],
-///  "type": "string",
-///  "minLength": 5,
-///  "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-((?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\\.(?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\\+([0-9a-zA-Z-]+(?:\\.[0-9a-zA-Z-]+)*))?$"
-///}
-/// ```
-/// </details>
 #[derive(::serde::Serialize, Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
 #[serde(transparent)]
 pub struct Version(::std::string::String);
@@ -618,14 +339,6 @@ impl ::std::convert::TryFrom<&str> for Version {
     type Error = self::error::ConversionError;
     fn try_from(
         value: &str,
-    ) -> ::std::result::Result<Self, self::error::ConversionError> {
-        value.parse()
-    }
-}
-impl ::std::convert::TryFrom<&::std::string::String> for Version {
-    type Error = self::error::ConversionError;
-    fn try_from(
-        value: &::std::string::String,
     ) -> ::std::result::Result<Self, self::error::ConversionError> {
         value.parse()
     }
@@ -865,5 +578,37 @@ pub mod builder {
 pub mod defaults {
     pub(super) fn decision_point_version() -> super::Version {
         super::Version("0.0.1".to_string())
+    }
+}
+/// Error types.
+pub mod error {
+    /// Error from a `TryFrom` or `FromStr` implementation.
+    pub struct ConversionError(::std::borrow::Cow<'static, str>);
+    impl ::std::error::Error for ConversionError {}
+    impl ::std::fmt::Display for ConversionError {
+        fn fmt(
+            &self,
+            f: &mut ::std::fmt::Formatter<'_>,
+        ) -> Result<(), ::std::fmt::Error> {
+            ::std::fmt::Display::fmt(&self.0, f)
+        }
+    }
+    impl ::std::fmt::Debug for ConversionError {
+        fn fmt(
+            &self,
+            f: &mut ::std::fmt::Formatter<'_>,
+        ) -> Result<(), ::std::fmt::Error> {
+            ::std::fmt::Debug::fmt(&self.0, f)
+        }
+    }
+    impl From<&'static str> for ConversionError {
+        fn from(value: &'static str) -> Self {
+            Self(value.into())
+        }
+    }
+    impl From<String> for ConversionError {
+        fn from(value: String) -> Self {
+            Self(value.into())
+        }
     }
 }

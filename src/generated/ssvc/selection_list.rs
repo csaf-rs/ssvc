@@ -5,50 +5,7 @@
  */
 #![cfg_attr(any(), rustfmt::skip)]
 #![allow(clippy::all)]
-/// Error types.
-pub mod error {
-    /// Error from a `TryFrom` or `FromStr` implementation.
-    pub struct ConversionError(::std::borrow::Cow<'static, str>);
-    impl ::std::error::Error for ConversionError {}
-    impl ::std::fmt::Display for ConversionError {
-        fn fmt(
-            &self,
-            f: &mut ::std::fmt::Formatter<'_>,
-        ) -> Result<(), ::std::fmt::Error> {
-            ::std::fmt::Display::fmt(&self.0, f)
-        }
-    }
-    impl ::std::fmt::Debug for ConversionError {
-        fn fmt(
-            &self,
-            f: &mut ::std::fmt::Formatter<'_>,
-        ) -> Result<(), ::std::fmt::Error> {
-            ::std::fmt::Debug::fmt(&self.0, f)
-        }
-    }
-    impl From<&'static str> for ConversionError {
-        fn from(value: &'static str) -> Self {
-            Self(value.into())
-        }
-    }
-    impl From<String> for ConversionError {
-        fn from(value: String) -> Self {
-            Self(value.into())
-        }
-    }
-}
 ///`Definition`
-///
-/// <details><summary>JSON schema</summary>
-///
-/// ```json
-///{
-///  "title": "Definition",
-///  "type": "string",
-///  "minLength": 1
-///}
-/// ```
-/// </details>
 #[derive(::serde::Serialize, Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
 #[serde(transparent)]
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
@@ -83,14 +40,6 @@ impl ::std::convert::TryFrom<&str> for Definition {
         value.parse()
     }
 }
-impl ::std::convert::TryFrom<&::std::string::String> for Definition {
-    type Error = self::error::ConversionError;
-    fn try_from(
-        value: &::std::string::String,
-    ) -> ::std::result::Result<Self, self::error::ConversionError> {
-        value.parse()
-    }
-}
 impl ::std::convert::TryFrom<::std::string::String> for Definition {
     type Error = self::error::ConversionError;
     fn try_from(
@@ -112,29 +61,6 @@ impl<'de> ::serde::Deserialize<'de> for Definition {
     }
 }
 ///A short, non-empty string identifier for the object. Keys must start with an alphanumeric, contain only alphanumerics and `_`, and end with an alphanumeric.(`T*` is explicitly grandfathered in as a valid key, but should not be used for new objects.)
-///
-/// <details><summary>JSON schema</summary>
-///
-/// ```json
-///{
-///  "title": "Key",
-///  "description": "A short, non-empty string identifier for the object. Keys must start with an alphanumeric, contain only alphanumerics and `_`, and end with an alphanumeric.(`T*` is explicitly grandfathered in as a valid key, but should not be used for new objects.)",
-///  "examples": [
-///    "E",
-///    "A",
-///    "SI",
-///    "L",
-///    "M",
-///    "H",
-///    "Mixed_case_OK",
-///    "alph4num3ric"
-///  ],
-///  "type": "string",
-///  "minLength": 1,
-///  "pattern": "^(([a-zA-Z0-9])|([a-zA-Z0-9][a-zA-Z0-9_]*[a-zA-Z0-9])|(T\\*))$"
-///}
-/// ```
-/// </details>
 #[derive(::serde::Serialize, Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
 #[serde(transparent)]
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
@@ -182,14 +108,6 @@ impl ::std::convert::TryFrom<&str> for Key {
         value.parse()
     }
 }
-impl ::std::convert::TryFrom<&::std::string::String> for Key {
-    type Error = self::error::ConversionError;
-    fn try_from(
-        value: &::std::string::String,
-    ) -> ::std::result::Result<Self, self::error::ConversionError> {
-        value.parse()
-    }
-}
 impl ::std::convert::TryFrom<::std::string::String> for Key {
     type Error = self::error::ConversionError;
     fn try_from(
@@ -216,59 +134,15 @@ A decision point value is uniquely identified within a decision point by its key
 Globally, the combination of Decision Point namespace, key, and version coupled with the value key
 uniquely identifies a value across all decision points and values.
 Other required fields in the DecisionPointValue object, such as name and description, are optional here.*/
-///
-/// <details><summary>JSON schema</summary>
-///
-/// ```json
-///{
-///  "title": "MinimalDecisionPointValue",
-///  "description": "A minimal representation of a decision point value.\nIntended to parallel the DecisionPointValue object, but with fewer required fields.\nA decision point value is uniquely identified within a decision point by its key.\nGlobally, the combination of Decision Point namespace, key, and version coupled with the value key\nuniquely identifies a value across all decision points and values.\nOther required fields in the DecisionPointValue object, such as name and description, are optional here.",
-///  "type": "object",
-///  "required": [
-///    "key"
-///  ],
-///  "properties": {
-///    "definition": {
-///      "title": "Definition",
-///      "type": "string",
-///      "minLength": 1
-///    },
-///    "key": {
-///      "title": "Key",
-///      "description": "A short, non-empty string identifier for the object. Keys must start with an alphanumeric, contain only alphanumerics and `_`, and end with an alphanumeric.(`T*` is explicitly grandfathered in as a valid key, but should not be used for new objects.)",
-///      "examples": [
-///        "E",
-///        "A",
-///        "SI",
-///        "L",
-///        "M",
-///        "H",
-///        "Mixed_case_OK",
-///        "alph4num3ric"
-///      ],
-///      "type": "string",
-///      "minLength": 1,
-///      "pattern": "^(([a-zA-Z0-9])|([a-zA-Z0-9][a-zA-Z0-9_]*[a-zA-Z0-9])|(T\\*))$"
-///    },
-///    "name": {
-///      "title": "Name",
-///      "type": "string",
-///      "minLength": 1
-///    }
-///  },
-///  "additionalProperties": false
-///}
-/// ```
-/// </details>
 #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug, Eq, PartialEq)]
 #[serde(deny_unknown_fields)]
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 pub struct MinimalDecisionPointValue {
-    #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+    #[serde(skip_serializing_if = "::std::option::Option::is_none")]
     pub definition: ::std::option::Option<Definition>,
     ///A short, non-empty string identifier for the object. Keys must start with an alphanumeric, contain only alphanumerics and `_`, and end with an alphanumeric.(`T*` is explicitly grandfathered in as a valid key, but should not be used for new objects.)
     pub key: Key,
-    #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+    #[serde(skip_serializing_if = "::std::option::Option::is_none")]
     pub name: ::std::option::Option<Name>,
 }
 impl MinimalDecisionPointValue {
@@ -277,17 +151,6 @@ impl MinimalDecisionPointValue {
     }
 }
 ///`Name`
-///
-/// <details><summary>JSON schema</summary>
-///
-/// ```json
-///{
-///  "title": "Name",
-///  "type": "string",
-///  "minLength": 1
-///}
-/// ```
-/// </details>
 #[derive(::serde::Serialize, Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
 #[serde(transparent)]
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
@@ -322,14 +185,6 @@ impl ::std::convert::TryFrom<&str> for Name {
         value.parse()
     }
 }
-impl ::std::convert::TryFrom<&::std::string::String> for Name {
-    type Error = self::error::ConversionError;
-    fn try_from(
-        value: &::std::string::String,
-    ) -> ::std::result::Result<Self, self::error::ConversionError> {
-        value.parse()
-    }
-}
 impl ::std::convert::TryFrom<::std::string::String> for Name {
     type Error = self::error::ConversionError;
     fn try_from(
@@ -351,26 +206,6 @@ impl<'de> ::serde::Deserialize<'de> for Name {
     }
 }
 ///The namespace of the SSVC object.
-///
-/// <details><summary>JSON schema</summary>
-///
-/// ```json
-///{
-///  "title": "Namespace",
-///  "description": "The namespace of the SSVC object.",
-///  "examples": [
-///    "ssvc",
-///    "cisa",
-///    "x_example.test#test//.example.test#private-extension",
-///    "ssvc/de-DE/.example.organization#reference-arch-1"
-///  ],
-///  "type": "string",
-///  "maxLength": 1000,
-///  "minLength": 3,
-///  "pattern": "^(x_([a-z]|[0-9])(((([a-z]|[0-9])|-)){0,61}([a-z]|[0-9]))?(\\.([a-z]|[0-9])(((([a-z]|[0-9])|-)){0,61}([a-z]|[0-9]))?)+#(([a-z]|[0-9]))+((\\.|-)(([a-z]|[0-9]))+)*|[a-z]([a-z]|[0-9])(((\\.|-))?(([a-z]|[0-9]))+)+(#(([a-z]|[0-9]))+((\\.|-)(([a-z]|[0-9]))+)*)?)((/|/(([a-zA-Z]{2,3}(-[a-zA-Z]{3}(-[a-zA-Z]{3}){0,2})?|[a-zA-Z]{4,8})(-[a-zA-Z]{4})?(-([a-zA-Z]{2}|[0-9]{3}))?(-(([a-zA-Z0-9]){5,8}|[0-9]([a-zA-Z0-9]){3}))*(-[0-9A-WY-Za-wy-z](-([a-zA-Z0-9]){2,8})+)*(-[xX](-([a-zA-Z0-9]){2,8})+)?|[xX](-([a-zA-Z0-9]){2,8})+|i-default|i-mingo))((/((([a-zA-Z]{2,3}(-[a-zA-Z]{3}(-[a-zA-Z]{3}){0,2})?|[a-zA-Z]{4,8})(-[a-zA-Z]{4})?(-([a-zA-Z]{2}|[0-9]{3}))?(-(([a-zA-Z0-9]){5,8}|[0-9]([a-zA-Z0-9]){3}))*(-[0-9A-WY-Za-wy-z](-([a-zA-Z0-9]){2,8})+)*(-[xX](-([a-zA-Z0-9]){2,8})+)?|[xX](-([a-zA-Z0-9]){2,8})+|i-default|i-mingo)|\\.([a-z]|[0-9])(((([a-z]|[0-9])|-)){0,61}([a-z]|[0-9]))?(\\.([a-z]|[0-9])(((([a-z]|[0-9])|-)){0,61}([a-z]|[0-9]))?)+#(([a-z]|[0-9]))+((\\.|-)(([a-z]|[0-9]))+)*|\\.(([a-z]|[0-9])(((([a-z]|[0-9])|-)){0,61}([a-z]|[0-9]))?(\\.([a-z]|[0-9])(((([a-z]|[0-9])|-)){0,61}([a-z]|[0-9]))?)+|([a-z]|[0-9])(((([a-z]|[0-9])|-)){0,61}([a-z]|[0-9]))?(\\.([a-z]|[0-9])(((([a-z]|[0-9])|-)){0,61}([a-z]|[0-9]))?)+#(([a-z]|[0-9]))+((\\.|-)(([a-z]|[0-9]))+)*)\\$(([a-zA-Z]{2,3}(-[a-zA-Z]{3}(-[a-zA-Z]{3}){0,2})?|[a-zA-Z]{4,8})(-[a-zA-Z]{4})?(-([a-zA-Z]{2}|[0-9]{3}))?(-(([a-zA-Z0-9]){5,8}|[0-9]([a-zA-Z0-9]){3}))*(-[0-9A-WY-Za-wy-z](-([a-zA-Z0-9]){2,8})+)*(-[xX](-([a-zA-Z0-9]){2,8})+)?|[xX](-([a-zA-Z0-9]){2,8})+|i-default|i-mingo)))+)?)?$"
-///}
-/// ```
-/// </details>
 #[derive(::serde::Serialize, Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
 #[serde(transparent)]
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
@@ -421,14 +256,6 @@ impl ::std::convert::TryFrom<&str> for Namespace {
         value.parse()
     }
 }
-impl ::std::convert::TryFrom<&::std::string::String> for Namespace {
-    type Error = self::error::ConversionError;
-    fn try_from(
-        value: &::std::string::String,
-    ) -> ::std::result::Result<Self, self::error::ConversionError> {
-        value.parse()
-    }
-}
 impl ::std::convert::TryFrom<::std::string::String> for Namespace {
     type Error = self::error::ConversionError;
     fn try_from(
@@ -451,34 +278,6 @@ impl<'de> ::serde::Deserialize<'de> for Namespace {
 }
 /**A reference to a resource that provides additional context about the decision points or selections.
 This object is intentionally minimal and contains only the URL and an optional description.*/
-///
-/// <details><summary>JSON schema</summary>
-///
-/// ```json
-///{
-///  "title": "Reference",
-///  "description": "A reference to a resource that provides additional context about the decision points or selections.\nThis object is intentionally minimal and contains only the URL and an optional description.",
-///  "type": "object",
-///  "required": [
-///    "summary",
-///    "uri"
-///  ],
-///  "properties": {
-///    "summary": {
-///      "title": "Summary",
-///      "type": "string"
-///    },
-///    "uri": {
-///      "title": "Uri",
-///      "type": "string",
-///      "format": "uri",
-///      "minLength": 1
-///    }
-///  },
-///  "additionalProperties": false
-///}
-/// ```
-/// </details>
 #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug, Eq, PartialEq)]
 #[serde(deny_unknown_fields)]
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
@@ -498,117 +297,15 @@ previously defined decision point. The expectation is that a Selection object wi
 fewer values than the original decision point, as it represents a specific evaluation
 at a specific time and may therefore rule out some values that were previously considered.
 Other fields like name and description may be copied from the decision point, but are not required.*/
-///
-/// <details><summary>JSON schema</summary>
-///
-/// ```json
-///{
-///  "title": "Selection",
-///  "description": "A minimal selection object that contains the decision point ID and the selected values.\nWhile the Selection object parallels the DecisionPoint object, it is intentionally minimal, with\nfewer required fields and no additional metadata, as it is meant to represent a selection made from a\npreviously defined decision point. The expectation is that a Selection object will usually have\nfewer values than the original decision point, as it represents a specific evaluation\nat a specific time and may therefore rule out some values that were previously considered.\nOther fields like name and description may be copied from the decision point, but are not required.",
-///  "type": "object",
-///  "required": [
-///    "key",
-///    "namespace",
-///    "values",
-///    "version"
-///  ],
-///  "properties": {
-///    "definition": {
-///      "title": "Definition",
-///      "type": "string",
-///      "minLength": 1
-///    },
-///    "key": {
-///      "title": "Key",
-///      "description": "A short, non-empty string identifier for the object. Keys must start with an alphanumeric, contain only alphanumerics and `_`, and end with an alphanumeric.(`T*` is explicitly grandfathered in as a valid key, but should not be used for new objects.)",
-///      "examples": [
-///        "E",
-///        "A",
-///        "SI",
-///        "L",
-///        "M",
-///        "H",
-///        "Mixed_case_OK",
-///        "alph4num3ric"
-///      ],
-///      "type": "string",
-///      "minLength": 1,
-///      "pattern": "^(([a-zA-Z0-9])|([a-zA-Z0-9][a-zA-Z0-9_]*[a-zA-Z0-9])|(T\\*))$"
-///    },
-///    "name": {
-///      "title": "Name",
-///      "type": "string",
-///      "minLength": 1
-///    },
-///    "namespace": {
-///      "title": "Namespace",
-///      "description": "The namespace of the SSVC object.",
-///      "examples": [
-///        "ssvc",
-///        "cisa",
-///        "x_example.test#test//.example.test#private-extension",
-///        "ssvc/de-DE/.example.organization#reference-arch-1"
-///      ],
-///      "type": "string",
-///      "maxLength": 1000,
-///      "minLength": 3,
-///      "pattern": "^(x_([a-z]|[0-9])(((([a-z]|[0-9])|-)){0,61}([a-z]|[0-9]))?(\\.([a-z]|[0-9])(((([a-z]|[0-9])|-)){0,61}([a-z]|[0-9]))?)+#(([a-z]|[0-9]))+((\\.|-)(([a-z]|[0-9]))+)*|[a-z]([a-z]|[0-9])(((\\.|-))?(([a-z]|[0-9]))+)+(#(([a-z]|[0-9]))+((\\.|-)(([a-z]|[0-9]))+)*)?)((/|/(([a-zA-Z]{2,3}(-[a-zA-Z]{3}(-[a-zA-Z]{3}){0,2})?|[a-zA-Z]{4,8})(-[a-zA-Z]{4})?(-([a-zA-Z]{2}|[0-9]{3}))?(-(([a-zA-Z0-9]){5,8}|[0-9]([a-zA-Z0-9]){3}))*(-[0-9A-WY-Za-wy-z](-([a-zA-Z0-9]){2,8})+)*(-[xX](-([a-zA-Z0-9]){2,8})+)?|[xX](-([a-zA-Z0-9]){2,8})+|i-default|i-mingo))((/((([a-zA-Z]{2,3}(-[a-zA-Z]{3}(-[a-zA-Z]{3}){0,2})?|[a-zA-Z]{4,8})(-[a-zA-Z]{4})?(-([a-zA-Z]{2}|[0-9]{3}))?(-(([a-zA-Z0-9]){5,8}|[0-9]([a-zA-Z0-9]){3}))*(-[0-9A-WY-Za-wy-z](-([a-zA-Z0-9]){2,8})+)*(-[xX](-([a-zA-Z0-9]){2,8})+)?|[xX](-([a-zA-Z0-9]){2,8})+|i-default|i-mingo)|\\.([a-z]|[0-9])(((([a-z]|[0-9])|-)){0,61}([a-z]|[0-9]))?(\\.([a-z]|[0-9])(((([a-z]|[0-9])|-)){0,61}([a-z]|[0-9]))?)+#(([a-z]|[0-9]))+((\\.|-)(([a-z]|[0-9]))+)*|\\.(([a-z]|[0-9])(((([a-z]|[0-9])|-)){0,61}([a-z]|[0-9]))?(\\.([a-z]|[0-9])(((([a-z]|[0-9])|-)){0,61}([a-z]|[0-9]))?)+|([a-z]|[0-9])(((([a-z]|[0-9])|-)){0,61}([a-z]|[0-9]))?(\\.([a-z]|[0-9])(((([a-z]|[0-9])|-)){0,61}([a-z]|[0-9]))?)+#(([a-z]|[0-9]))+((\\.|-)(([a-z]|[0-9]))+)*)\\$(([a-zA-Z]{2,3}(-[a-zA-Z]{3}(-[a-zA-Z]{3}){0,2})?|[a-zA-Z]{4,8})(-[a-zA-Z]{4})?(-([a-zA-Z]{2}|[0-9]{3}))?(-(([a-zA-Z0-9]){5,8}|[0-9]([a-zA-Z0-9]){3}))*(-[0-9A-WY-Za-wy-z](-([a-zA-Z0-9]){2,8})+)*(-[xX](-([a-zA-Z0-9]){2,8})+)?|[xX](-([a-zA-Z0-9]){2,8})+|i-default|i-mingo)))+)?)?$"
-///    },
-///    "values": {
-///      "title": "Values",
-///      "description": "A list of selected value keys from the decision point values.",
-///      "examples": [
-///        [
-///          {
-///            "key": "N"
-///          },
-///          {
-///            "key": "Y"
-///          }
-///        ],
-///        [
-///          {
-///            "key": "A"
-///          },
-///          {
-///            "key": "B"
-///          },
-///          {
-///            "key": "C"
-///          }
-///        ]
-///      ],
-///      "type": "array",
-///      "items": {
-///        "$ref": "#/$defs/MinimalDecisionPointValue"
-///      },
-///      "minItems": 1
-///    },
-///    "version": {
-///      "title": "Version",
-///      "description": "The version of the SSVC object. This must be a valid semantic version string.",
-///      "examples": [
-///        "1.0.0",
-///        "2.1.3"
-///      ],
-///      "type": "string",
-///      "minLength": 5,
-///      "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-((?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\\.(?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\\+([0-9a-zA-Z-]+(?:\\.[0-9a-zA-Z-]+)*))?$"
-///    }
-///  },
-///  "additionalProperties": false
-///}
-/// ```
-/// </details>
 #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug, Eq, PartialEq)]
 #[serde(deny_unknown_fields)]
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 pub struct Selection {
-    #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+    #[serde(skip_serializing_if = "::std::option::Option::is_none")]
     pub definition: ::std::option::Option<Definition>,
     ///A short, non-empty string identifier for the object. Keys must start with an alphanumeric, contain only alphanumerics and `_`, and end with an alphanumeric.(`T*` is explicitly grandfathered in as a valid key, but should not be used for new objects.)
     pub key: Key,
-    #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+    #[serde(skip_serializing_if = "::std::option::Option::is_none")]
     pub name: ::std::option::Option<Name>,
     ///The namespace of the SSVC object.
     pub namespace: Namespace,
@@ -623,112 +320,6 @@ impl Selection {
     }
 }
 ///This schema defines the structure to represent an SSVC SelectionList object.
-///
-/// <details><summary>JSON schema</summary>
-///
-/// ```json
-///{
-///  "$id": "https://certcc.github.io/SSVC/data/schema/v2/SelectionList_2_0_0.schema.json",
-///  "title": "SelectionList",
-///  "description": "This schema defines the structure to represent an SSVC SelectionList object.",
-///  "type": "object",
-///  "required": [
-///    "schemaVersion",
-///    "selections",
-///    "timestamp"
-///  ],
-///  "properties": {
-///    "decision_point_resources": {
-///      "title": "Decision Point Resources",
-///      "description": "A list of resources that provide additional context about the decision points found in this selection.",
-///      "examples": [
-///        [
-///          {
-///            "summary": "Documentation for a set of decision points",
-///            "uri": "https://example.com/decision_points"
-///          },
-///          {
-///            "summary": "JSON representation of decision point 2",
-///            "uri": "https://example.org/definitions/dp2.json"
-///          },
-///          {
-///            "summary": "A JSON file containing extension decision points in the x_com.example namespace",
-///            "uri": "https://example.com/ssvc/x_com.example/decision_points.json"
-///          }
-///        ]
-///      ],
-///      "type": "array",
-///      "items": {
-///        "$ref": "#/$defs/Reference"
-///      },
-///      "minItems": 1
-///    },
-///    "references": {
-///      "title": "References",
-///      "description": "A list of references that provide additional context about the specific values selected.",
-///      "examples": [
-///        [
-///          {
-///            "summary": "A report on which the selections were based",
-///            "uri": "https://example.com/report"
-///          }
-///        ]
-///      ],
-///      "type": "array",
-///      "items": {
-///        "$ref": "#/$defs/Reference"
-///      },
-///      "minItems": 1
-///    },
-///    "schemaVersion": {
-///      "title": "Schemaversion",
-///      "description": "The schema version of this selection list.",
-///      "type": "string",
-///      "const": "2.0.0"
-///    },
-///    "selections": {
-///      "title": "Selections",
-///      "description": "List of selections made from decision points. Each selection item corresponds to value keys contained in a specific decision point identified by its namespace, key, and version. Note that selection objects are deliberately minimal objects and do not contain the full decision point details.",
-///      "type": "array",
-///      "items": {
-///        "$ref": "#/$defs/Selection"
-///      },
-///      "minItems": 1
-///    },
-///    "target_ids": {
-///      "title": "Target Ids",
-///      "description": "Optional list of identifiers for the item or items (vulnerabilities, reports, advisories, systems, assets, etc.) being evaluated by these selections.",
-///      "examples": [
-///        [
-///          "CVE-1900-0000"
-///        ],
-///        [
-///          "VU#999999",
-///          "GHSA-0123-4567-89ab"
-///        ]
-///      ],
-///      "type": "array",
-///      "items": {
-///        "type": "string"
-///      },
-///      "minItems": 1,
-///      "uniqueItems": true
-///    },
-///    "timestamp": {
-///      "title": "Timestamp",
-///      "description": "Timestamp of the selections, in RFC 3339 format.",
-///      "examples": [
-///        "2025-01-01T12:00:00Z",
-///        "2025-01-02T15:30:45-04:00"
-///      ],
-///      "type": "string",
-///      "format": "date-time"
-///    }
-///  },
-///  "additionalProperties": false
-///}
-/// ```
-/// </details>
 #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug, Eq, PartialEq)]
 #[serde(deny_unknown_fields)]
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
@@ -745,8 +336,8 @@ pub struct SelectionList {
     ///List of selections made from decision points. Each selection item corresponds to value keys contained in a specific decision point identified by its namespace, key, and version. Note that selection objects are deliberately minimal objects and do not contain the full decision point details.
     pub selections: ::std::vec::Vec<Selection>,
     ///Optional list of identifiers for the item or items (vulnerabilities, reports, advisories, systems, assets, etc.) being evaluated by these selections.
-    #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
-    pub target_ids: ::std::option::Option<Vec<::std::string::String>>,
+    #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+    pub target_ids: ::std::option::Option<::std::vec::Vec<::std::string::String>>,
     ///Timestamp of the selections, in RFC 3339 format.
     #[cfg_attr(feature = "wasm", tsify(type = "string"))]
     pub timestamp: ::chrono::DateTime<::chrono::offset::Utc>,
@@ -757,18 +348,6 @@ impl SelectionList {
     }
 }
 ///`Uri`
-///
-/// <details><summary>JSON schema</summary>
-///
-/// ```json
-///{
-///  "title": "Uri",
-///  "type": "string",
-///  "format": "uri",
-///  "minLength": 1
-///}
-/// ```
-/// </details>
 #[derive(::serde::Serialize, Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
 #[serde(transparent)]
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
@@ -803,14 +382,6 @@ impl ::std::convert::TryFrom<&str> for Uri {
         value.parse()
     }
 }
-impl ::std::convert::TryFrom<&::std::string::String> for Uri {
-    type Error = self::error::ConversionError;
-    fn try_from(
-        value: &::std::string::String,
-    ) -> ::std::result::Result<Self, self::error::ConversionError> {
-        value.parse()
-    }
-}
 impl ::std::convert::TryFrom<::std::string::String> for Uri {
     type Error = self::error::ConversionError;
     fn try_from(
@@ -832,23 +403,6 @@ impl<'de> ::serde::Deserialize<'de> for Uri {
     }
 }
 ///The version of the SSVC object. This must be a valid semantic version string.
-///
-/// <details><summary>JSON schema</summary>
-///
-/// ```json
-///{
-///  "title": "Version",
-///  "description": "The version of the SSVC object. This must be a valid semantic version string.",
-///  "examples": [
-///    "1.0.0",
-///    "2.1.3"
-///  ],
-///  "type": "string",
-///  "minLength": 5,
-///  "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-((?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\\.(?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\\+([0-9a-zA-Z-]+(?:\\.[0-9a-zA-Z-]+)*))?$"
-///}
-/// ```
-/// </details>
 #[derive(::serde::Serialize, Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
 #[serde(transparent)]
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
@@ -892,14 +446,6 @@ impl ::std::convert::TryFrom<&str> for Version {
     type Error = self::error::ConversionError;
     fn try_from(
         value: &str,
-    ) -> ::std::result::Result<Self, self::error::ConversionError> {
-        value.parse()
-    }
-}
-impl ::std::convert::TryFrom<&::std::string::String> for Version {
-    type Error = self::error::ConversionError;
-    fn try_from(
-        value: &::std::string::String,
     ) -> ::std::result::Result<Self, self::error::ConversionError> {
         value.parse()
     }
@@ -1206,7 +752,7 @@ pub mod builder {
             ::std::string::String,
         >,
         target_ids: ::std::result::Result<
-            ::std::option::Option<Vec<::std::string::String>>,
+            ::std::option::Option<::std::vec::Vec<::std::string::String>>,
             ::std::string::String,
         >,
         timestamp: ::std::result::Result<
@@ -1280,7 +826,7 @@ pub mod builder {
         pub fn target_ids<T>(mut self, value: T) -> Self
         where
             T: ::std::convert::TryInto<
-                ::std::option::Option<Vec<::std::string::String>>,
+                ::std::option::Option<::std::vec::Vec<::std::string::String>>,
             >,
             T::Error: ::std::fmt::Display,
         {
@@ -1329,6 +875,38 @@ pub mod builder {
                 target_ids: Ok(value.target_ids),
                 timestamp: Ok(value.timestamp),
             }
+        }
+    }
+}
+/// Error types.
+pub mod error {
+    /// Error from a `TryFrom` or `FromStr` implementation.
+    pub struct ConversionError(::std::borrow::Cow<'static, str>);
+    impl ::std::error::Error for ConversionError {}
+    impl ::std::fmt::Display for ConversionError {
+        fn fmt(
+            &self,
+            f: &mut ::std::fmt::Formatter<'_>,
+        ) -> Result<(), ::std::fmt::Error> {
+            ::std::fmt::Display::fmt(&self.0, f)
+        }
+    }
+    impl ::std::fmt::Debug for ConversionError {
+        fn fmt(
+            &self,
+            f: &mut ::std::fmt::Formatter<'_>,
+        ) -> Result<(), ::std::fmt::Error> {
+            ::std::fmt::Debug::fmt(&self.0, f)
+        }
+    }
+    impl From<&'static str> for ConversionError {
+        fn from(value: &'static str) -> Self {
+            Self(value.into())
+        }
+    }
+    impl From<String> for ConversionError {
+        fn from(value: String) -> Self {
+            Self(value.into())
         }
     }
 }
