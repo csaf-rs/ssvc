@@ -36,7 +36,7 @@ jobs:
             ~/.cargo/git
           key: ${{ runner.os }}-cargo-registry-${{ hashFiles('**/Cargo.lock') }}
       - name: Run shared format, clippy and doc checks
-        uses: csaf-rs/shared-workflows/.github/actions/rust-checks@4828cd545465d4faade7eb410621ad7d8954f0dc # v1.9.0
+        uses: csaf-rs/shared-workflows/.github/actions/rust-checks@a55e51a118eb3d0beae0fed4a616eec29dc01ca2 # v1.10.0
         with:
           clippy-extra-args: "--all-features"
           doc-extra-args: "--all-features"
@@ -50,10 +50,10 @@ jobs:
         run: wasm-pack test --node -- --features wasm
       - name: Publish dry-run
         if: github.ref_type != 'tag'
-        uses: csaf-rs/shared-workflows/.github/actions/cargo-publish-dry-run@4828cd545465d4faade7eb410621ad7d8954f0dc # v1.9.0
+        uses: csaf-rs/shared-workflows/.github/actions/cargo-publish-dry-run@a55e51a118eb3d0beae0fed4a616eec29dc01ca2 # v1.10.0
 
   coverage:
-    uses: csaf-rs/shared-workflows/.github/workflows/rust-coverage.yml@4828cd545465d4faade7eb410621ad7d8954f0dc # v1.9.0
+    uses: csaf-rs/shared-workflows/.github/workflows/rust-coverage.yml@a55e51a118eb3d0beae0fed4a616eec29dc01ca2 # v1.10.0
 
   publish-crates:
     permissions:
