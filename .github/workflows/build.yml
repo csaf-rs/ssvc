@@ -84,6 +84,8 @@ jobs:
         run: |
           cargo install wasm-pack --locked
           wasm-pack build --target web --out-dir pkg --scope csaf-rs -- --features wasm
+      - name: Use npm-specific README
+        run: cp NPM-README.md pkg/README.md
       - name: Publish to NPM
         working-directory: ./pkg
         run: |
