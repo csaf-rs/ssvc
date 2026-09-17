@@ -59,22 +59,7 @@ wasm-pack build --target web --out-dir pkg -- --features wasm
 
 #### Usage
 
-```javascript
-import * as wasm from './pkg/ssvc.js';
-
-const jsonData = {...}; // Your SSVC selection list
-
-try {
-  const result = wasm.validateSelectionList(JSON.stringify(jsonData), false);
-  if (result.success) {
-    console.log("Valid SSVC data");
-  } else {
-    console.log("Validation errors:", result.errors);
-  }
-} catch (error) {
-  console.error("Error:", error);
-}
-```
+For installation and usage instructions when consuming the published npm package, see [NPM-README.md](NPM-README.md).
 
 ## License
 
