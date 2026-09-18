@@ -13,6 +13,12 @@ fn main() -> Result<()> {
     println!("cargo:rerun-if-changed=build/utils.rs");
     println!("cargo:rerun-if-changed=build/validation.rs");
 
+    // On docs.rs builds the filesystem is read-only. The generated files are
+    // already committed, so we can skip code generation entirely.
+    if std::env::var("DOCS_RS").is_ok() {
+        return Ok(());
+    }
+
     // Generate types from JSON schemas
     typegen::build_all_schemas()?;
 
