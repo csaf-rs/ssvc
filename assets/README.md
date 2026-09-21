@@ -20,3 +20,10 @@ They are 1:1 copies from the respective repository (i.e., git submodule), cloned
 See https://github.com/CERTCC/SSVC/blob/main/data/schema/v2/SelectionList_2_0_0.schema.json for this schema file and
 https://github.com/CERTCC/SSVC/blob/main/data/LICENSE for information about licenses.
 This is a 1:1 copy from the respective repository (i.e., git submodule), cloned solely for successful crate publishing.
+
+- `namespaces.py`
+
+See https://github.com/CERTCC/SSVC/blob/main/src/ssvc/namespaces.py for this file and
+https://github.com/CERTCC/SSVC/blob/main/data/LICENSE and the license text in the file's header for information about licenses.
+We manually copy the reserved / registered namespaces listed in this file for now, this is a 1:1 copy from the respective repository 
+(i.e., git submodule), cloned so we get a hint if the reserved / registered namespaces were modified upstream.

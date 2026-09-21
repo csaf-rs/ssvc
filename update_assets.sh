@@ -41,6 +41,13 @@ else
   exit 1
 fi
 
+if rsync -c "$SOURCE_ROOT/src/ssvc/namespaces.py" assets/namespaces.py; then
+  echo "namespaces.py file watcher was updated"
+else
+  echo "ERROR: Failed to update namespaces.py file watcher" >&2
+  exit 1
+fi
+
 if rsync -cr --delete "$SOURCE_ROOT/data/json/decision_points/" assets/ssvc_decision_points/; then
   echo "Decision points synchronized"
 else
