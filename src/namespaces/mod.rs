@@ -68,6 +68,9 @@ impl ParsedNamespace {
         let base = BaseNamespace::parse_base(parts[0], allow_test)?;
         // check if there are extensions, if so, parse them
         let extensions = if parts.len() > 1 {
+            if parts.len() == 2 && parts[1].is_empty() {
+                return Err(NamespaceError::EmptyLanguageExtension);
+            }
             parse_extensions(&parts[1..])?
         } else {
             None
@@ -158,7 +161,14 @@ mod tests {
             let parsed = result.unwrap();
             assert!(parsed.extensions.is_some_and(|ext| ext.len() == 3));
         }
+
+        #[test]
+        fn test_empty_language_extension_requires_segment() {
+            let result = validate_namespace("ssvc/", false);
+            assert_eq!(result, Err(NamespaceError::EmptyLanguageExtension));
+        }
     }
+
     mod csaf_6_2_34_tests {
         use crate::validate_namespace;
 
@@ -233,7 +243,6 @@ mod tests {
         #[case::registered_without_fragment("ssvc", false)]
         #[case::registered_with_fragment("ssvc#fragment", false)]
         #[case::unregistered("x_com.example#fragment", false)]
-        #[case::with_default_first_segment("ssvc/", false)]
         #[case::with_non_default_first_segment("ssvc/de-DE", false)]
         #[case::with_domain_extension("ssvc/de-DE/.example.organization#ref-arch-1", false)]
         #[case::with_domain_extension_and_lang_tag(
