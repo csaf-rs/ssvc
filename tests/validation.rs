@@ -35,7 +35,7 @@ fn csaf_6_1_48_01_fails() {
         success: false,
         errors: vec![
             ValidationError {
-                message: "The SSVC decision point 'ssvc::Mission Impact' (version 1.0.0) doesn't have a value with key 'D'".to_string(),
+                message: "The SSVC decision point `Mission Impact (ssvc:MI:1.0.0)` doesn't have a value with key `D`".to_string(),
                 instance_path: Vec::from([
                     "selections".to_string(),
                     "0".to_string(),
@@ -104,7 +104,7 @@ fn nist_800_30_with_wrong_key_fails() {
         success: false,
         errors: vec![
             ValidationError {
-                message: "The SSVC decision point 'nist#800-30::Probability Scale in 5 weighted levels, ascending' (version 1.0.0) doesn't have a value with key 'V'".to_string(),
+                message: "The SSVC decision point `Probability Scale in 5 weighted levels, ascending (nist#800-30:P_5X:1.0.0)` doesn't have a value with key `V`".to_string(),
                 instance_path: Vec::from([
                     "selections".to_string(),
                     "0".to_string(),
