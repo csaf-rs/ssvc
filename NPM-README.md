@@ -18,7 +18,7 @@ npm install @csaf-rs/ssvc
 
 ## Usage
 
-The WASM module must be initialized once before its functions can be used:
+The WASM module must be initialized once before its functions can be used. In browsers `init()` loads it; in Node.js it returns immediately, because the module is already loaded on import:
 
 ```javascript
 import init, { validateSelectionList } from '@csaf-rs/ssvc';
