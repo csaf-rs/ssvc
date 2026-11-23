@@ -44,10 +44,10 @@ pub fn add_tsify_derive(file: &mut syn::File) {
 }
 
 /// Adds `#[cfg_attr(feature = "wasm", tsify(type = "string"))]` to any struct
-/// field typed as `chrono::DateTime<_>`. Without this override, tsify would
+/// field typed as `jiff::Timestamp`. Without this override, tsify would
 /// otherwise emit an unresolvable `DateTime<Utc>` reference in the generated
-/// `.d.ts`, since chrono types have no built-in TypeScript mapping. Chrono
-/// already (de)serializes `DateTime` as an RFC 3339 string, so `string` is the
+/// `.d.ts`, since jiff types have no built-in TypeScript mapping. jiff
+/// already (de)serializes `Timestamp` as an RFC 3339 string, so `string` is the
 /// correct runtime-accurate type.
 pub fn add_tsify_datetime_type_override(file: &mut syn::File) {
     let attr: syn::Attribute =
@@ -58,30 +58,29 @@ pub fn add_tsify_datetime_type_override(file: &mut syn::File) {
             continue;
         };
         for field in &mut fields.named {
-            if is_chrono_date_time(&field.ty) {
+            if is_jiff_timestamp(&field.ty) {
                 field.attrs.push(attr.clone());
             }
         }
     }
 }
 
-/// Returns whether `ty` is (or wraps) a `chrono::DateTime<_>` type, e.g.
-/// `::chrono::DateTime<::chrono::offset::Utc>` or `Option<DateTime<Utc>>`.
-fn is_chrono_date_time(ty: &syn::Type) -> bool {
+/// Returns whether `ty` is (or wraps) a `jiff:Timestamp` type including wrapped in an option
+fn is_jiff_timestamp(ty: &syn::Type) -> bool {
     let syn::Type::Path(type_path) = ty else {
         return false;
     };
     let Some(segment) = type_path.path.segments.last() else {
         return false;
     };
-    if segment.ident == "DateTime" {
+    if segment.ident == "Timestamp" || segment.ident == "Date" {
         return true;
     }
     if segment.ident == "Option" {
         if let syn::PathArguments::AngleBracketed(args) = &segment.arguments {
-            return args.args.iter().any(|arg| {
-                matches!(arg, syn::GenericArgument::Type(inner) if is_chrono_date_time(inner))
-            });
+            return args.args.iter().any(
+                |arg| matches!(arg, syn::GenericArgument::Type(inner) if is_jiff_timestamp(inner)),
+            );
         }
     }
     false

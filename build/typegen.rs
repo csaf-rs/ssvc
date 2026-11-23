@@ -1,6 +1,7 @@
+use schemars::schema::{InstanceType, SchemaObject};
 use std::fs;
 use std::path::Path;
-use typify::{TypeSpace, TypeSpaceSettings};
+use typify::{CrateVers, TypeSpace, TypeSpaceImpl, TypeSpaceSettings};
 
 use super::utils;
 use anyhow::Result;
@@ -47,7 +48,26 @@ pub fn build_from_schema(file_path: &str, target_path: &str, with_tsify: bool) -
         TypeSpaceSettings::default()
             .with_struct_builder(true)
             .with_derive("PartialEq".into())
-            .with_derive("Eq".into()),
+            .with_derive("Eq".into())
+            .with_crate("jiff", CrateVers::Any, None)
+            .with_conversion(
+                SchemaObject {
+                    instance_type: Some(InstanceType::String.into()),
+                    format: Some("date-time".to_string()),
+                    ..Default::default()
+                },
+                "jiff::Timestamp",
+                [TypeSpaceImpl::Display].into_iter(),
+            )
+            .with_conversion(
+                SchemaObject {
+                    instance_type: Some(InstanceType::String.into()),
+                    format: Some("date".to_string()),
+                    ..Default::default()
+                },
+                "jiff::civil::Date",
+                [TypeSpaceImpl::Display].into_iter(),
+            ),
     );
     type_space.add_root_schema(schema)?;
 

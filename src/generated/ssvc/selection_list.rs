@@ -340,7 +340,7 @@ pub struct SelectionList {
     pub target_ids: ::std::option::Option<::std::vec::Vec<::std::string::String>>,
     ///Timestamp of the selections, in RFC 3339 format.
     #[cfg_attr(feature = "wasm", tsify(type = "string"))]
-    pub timestamp: ::chrono::DateTime<::chrono::offset::Utc>,
+    pub timestamp: jiff::Timestamp,
 }
 impl SelectionList {
     pub fn builder() -> builder::SelectionList {
@@ -755,10 +755,7 @@ pub mod builder {
             ::std::option::Option<::std::vec::Vec<::std::string::String>>,
             ::std::string::String,
         >,
-        timestamp: ::std::result::Result<
-            ::chrono::DateTime<::chrono::offset::Utc>,
-            ::std::string::String,
-        >,
+        timestamp: ::std::result::Result<jiff::Timestamp, ::std::string::String>,
     }
     impl ::std::default::Default for SelectionList {
         fn default() -> Self {
@@ -839,7 +836,7 @@ pub mod builder {
         }
         pub fn timestamp<T>(mut self, value: T) -> Self
         where
-            T: ::std::convert::TryInto<::chrono::DateTime<::chrono::offset::Utc>>,
+            T: ::std::convert::TryInto<jiff::Timestamp>,
             T::Error: ::std::fmt::Display,
         {
             self.timestamp = value
