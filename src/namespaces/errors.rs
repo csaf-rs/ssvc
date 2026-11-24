@@ -38,6 +38,9 @@ pub enum NamespaceError {
     #[error("Language tag cannot be empty")]
     EmptyLanguageTag,
 
+    #[error("Empty language extension must be followed by an extension segment")]
+    EmptyLanguageExtension,
+
     #[error("Invalid language tag '{tag}': must be a valid BCP 47 language tag")]
     InvalidLanguageTag { tag: String },
 }
