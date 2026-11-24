@@ -84,7 +84,7 @@ pub fn validate_selection_list(
             Ok(ns) => ns,
             Err(err) => {
                 errors.push(ValidationError {
-                    message: format!("Invalid SSVC namespace: {}", err),
+                    message: format!("Invalid SSVC namespace: `{}`", err),
                     instance_path: vec![
                         "selections".to_string(),
                         i_s.to_string(),
@@ -168,9 +168,10 @@ pub fn validate_selection_list(
                             // The value is not found in the base decision point
                             errors.push(ValidationError {
                                 message: format!(
-                                    "The SSVC decision point '{}::{}' (version {}) doesn't have a value with key '{}'",
-                                    selection.namespace.deref(),
+                                    "The SSVC decision point `{} ({}:{}:{})` doesn't have a value with key `{}`",
                                     dp.name.deref(),
+                                    selection.namespace.deref(),
+                                    selection.key.deref(),
                                     version,
                                     v_key
                                 ),
@@ -188,9 +189,10 @@ pub fn validate_selection_list(
                             if last_index > *i_dp_val {
                                 errors.push(ValidationError {
                                     message: format!(
-                                        "The values for SSVC decision point '{}::{}' (version {}) are not in correct order",
-                                        selection.namespace.deref(),
+                                        "The values for SSVC decision point `{} ({}:{}:{})` are not in correct order",
                                         dp.name.deref(),
+                                        selection.namespace.deref(),
+                                        selection.key.deref(),
                                         version
                                     ),
                                     instance_path: vec![
@@ -242,7 +244,7 @@ pub fn validate_selection_list(
             None => {
                 errors.push(ValidationError {
                     message: format!(
-                        "Unknown SSVC decision point '{}::{}' with version '{}'",
+                        "Unknown SSVC decision point `{}:{}:{}`",
                         selection.namespace.deref(),
                         s_key,
                         version
