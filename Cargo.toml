@@ -42,4 +42,4 @@ schemars = "0.8.22"
 
 [dev-dependencies]
 wasm-bindgen-test = "0.3"
-rstest = "0.28"
+rstest = "0.29"
