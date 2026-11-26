@@ -1,7 +1,7 @@
 use schemars::schema::{InstanceType, SchemaObject};
 use std::fs;
 use std::path::Path;
-use typify::{CrateVers, TypeSpace, TypeSpaceImpl, TypeSpaceSettings};
+use typify::{CrateVers, TypeSpace, TypeSpaceImpl, TypeSpaceSettings, typespace::TypespaceTrait};
 
 use super::utils;
 use anyhow::Result;
@@ -46,9 +46,11 @@ pub fn build_from_schema(file_path: &str, target_path: &str, with_tsify: bool) -
 
     let mut type_space = TypeSpace::new(
         TypeSpaceSettings::default()
-            .with_struct_builder(true)
-            .with_derive("PartialEq".into())
-            .with_derive("Eq".into())
+            .map_typespace_settings(|s| {
+                s.with_struct_builder(true)
+                    .with_required_trait(TypespaceTrait::PartialEq)
+                    .with_required_trait(TypespaceTrait::Eq)
+            })
             .with_crate("jiff", CrateVers::Any, None)
             .with_conversion(
                 SchemaObject {
@@ -71,7 +73,7 @@ pub fn build_from_schema(file_path: &str, target_path: &str, with_tsify: bool) -
     );
     type_space.add_root_schema(schema)?;
 
-    let mut syn_file = syn::parse2::<syn::File>(type_space.to_stream())?;
+    let mut syn_file = syn::parse2::<syn::File>(type_space.to_stream()?)?;
     utils::add_generated_code_header(&mut syn_file);
     utils::add_ignore_rustfmt(&mut syn_file);
     utils::add_ignore_clippy(&mut syn_file);
