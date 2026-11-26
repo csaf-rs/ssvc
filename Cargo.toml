@@ -38,7 +38,7 @@ typify = "0.10"
 prettyplease = "0.3"
 syn = "3"
 jsonschema = { version = "0.63", default-features = false }
-schemars = "0.8.22"
+schemars = "1.2.3"
 
 [dev-dependencies]
 wasm-bindgen-test = "0.3"
