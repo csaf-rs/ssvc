@@ -26,10 +26,7 @@ impl ::std::str::FromStr for Definition {
     fn from_str(
         value: &str,
     ) -> ::std::result::Result<Self, self::error::ConversionError> {
-        if value.chars().count() < 1usize {
-            return Err("shorter than 1 characters".into());
-        }
-        Ok(Self(value.to_string()))
+        ::std::convert::TryFrom::try_from(value)
     }
 }
 impl ::std::convert::TryFrom<&str> for Definition {
@@ -37,7 +34,10 @@ impl ::std::convert::TryFrom<&str> for Definition {
     fn try_from(
         value: &str,
     ) -> ::std::result::Result<Self, self::error::ConversionError> {
-        value.parse()
+        if value.chars().count() < 1usize {
+            return Err("shorter than 1 characters".into());
+        }
+        Ok(Self(value.to_string()))
     }
 }
 impl ::std::convert::TryFrom<::std::string::String> for Definition {
@@ -45,7 +45,7 @@ impl ::std::convert::TryFrom<::std::string::String> for Definition {
     fn try_from(
         value: ::std::string::String,
     ) -> ::std::result::Result<Self, self::error::ConversionError> {
-        value.parse()
+        ::std::convert::TryFrom::try_from(value.as_str())
     }
 }
 impl<'de> ::serde::Deserialize<'de> for Definition {
@@ -53,8 +53,9 @@ impl<'de> ::serde::Deserialize<'de> for Definition {
     where
         D: ::serde::Deserializer<'de>,
     {
-        ::std::string::String::deserialize(deserializer)?
-            .parse()
+        ::std::convert::TryFrom::try_from(
+                ::std::string::String::deserialize(deserializer)?,
+            )
             .map_err(|e: self::error::ConversionError| {
                 <D::Error as ::serde::de::Error>::custom(e.to_string())
             })
@@ -81,13 +82,22 @@ impl ::std::str::FromStr for Key {
     fn from_str(
         value: &str,
     ) -> ::std::result::Result<Self, self::error::ConversionError> {
+        ::std::convert::TryFrom::try_from(value)
+    }
+}
+impl ::std::convert::TryFrom<&str> for Key {
+    type Error = self::error::ConversionError;
+    fn try_from(
+        value: &str,
+    ) -> ::std::result::Result<Self, self::error::ConversionError> {
         if value.chars().count() < 1usize {
             return Err("shorter than 1 characters".into());
         }
         static PATTERN: ::std::sync::LazyLock<::regress::Regex> = ::std::sync::LazyLock::new(||
         {
-            ::regress::Regex::new(
+            ::regress::Regex::with_flags(
                     "^(([a-zA-Z0-9])|([a-zA-Z0-9][a-zA-Z0-9_]*[a-zA-Z0-9])|(T\\*))$",
+                    "u",
                 )
                 .unwrap()
         });
@@ -100,20 +110,12 @@ impl ::std::str::FromStr for Key {
         Ok(Self(value.to_string()))
     }
 }
-impl ::std::convert::TryFrom<&str> for Key {
-    type Error = self::error::ConversionError;
-    fn try_from(
-        value: &str,
-    ) -> ::std::result::Result<Self, self::error::ConversionError> {
-        value.parse()
-    }
-}
 impl ::std::convert::TryFrom<::std::string::String> for Key {
     type Error = self::error::ConversionError;
     fn try_from(
         value: ::std::string::String,
     ) -> ::std::result::Result<Self, self::error::ConversionError> {
-        value.parse()
+        ::std::convert::TryFrom::try_from(value.as_str())
     }
 }
 impl<'de> ::serde::Deserialize<'de> for Key {
@@ -121,8 +123,9 @@ impl<'de> ::serde::Deserialize<'de> for Key {
     where
         D: ::serde::Deserializer<'de>,
     {
-        ::std::string::String::deserialize(deserializer)?
-            .parse()
+        ::std::convert::TryFrom::try_from(
+                ::std::string::String::deserialize(deserializer)?,
+            )
             .map_err(|e: self::error::ConversionError| {
                 <D::Error as ::serde::de::Error>::custom(e.to_string())
             })
@@ -171,10 +174,7 @@ impl ::std::str::FromStr for Name {
     fn from_str(
         value: &str,
     ) -> ::std::result::Result<Self, self::error::ConversionError> {
-        if value.chars().count() < 1usize {
-            return Err("shorter than 1 characters".into());
-        }
-        Ok(Self(value.to_string()))
+        ::std::convert::TryFrom::try_from(value)
     }
 }
 impl ::std::convert::TryFrom<&str> for Name {
@@ -182,7 +182,10 @@ impl ::std::convert::TryFrom<&str> for Name {
     fn try_from(
         value: &str,
     ) -> ::std::result::Result<Self, self::error::ConversionError> {
-        value.parse()
+        if value.chars().count() < 1usize {
+            return Err("shorter than 1 characters".into());
+        }
+        Ok(Self(value.to_string()))
     }
 }
 impl ::std::convert::TryFrom<::std::string::String> for Name {
@@ -190,7 +193,7 @@ impl ::std::convert::TryFrom<::std::string::String> for Name {
     fn try_from(
         value: ::std::string::String,
     ) -> ::std::result::Result<Self, self::error::ConversionError> {
-        value.parse()
+        ::std::convert::TryFrom::try_from(value.as_str())
     }
 }
 impl<'de> ::serde::Deserialize<'de> for Name {
@@ -198,8 +201,9 @@ impl<'de> ::serde::Deserialize<'de> for Name {
     where
         D: ::serde::Deserializer<'de>,
     {
-        ::std::string::String::deserialize(deserializer)?
-            .parse()
+        ::std::convert::TryFrom::try_from(
+                ::std::string::String::deserialize(deserializer)?,
+            )
             .map_err(|e: self::error::ConversionError| {
                 <D::Error as ::serde::de::Error>::custom(e.to_string())
             })
@@ -226,6 +230,14 @@ impl ::std::str::FromStr for Namespace {
     fn from_str(
         value: &str,
     ) -> ::std::result::Result<Self, self::error::ConversionError> {
+        ::std::convert::TryFrom::try_from(value)
+    }
+}
+impl ::std::convert::TryFrom<&str> for Namespace {
+    type Error = self::error::ConversionError;
+    fn try_from(
+        value: &str,
+    ) -> ::std::result::Result<Self, self::error::ConversionError> {
         if value.chars().count() > 1000usize {
             return Err("longer than 1000 characters".into());
         }
@@ -234,8 +246,9 @@ impl ::std::str::FromStr for Namespace {
         }
         static PATTERN: ::std::sync::LazyLock<::regress::Regex> = ::std::sync::LazyLock::new(||
         {
-            ::regress::Regex::new(
+            ::regress::Regex::with_flags(
                     "^(x_([a-z]|[0-9])(((([a-z]|[0-9])|-)){0,61}([a-z]|[0-9]))?(\\.([a-z]|[0-9])(((([a-z]|[0-9])|-)){0,61}([a-z]|[0-9]))?)+#(([a-z]|[0-9]))+((\\.|-)(([a-z]|[0-9]))+)*|[a-z]([a-z]|[0-9])(((\\.|-))?(([a-z]|[0-9]))+)+(#(([a-z]|[0-9]))+((\\.|-)(([a-z]|[0-9]))+)*)?)((/(([a-zA-Z]{2,3}(-[a-zA-Z]{3}(-[a-zA-Z]{3}){0,2})?|[a-zA-Z]{4,8})(-[a-zA-Z]{4})?(-([a-zA-Z]{2}|[0-9]{3}))?(-(([a-zA-Z0-9]){5,8}|[0-9]([a-zA-Z0-9]){3}))*(-[0-9A-WY-Za-wy-z](-([a-zA-Z0-9]){2,8})+)*(-[xX](-([a-zA-Z0-9]){1,8})+)?|[xX](-([a-zA-Z0-9]){1,8})+|i-default|i-mingo)(/((([a-zA-Z]{2,3}(-[a-zA-Z]{3}(-[a-zA-Z]{3}){0,2})?|[a-zA-Z]{4,8})(-[a-zA-Z]{4})?(-([a-zA-Z]{2}|[0-9]{3}))?(-(([a-zA-Z0-9]){5,8}|[0-9]([a-zA-Z0-9]){3}))*(-[0-9A-WY-Za-wy-z](-([a-zA-Z0-9]){2,8})+)*(-[xX](-([a-zA-Z0-9]){1,8})+)?|[xX](-([a-zA-Z0-9]){1,8})+|i-default|i-mingo)|\\.([a-z]|[0-9])(((([a-z]|[0-9])|-)){0,61}([a-z]|[0-9]))?(\\.([a-z]|[0-9])(((([a-z]|[0-9])|-)){0,61}([a-z]|[0-9]))?)+#(([a-z]|[0-9]))+((\\.|-)(([a-z]|[0-9]))+)*|\\.(([a-z]|[0-9])(((([a-z]|[0-9])|-)){0,61}([a-z]|[0-9]))?(\\.([a-z]|[0-9])(((([a-z]|[0-9])|-)){0,61}([a-z]|[0-9]))?)+|([a-z]|[0-9])(((([a-z]|[0-9])|-)){0,61}([a-z]|[0-9]))?(\\.([a-z]|[0-9])(((([a-z]|[0-9])|-)){0,61}([a-z]|[0-9]))?)+#(([a-z]|[0-9]))+((\\.|-)(([a-z]|[0-9]))+)*)\\$(([a-zA-Z]{2,3}(-[a-zA-Z]{3}(-[a-zA-Z]{3}){0,2})?|[a-zA-Z]{4,8})(-[a-zA-Z]{4})?(-([a-zA-Z]{2}|[0-9]{3}))?(-(([a-zA-Z0-9]){5,8}|[0-9]([a-zA-Z0-9]){3}))*(-[0-9A-WY-Za-wy-z](-([a-zA-Z0-9]){2,8})+)*(-[xX](-([a-zA-Z0-9]){1,8})+)?|[xX](-([a-zA-Z0-9]){1,8})+|i-default|i-mingo)))*|/(/((([a-zA-Z]{2,3}(-[a-zA-Z]{3}(-[a-zA-Z]{3}){0,2})?|[a-zA-Z]{4,8})(-[a-zA-Z]{4})?(-([a-zA-Z]{2}|[0-9]{3}))?(-(([a-zA-Z0-9]){5,8}|[0-9]([a-zA-Z0-9]){3}))*(-[0-9A-WY-Za-wy-z](-([a-zA-Z0-9]){2,8})+)*(-[xX](-([a-zA-Z0-9]){1,8})+)?|[xX](-([a-zA-Z0-9]){1,8})+|i-default|i-mingo)|\\.([a-z]|[0-9])(((([a-z]|[0-9])|-)){0,61}([a-z]|[0-9]))?(\\.([a-z]|[0-9])(((([a-z]|[0-9])|-)){0,61}([a-z]|[0-9]))?)+#(([a-z]|[0-9]))+((\\.|-)(([a-z]|[0-9]))+)*|\\.(([a-z]|[0-9])(((([a-z]|[0-9])|-)){0,61}([a-z]|[0-9]))?(\\.([a-z]|[0-9])(((([a-z]|[0-9])|-)){0,61}([a-z]|[0-9]))?)+|([a-z]|[0-9])(((([a-z]|[0-9])|-)){0,61}([a-z]|[0-9]))?(\\.([a-z]|[0-9])(((([a-z]|[0-9])|-)){0,61}([a-z]|[0-9]))?)+#(([a-z]|[0-9]))+((\\.|-)(([a-z]|[0-9]))+)*)\\$(([a-zA-Z]{2,3}(-[a-zA-Z]{3}(-[a-zA-Z]{3}){0,2})?|[a-zA-Z]{4,8})(-[a-zA-Z]{4})?(-([a-zA-Z]{2}|[0-9]{3}))?(-(([a-zA-Z0-9]){5,8}|[0-9]([a-zA-Z0-9]){3}))*(-[0-9A-WY-Za-wy-z](-([a-zA-Z0-9]){2,8})+)*(-[xX](-([a-zA-Z0-9]){1,8})+)?|[xX](-([a-zA-Z0-9]){1,8})+|i-default|i-mingo)))+))?$",
+                    "u",
                 )
                 .unwrap()
         });
@@ -248,20 +261,12 @@ impl ::std::str::FromStr for Namespace {
         Ok(Self(value.to_string()))
     }
 }
-impl ::std::convert::TryFrom<&str> for Namespace {
-    type Error = self::error::ConversionError;
-    fn try_from(
-        value: &str,
-    ) -> ::std::result::Result<Self, self::error::ConversionError> {
-        value.parse()
-    }
-}
 impl ::std::convert::TryFrom<::std::string::String> for Namespace {
     type Error = self::error::ConversionError;
     fn try_from(
         value: ::std::string::String,
     ) -> ::std::result::Result<Self, self::error::ConversionError> {
-        value.parse()
+        ::std::convert::TryFrom::try_from(value.as_str())
     }
 }
 impl<'de> ::serde::Deserialize<'de> for Namespace {
@@ -269,8 +274,9 @@ impl<'de> ::serde::Deserialize<'de> for Namespace {
     where
         D: ::serde::Deserializer<'de>,
     {
-        ::std::string::String::deserialize(deserializer)?
-            .parse()
+        ::std::convert::TryFrom::try_from(
+                ::std::string::String::deserialize(deserializer)?,
+            )
             .map_err(|e: self::error::ConversionError| {
                 <D::Error as ::serde::de::Error>::custom(e.to_string())
             })
@@ -288,6 +294,58 @@ pub struct Reference {
 impl Reference {
     pub fn builder() -> builder::Reference {
         Default::default()
+    }
+}
+///The schema version of this selection list.
+#[derive(
+    ::serde::Deserialize,
+    ::serde::Serialize,
+    Clone,
+    Copy,
+    Debug,
+    Eq,
+    Hash,
+    Ord,
+    PartialEq,
+    PartialOrd
+)]
+#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
+pub enum Schemaversion {
+    #[serde(rename = "2.0.0")]
+    X200,
+}
+impl ::std::fmt::Display for Schemaversion {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+        match *self {
+            Self::X200 => f.write_str("2.0.0"),
+        }
+    }
+}
+impl ::std::str::FromStr for Schemaversion {
+    type Err = self::error::ConversionError;
+    fn from_str(
+        value: &str,
+    ) -> ::std::result::Result<Self, self::error::ConversionError> {
+        match value {
+            "2.0.0" => Ok(Self::X200),
+            _ => Err("invalid value".into()),
+        }
+    }
+}
+impl ::std::convert::TryFrom<&str> for Schemaversion {
+    type Error = self::error::ConversionError;
+    fn try_from(
+        value: &str,
+    ) -> ::std::result::Result<Self, self::error::ConversionError> {
+        value.parse()
+    }
+}
+impl ::std::convert::TryFrom<::std::string::String> for Schemaversion {
+    type Error = self::error::ConversionError;
+    fn try_from(
+        value: ::std::string::String,
+    ) -> ::std::result::Result<Self, self::error::ConversionError> {
+        value.parse()
     }
 }
 /**A minimal selection object that contains the decision point ID and the selected values.
@@ -332,7 +390,7 @@ pub struct SelectionList {
     pub references: ::std::vec::Vec<Reference>,
     ///The schema version of this selection list.
     #[serde(rename = "schemaVersion")]
-    pub schema_version: ::std::string::String,
+    pub schema_version: Schemaversion,
     ///List of selections made from decision points. Each selection item corresponds to value keys contained in a specific decision point identified by its namespace, key, and version. Note that selection objects are deliberately minimal objects and do not contain the full decision point details.
     pub selections: ::std::vec::Vec<Selection>,
     ///Optional list of identifiers for the item or items (vulnerabilities, reports, advisories, systems, assets, etc.) being evaluated by these selections.
@@ -368,10 +426,7 @@ impl ::std::str::FromStr for Uri {
     fn from_str(
         value: &str,
     ) -> ::std::result::Result<Self, self::error::ConversionError> {
-        if value.chars().count() < 1usize {
-            return Err("shorter than 1 characters".into());
-        }
-        Ok(Self(value.to_string()))
+        ::std::convert::TryFrom::try_from(value)
     }
 }
 impl ::std::convert::TryFrom<&str> for Uri {
@@ -379,7 +434,10 @@ impl ::std::convert::TryFrom<&str> for Uri {
     fn try_from(
         value: &str,
     ) -> ::std::result::Result<Self, self::error::ConversionError> {
-        value.parse()
+        if value.chars().count() < 1usize {
+            return Err("shorter than 1 characters".into());
+        }
+        Ok(Self(value.to_string()))
     }
 }
 impl ::std::convert::TryFrom<::std::string::String> for Uri {
@@ -387,7 +445,7 @@ impl ::std::convert::TryFrom<::std::string::String> for Uri {
     fn try_from(
         value: ::std::string::String,
     ) -> ::std::result::Result<Self, self::error::ConversionError> {
-        value.parse()
+        ::std::convert::TryFrom::try_from(value.as_str())
     }
 }
 impl<'de> ::serde::Deserialize<'de> for Uri {
@@ -395,8 +453,9 @@ impl<'de> ::serde::Deserialize<'de> for Uri {
     where
         D: ::serde::Deserializer<'de>,
     {
-        ::std::string::String::deserialize(deserializer)?
-            .parse()
+        ::std::convert::TryFrom::try_from(
+                ::std::string::String::deserialize(deserializer)?,
+            )
             .map_err(|e: self::error::ConversionError| {
                 <D::Error as ::serde::de::Error>::custom(e.to_string())
             })
@@ -423,13 +482,22 @@ impl ::std::str::FromStr for Version {
     fn from_str(
         value: &str,
     ) -> ::std::result::Result<Self, self::error::ConversionError> {
+        ::std::convert::TryFrom::try_from(value)
+    }
+}
+impl ::std::convert::TryFrom<&str> for Version {
+    type Error = self::error::ConversionError;
+    fn try_from(
+        value: &str,
+    ) -> ::std::result::Result<Self, self::error::ConversionError> {
         if value.chars().count() < 5usize {
             return Err("shorter than 5 characters".into());
         }
         static PATTERN: ::std::sync::LazyLock<::regress::Regex> = ::std::sync::LazyLock::new(||
         {
-            ::regress::Regex::new(
+            ::regress::Regex::with_flags(
                     "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-((?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\\.(?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\\+([0-9a-zA-Z-]+(?:\\.[0-9a-zA-Z-]+)*))?$",
+                    "u",
                 )
                 .unwrap()
         });
@@ -442,20 +510,12 @@ impl ::std::str::FromStr for Version {
         Ok(Self(value.to_string()))
     }
 }
-impl ::std::convert::TryFrom<&str> for Version {
-    type Error = self::error::ConversionError;
-    fn try_from(
-        value: &str,
-    ) -> ::std::result::Result<Self, self::error::ConversionError> {
-        value.parse()
-    }
-}
 impl ::std::convert::TryFrom<::std::string::String> for Version {
     type Error = self::error::ConversionError;
     fn try_from(
         value: ::std::string::String,
     ) -> ::std::result::Result<Self, self::error::ConversionError> {
-        value.parse()
+        ::std::convert::TryFrom::try_from(value.as_str())
     }
 }
 impl<'de> ::serde::Deserialize<'de> for Version {
@@ -463,8 +523,9 @@ impl<'de> ::serde::Deserialize<'de> for Version {
     where
         D: ::serde::Deserializer<'de>,
     {
-        ::std::string::String::deserialize(deserializer)?
-            .parse()
+        ::std::convert::TryFrom::try_from(
+                ::std::string::String::deserialize(deserializer)?,
+            )
             .map_err(|e: self::error::ConversionError| {
                 <D::Error as ::serde::de::Error>::custom(e.to_string())
             })
@@ -744,7 +805,7 @@ pub mod builder {
             ::std::string::String,
         >,
         schema_version: ::std::result::Result<
-            ::std::string::String,
+            super::Schemaversion,
             ::std::string::String,
         >,
         selections: ::std::result::Result<
@@ -798,7 +859,7 @@ pub mod builder {
         }
         pub fn schema_version<T>(mut self, value: T) -> Self
         where
-            T: ::std::convert::TryInto<::std::string::String>,
+            T: ::std::convert::TryInto<super::Schemaversion>,
             T::Error: ::std::fmt::Display,
         {
             self.schema_version = value

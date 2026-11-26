@@ -76,12 +76,12 @@ fn is_jiff_timestamp(ty: &syn::Type) -> bool {
     if segment.ident == "Timestamp" || segment.ident == "Date" {
         return true;
     }
-    if segment.ident == "Option" {
-        if let syn::PathArguments::AngleBracketed(args) = &segment.arguments {
-            return args.args.iter().any(
-                |arg| matches!(arg, syn::GenericArgument::Type(inner) if is_jiff_timestamp(inner)),
-            );
-        }
+    if segment.ident == "Option"
+        && let syn::PathArguments::AngleBracketed(args) = &segment.arguments
+    {
+        return args.args.iter().any(
+            |arg| matches!(arg, syn::GenericArgument::Type(inner) if is_jiff_timestamp(inner)),
+        );
     }
     false
 }
