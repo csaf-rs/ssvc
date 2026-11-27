@@ -19,7 +19,7 @@ cargo add ssvc
 
 ## MSRV
 
-1.85.0
+1.88.0
 
 ## Examples
 
